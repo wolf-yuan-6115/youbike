@@ -11,22 +11,22 @@ export type Database = {
     Tables: {
       history: {
         Row: {
-          fail: number | null
+          fail: number
           station_id: number
-          success: number | null
-          unavailable: number | null
+          success: number
+          unavailable: number
         }
         Insert: {
-          fail?: number | null
+          fail?: number
           station_id: number
-          success?: number | null
-          unavailable?: number | null
+          success?: number
+          unavailable?: number
         }
         Update: {
-          fail?: number | null
+          fail?: number
           station_id?: number
-          success?: number | null
-          unavailable?: number | null
+          success?: number
+          unavailable?: number
         }
         Relationships: [
           {
@@ -41,22 +41,22 @@ export type Database = {
       recently: {
         Row: {
           at: string
-          available: number | null
-          empty: number | null
+          available: number
+          empty: number
           id: string
           station_id: number
         }
         Insert: {
           at: string
-          available?: number | null
-          empty?: number | null
+          available: number
+          empty: number
           id?: string
           station_id: number
         }
         Update: {
           at?: string
-          available?: number | null
-          empty?: number | null
+          available?: number
+          empty?: number
           id?: string
           station_id?: number
         }
@@ -72,28 +72,28 @@ export type Database = {
       }
       stations: {
         Row: {
-          address: string | null
-          enabled: boolean | null
+          address: string
+          enabled: boolean
           id: number
-          lat: number | null
-          lng: number | null
-          name: string | null
+          lat: number
+          lng: number
+          name: string
         }
         Insert: {
-          address?: string | null
-          enabled?: boolean | null
+          address: string
+          enabled: boolean
           id: number
-          lat?: number | null
-          lng?: number | null
-          name?: string | null
+          lat: number
+          lng: number
+          name: string
         }
         Update: {
-          address?: string | null
-          enabled?: boolean | null
+          address?: string
+          enabled?: boolean
           id?: number
-          lat?: number | null
-          lng?: number | null
-          name?: string | null
+          lat?: number
+          lng?: number
+          name?: string
         }
         Relationships: []
       }

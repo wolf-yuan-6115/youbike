@@ -5,10 +5,12 @@
   "private": true,
   "dependencies": {
     "@supabase/supabase-js": "^2.50.0",
-    "dotenv": "^16.5.0"
+    "dotenv": "^16.5.0",
+    "node-cron": "^4.1.0"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "prettier-plugin-organize-imports": "^4.1.0",
     "supabase": "^2.26.9"
   },
   "peerDependencies": {
