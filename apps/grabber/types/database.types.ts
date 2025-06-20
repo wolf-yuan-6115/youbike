@@ -9,7 +9,7 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      history: {
+      current: {
         Row: {
           bikes: number
           fail: number
@@ -50,7 +50,7 @@ export type Database = {
           },
         ]
       }
-      recently: {
+      history: {
         Row: {
           at: string
           available: number
@@ -90,6 +90,7 @@ export type Database = {
           lat: number
           lng: number
           name: string
+          total: number | null
         }
         Insert: {
           address: string
@@ -98,6 +99,7 @@ export type Database = {
           lat: number
           lng: number
           name: string
+          total?: number | null
         }
         Update: {
           address?: string
@@ -106,6 +108,7 @@ export type Database = {
           lat?: number
           lng?: number
           name?: string
+          total?: number | null
         }
         Relationships: []
       }

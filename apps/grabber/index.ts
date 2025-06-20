@@ -68,7 +68,7 @@ cron.schedule("* * * * *", async () => {
       else logCurrentTime(`Station ${station.id} is available`);
 
       const existingRecentlyData = await supabase
-        .from("history")
+        .from("current")
         .select()
         .eq("station_id", station.id)
         .single();
@@ -78,7 +78,7 @@ cron.schedule("* * * * *", async () => {
           `Station ${station.id} is not in the database, adding entry`,
         );
 
-        await supabase.from("history").insert({
+        await supabase.from("current").insert({
           station_id: station.id,
           bikes: targetStation.available_spaces,
           slots: targetStation.empty_spaces,
@@ -90,7 +90,7 @@ cron.schedule("* * * * *", async () => {
         });
       } else if (isUnavailable) {
         await supabase
-          .from("history")
+          .from("current")
           .update({
             bikes: targetStation.available_spaces,
             slots: targetStation.empty_spaces,
@@ -102,7 +102,7 @@ cron.schedule("* * * * *", async () => {
           .eq("station_id", station.id);
       } else {
         await supabase
-          .from("history")
+          .from("current")
           .update({
             bikes: targetStation.available_spaces,
             slots: targetStation.empty_spaces,
