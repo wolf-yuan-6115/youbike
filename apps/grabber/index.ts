@@ -1,10 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 import dotenv from "dotenv";
-import cron from "node-cron"
 
 import type { Database } from "./types/database.types";
 import type { ParkingInfo } from "./types/youbike.types.ts";
-import { logCurrentTime } from "./utils/currentTime.ts";
+import {
+  getCurrentTimeISOString,
+  logCurrentTime,
+} from "./utils/currentTime.ts";
 
 dotenv.config();
 
@@ -56,36 +58,62 @@ cron.schedule("* * * * *", async () => {
         continue;
       }
 
-      logCurrentTime(`Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}`);
-      const isUnavailable = targetStation.available_spaces < 5
+      logCurrentTime(
+        `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}`,
+      );
+      const isUnavailable = targetStation.available_spaces < 5;
 
       if (isUnavailable)
-        logCurrentTime(`Station ${station.id} is unavailable`)
-      else
-        logCurrentTime(`Station ${station.id} is available`)
+        logCurrentTime(`Station ${station.id} is unavailable`);
+      else logCurrentTime(`Station ${station.id} is available`);
 
-      const existingRecentlyData = await supabase.from("history").select().eq("station_id", station.id).single();
+      const existingRecentlyData = await supabase
+        .from("history")
+        .select()
+        .eq("station_id", station.id)
+        .single();
+      const currentTime = getCurrentTimeISOString();
       if (!existingRecentlyData || !existingRecentlyData.data) {
-        logCurrentTime(`Station ${station.id} is not in the database, adding entry`)
+        logCurrentTime(
+          `Station ${station.id} is not in the database, adding entry`,
+        );
 
         await supabase.from("history").insert({
           station_id: station.id,
+          bikes: targetStation.available_spaces,
+          slots: targetStation.empty_spaces,
           unavailable: isUnavailable ? 1 : 0,
           success: 1,
           fail: 0,
-        })
+          update: currentTime,
+          status: !isUnavailable,
+        });
       } else if (isUnavailable) {
-        await supabase.from("history").update({
-          unavailable: existingRecentlyData.data.unavailable + 1,
-          success: existingRecentlyData.data.success + 1,
-        }).eq("station_id", station.id);
+        await supabase
+          .from("history")
+          .update({
+            bikes: targetStation.available_spaces,
+            slots: targetStation.empty_spaces,
+            unavailable: existingRecentlyData.data.unavailable + 1,
+            success: existingRecentlyData.data.success + 1,
+            update: currentTime,
+            status: !isUnavailable,
+          })
+          .eq("station_id", station.id);
       } else {
-        await supabase.from("history").update({
-          success: existingRecentlyData.data.success + 1,
-        }).eq("station_id", station.id);
+        await supabase
+          .from("history")
+          .update({
+            bikes: targetStation.available_spaces,
+            slots: targetStation.empty_spaces,
+            success: existingRecentlyData.data.success + 1,
+            update: currentTime,
+            status: !isUnavailable,
+          })
+          .eq("station_id", station.id);
       }
     } catch (error) {
-      logCurrentTime(`Cooked when processing ${station.id}`)
+      logCurrentTime(`Cooked when processing ${station.id}`);
       console.log(error);
     }
   }

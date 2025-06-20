@@ -11,22 +11,34 @@ export type Database = {
     Tables: {
       history: {
         Row: {
+          bikes: number
           fail: number
+          slots: number
           station_id: number
+          status: boolean
           success: number
           unavailable: number
+          update: string
         }
         Insert: {
+          bikes: number
           fail?: number
+          slots: number
           station_id: number
+          status: boolean
           success?: number
           unavailable?: number
+          update: string
         }
         Update: {
+          bikes?: number
           fail?: number
+          slots?: number
           station_id?: number
+          status?: boolean
           success?: number
           unavailable?: number
+          update?: string
         }
         Relationships: [
           {
