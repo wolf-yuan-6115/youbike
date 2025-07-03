@@ -1,5 +1,5 @@
 import type { Tables } from "../types/database.types.ts";
-import type { ParkingInfo } from "../types/youbike.types.ts";
+import { parkingInfo } from "../utils/api.ts";
 import {
   getCurrentTimeISOString,
   logCurrentTime,
@@ -11,22 +11,15 @@ export default async (stations: Tables<"stations">[]) => {
 
   for (const station of stations) {
     try {
-      logCurrentTime(`Processing ${station.id}`);
-      const response = await fetch(
-        "https://apis.youbike.com.tw/tw2/parkingInfo",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            lat: station.lat,
-            lng: station.lng,
-            maxDistance: 500,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      const data: ParkingInfo = await response.json();
+      const data = await parkingInfo(station.lat, station.lng);
+
+      if (!data) {
+        logCurrentTime(
+          `Unable to fetch data for station ${station.id}`,
+        );
+        continue;
+      }
+
       const targetStation = data.retVal.find(
         (k) => k.station_no === station.id.toString(),
       );
