@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import cron from "node-cron";
 import hourJob from "./jobs/hour.ts";
 import { logCurrentTime } from "./utils/currentTime.ts";
 import { supabase } from "./utils/supabaseClient.ts";
