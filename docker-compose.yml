@@ -1,6 +1,5 @@
 services:
   youbike-grabber:
-    image: grabber:latest
     build:
       context: apps/grabber
     env_file:
