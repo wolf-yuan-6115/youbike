@@ -1,5 +1,5 @@
 services:
-  grabber:
+  youbike-grabber:
     image: grabber:latest
     build:
       context: apps/grabber
