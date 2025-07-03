@@ -4,3 +4,4 @@ services:
       context: apps/grabber
     env_file:
       - apps/grabber/.env
+    restart: unless-stopped
