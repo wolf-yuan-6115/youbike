@@ -13,29 +13,32 @@ export type Database = {
         Row: {
           bikes: number
           fail: number
+          full: number
           slots: number
           station_id: number
-          status: boolean
+          status: Database["public"]["Enums"]["station_state"]
           success: number
           unavailable: number
           update: string
         }
         Insert: {
-          bikes: number
+          bikes?: number
           fail?: number
-          slots: number
+          full?: number
+          slots?: number
           station_id: number
-          status: boolean
+          status?: Database["public"]["Enums"]["station_state"]
           success?: number
           unavailable?: number
-          update: string
+          update?: string
         }
         Update: {
           bikes?: number
           fail?: number
+          full?: number
           slots?: number
           station_id?: number
-          status?: boolean
+          status?: Database["public"]["Enums"]["station_state"]
           success?: number
           unavailable?: number
           update?: string
@@ -120,7 +123,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      station_state: "FULL" | "EMPTY" | "NORMAL"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -235,6 +238,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      station_state: ["FULL", "EMPTY", "NORMAL"],
+    },
   },
 } as const
