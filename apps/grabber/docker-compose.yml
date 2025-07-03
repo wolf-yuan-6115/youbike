@@ -1,0 +1,7 @@
+services:
+  grabber:
+    image: grabber:latest
+    build:
+      context: .
+    env_file:
+      - .env
