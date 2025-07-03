@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
-import cron from "node-cron";
-import minuteJob from "./jobs/minute.ts";
+import hourJob from "./jobs/hour.ts";
 import { logCurrentTime } from "./utils/currentTime.ts";
 import { supabase } from "./utils/supabaseClient.ts";
 
@@ -15,6 +14,10 @@ if (!stations.data) {
 
 cron.schedule("* * * * *", async () => {
   await minuteJob(stations.data);
+});
+
+cron.schedule("0 * * * *", async () => {
+  await hourJob(stations.data);
 });
 
 logCurrentTime("Server started, waiting for next cron start");
