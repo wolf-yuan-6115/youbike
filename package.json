@@ -5,7 +5,8 @@
   "author": "Wolf Yuan <me@wolf-yuan.dev>",
   "license": "AGPL-3.0-or-later",
   "workspaces": [
-    "apps/grabber"
+    "apps/grabber",
+    "apps/web"
   ],
   "devDependencies": {
     "prettier": "^3.5.3"
