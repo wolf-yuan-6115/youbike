@@ -1,0 +1,110 @@
+---
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+
+import notByAIImage from "@assets/not_developed_ai_chinese.svg";
+---
+
+<footer
+  class="mt-8 bg-gray-950"
+  transition:name="footer"
+  transition:animate="none"
+>
+  <div class="mx-auto max-w-6xl px-6 py-6 lg:px-4">
+    <div class="grid grid-flow-row grid-cols-1 md:grid-cols-2">
+      <div>
+        <p class="pt-2 pb-7 text-xl font-bold md:pt-0 md:text-2xl">
+          <a
+            href="https://w.wolf-yuan.dev/project/presentation"
+            target="_blank"
+            class="transition-colors duration-200 hover:text-gray-400"
+          >
+            <Icon name="simple-icons:gitlab" class="inline" />
+            wolf-yuan/youbike
+          </a>
+        </p>
+        <p class="text-lg font-bold text-gray-400">
+          使用
+          <a href="https://supabase.com/" target="_blank">
+            <Icon
+              name="simple-icons:supabase"
+              class="inline text-[#3FCF8E]"
+            />
+            <span class="sr-only">Astro</span>
+          </a>
+          <a href="https://astro.build" target="_blank">
+            <Icon
+              name="simple-icons:astro"
+              class="inline text-[#BC52EE]"
+            />
+            <span class="sr-only">Astro</span>
+          </a>
+          <a href="https://tailwindcss.com" target="_blank">
+            <Icon
+              name="simple-icons:tailwindcss"
+              class="inline text-[#06B6D4]"
+            />
+            <span class="sr-only">Tailwind CSS</span>
+          </a>
+          和
+          <Icon
+            name="material-symbols:favorite-rounded"
+            class="inline text-red-500"
+          /> 製作而成
+        </p>
+      </div>
+      <div
+        class="flex h-fit flex-col justify-between gap-6 text-xl text-gray-400 md:mx-6 md:text-2xl md:text-gray-50"
+      >
+        <div class="flex items-center gap-5 md:justify-end">
+          <div class="w-fit">
+            <a
+              href="https://w.wolf-yuan.dev/facebook"
+              class="w-fit"
+              target="_blank"
+            >
+              <Icon
+                name="simple-icons:facebook"
+                class="inline duration-300 hover:text-[#0866FF]"
+              />
+              <p class="sr-only">Facebook</p>
+            </a>
+          </div>
+          <div class="w-fit">
+            <a
+              href="https://w.wolf-yuan.dev/instagram"
+              class="w-fit"
+              target="_blank"
+            >
+              <Icon
+                name="simple-icons:instagram"
+                class="inline duration-300 hover:text-[#E4405F]"
+              />
+              <p class="sr-only">Instagram</p>
+            </a>
+          </div>
+          <div class="w-fit">
+            <a
+              href="https://w.wolf-yuan.dev/discord"
+              class="w-fit"
+              target="_blank"
+            >
+              <Icon
+                name="simple-icons:discord"
+                class="inline duration-300 hover:text-[#5865F2]"
+              />
+              <p class="sr-only">Discord</p>
+            </a>
+          </div>
+        </div>
+
+        <Image
+          src={notByAIImage}
+          alt="Not developed by AI"
+          loading="eager"
+          class="md:ml-auto"
+        />
+      </div>
+    </div>
+  </div>
+</footer>

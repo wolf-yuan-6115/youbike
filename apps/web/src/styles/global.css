@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@source "../";
+
+@theme {
+  --font-sans:  'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', LiHei Pro, 黑體-繁, 微軟正黑體;
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}

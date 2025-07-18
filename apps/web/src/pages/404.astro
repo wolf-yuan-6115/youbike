@@ -1,0 +1,19 @@
+---
+import Base from "../layouts/main.astro";
+import Button from "../components/Button.astro";
+---
+
+<Base>
+  <div
+    class="flex h-screen flex-col items-center justify-center gap-y-12"
+  >
+    <div>
+      <p class="text-center text-5xl font-extrabold md:text-6xl">
+        你真的迷路了
+      </p>
+    </div>
+    <Button link="/" className="mx-auto">
+      <p>回去看你的 YouBike 在哪</p>
+    </Button>
+  </div>
+</Base>

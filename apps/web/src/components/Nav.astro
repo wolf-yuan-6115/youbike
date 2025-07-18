@@ -1,0 +1,159 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+
+import avatarImage from "../assets/transparent_2000x2000.png";
+import { twMerge } from "tailwind-merge";
+---
+
+{
+  /* Setting raw class below, cuz dumb TailwindCSS treat bg-[100%_200%] as background-position*/
+}
+<nav
+  class="js:nav-container sticky top-0 z-10 flex justify-center bg-linear-to-b from-gray-950/85 via-transparent to-transparent bg-bottom transition-all duration-300"
+  style={{ backgroundSize: "100% 200%" }}
+>
+  <div
+    class="js:nav-padding z-30 w-full max-w-7xl px-5 py-6 duration-300"
+  >
+    <div class="flex flex-row items-center gap-4">
+      <Icon
+        name="material-symbols:pedal-bike-outline-rounded"
+        class="text-3xl"
+      />
+      <div
+        class="js:nav-title text-lg font-bold transition-opacity duration-300"
+      >
+        YouBike??
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="blur-container absolute top-0 left-0 z-20 h-full w-full"
+  >
+    <div class="blur-filter"></div>
+    <div class="blur-filter"></div>
+    <div class="blur-filter"></div>
+    <div class="blur-filter"></div>
+    <div class="blur-filter"></div>
+  </div>
+
+  <style>
+    .blur-filter {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    /*
+     The blur filter has 5 layers w/ around 20% overlap
+    */
+
+    .blur-container {
+      .blur-filter:nth-child(1) {
+        backdrop-filter: blur(8px);
+        mask: linear-gradient(
+          rgba(0, 0, 0, 1),
+          rgba(0, 0, 0, 1) 20%,
+          rgba(0, 0, 0, 0) 40%
+        );
+      }
+
+      .blur-filter:nth-child(2) {
+        backdrop-filter: blur(6px);
+        mask: linear-gradient(
+          rgba(0, 0, 0, 0) 15%,
+          rgba(0, 0, 0, 1) 25%,
+          rgba(0, 0, 0, 1) 45%,
+          rgba(0, 0, 0, 0) 55%
+        );
+      }
+
+      .blur-filter:nth-child(3) {
+        backdrop-filter: blur(4px);
+        mask: linear-gradient(
+          rgba(0, 0, 0, 0) 35%,
+          rgba(0, 0, 0, 1) 45%,
+          rgba(0, 0, 0, 1) 65%,
+          rgba(0, 0, 0, 0) 75%
+        );
+      }
+
+      .blur-filter:nth-child(4) {
+        backdrop-filter: blur(2px);
+        mask: linear-gradient(
+          rgba(0, 0, 0, 0) 55%,
+          rgba(0, 0, 0, 1) 65%,
+          rgba(0, 0, 0, 1) 90%,
+          rgba(0, 0, 0, 0) 95%
+        );
+      }
+
+      .blur-filter:nth-child(5) {
+        backdrop-filter: blur(1px);
+        mask: linear-gradient(
+          rgba(0, 0, 0, 0) 70%,
+          rgba(0, 0, 0, 1) 75%,
+          rgba(0, 0, 0, 1) 95%,
+          rgba(0, 0, 0, 0) 100%
+        );
+      }
+    }
+  </style>
+</nav>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    let navContainer = document.getElementsByClassName(
+      "js:nav-container",
+    )[0];
+    let navPaddingArea =
+      document.getElementsByClassName("js:nav-padding")[0];
+    let navTitleElement =
+      document.getElementsByClassName("js:nav-title")[0];
+    let currentState = false;
+
+    function compareScrollDistance() {
+      if (window.scrollY > 52) {
+        if (currentState) return;
+        currentState = true;
+        changeState(true);
+      } else if (window.scrollY < 38) {
+        currentState = false;
+        changeState(false);
+      }
+    }
+
+    function changeState(state: boolean) {
+      if (state) {
+        navContainer.classList.add("bg-top");
+        navContainer.classList.remove("bg-bottom");
+
+        navPaddingArea.classList.add("py-4");
+        navPaddingArea.classList.remove("py-6");
+      } else {
+        navContainer.classList.add("bg-bottom");
+        navContainer.classList.remove("bg-top");
+
+        navPaddingArea.classList.add("py-6");
+        navPaddingArea.classList.remove("py-4");
+      }
+    }
+
+    function removeListener() {
+      window.removeEventListener("scroll", compareScrollDistance);
+      document.removeEventListener(
+        "astro:before-swap",
+        removeListener,
+      );
+    }
+
+    window.addEventListener("scroll", compareScrollDistance);
+    compareScrollDistance();
+
+    document.addEventListener("astro:before-swap", removeListener);
+  });
+</script>

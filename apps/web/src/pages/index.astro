@@ -1,0 +1,30 @@
+---
+import Base from "@layouts/main.astro";
+import Button from "../components/Button.astro";
+
+import { Icon } from "astro-icon/components";
+---
+
+<Base>
+  <section class="py-8">
+    <p
+      class="self-center pb-4 text-center text-xl font-semibold md:pb-0 md:text-2xl"
+    >
+      哦嗨，我是 Wolf Yuan
+    </p>
+
+    <Button
+      link="https://wolf-yuan.dev/"
+      className="mx-auto mt-6 border-violet-400 hover:bg-violet-400 hover:shadow-violet-400"
+      glow={true}
+    >
+      <Icon
+        name="material-symbols:arrow-back-rounded"
+        class="inline"
+      />
+      <p class="md:text-md inline text-sm">
+        Check out my main website
+      </p>
+    </Button>
+  </section>
+</Base>

@@ -1,0 +1,64 @@
+---
+import "@fontsource-variable/jetbrains-mono/wght.css";
+import "@styles/global.css";
+
+import Nav from "@components/Nav.astro";
+import Footer from "@components/Footer.astro";
+import { SEO } from "astro-seo";
+---
+
+<html
+  lang={Astro.currentLocale === "en" ? "en" : "zh-Hant"}
+  transition:name="root"
+  transition:animate="none"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <title>所以我說我的 YouBike 呢？</title>
+    <SEO
+      description="來看看 YouBike 到底有多少比例的時間沒有車可以借！"
+      charset="UTF-8"
+      openGraph={{
+        basic: {
+          title: "所以我說我的 YouBike 呢？",
+          type: "website",
+          image: "https://wolf-yuan.dev/logo_512x512.webp",
+        },
+      }}
+      twitter={{
+        title: "所以我說我的 YouBike 呢？",
+        description:
+          "來看看 YouBike 到底有多少比例的時間沒有車可以借！",
+        card: "summary",
+        site: "@wolfyuan1135",
+        image: "https://wolf-yuan.dev/logo_512x512.webp",
+      }}
+    />
+  </head>
+  <body class="bg-gray-900 text-gray-50">
+    <div class="flex h-screen flex-col">
+      <Nav />
+
+      <div
+        class="mx-auto mb-auto w-screen max-w-7xl"
+        transition:name="content"
+        transition:animate="fade"
+      >
+        <div class="mx-7">
+          <slot />
+        </div>
+      </div>
+
+      <Footer class="place-self-end" />
+    </div>
+
+    {/* Hacky way to fix scrollbar theme */}
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+    </style>
+  </body>
+</html>

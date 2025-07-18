@@ -1,0 +1,28 @@
+---
+import { twMerge } from "tailwind-merge";
+const { className, link, target, glow } = Astro.props;
+
+let prefetch = {};
+if (Astro.props.prefetch) {
+  prefetch = { "data-astro-prefetch": Astro.props.prefetch };
+}
+---
+
+<div
+  class={twMerge(
+    "w-fit bg-gray-800 border-2 border-emerald-200 border-solid hover:bg-emerald-200 hover:text-gray-800 hover:shadow-emerald-200 duration-300 rounded",
+    glow && "hover:shadow-[0_0_15px_4px]",
+    className,
+  )}
+>
+  <a
+    href={link}
+    target={target ?? "_self"}
+    class="inline h-max w-max"
+    {...prefetch}
+  >
+    <div class="px-5 py-3">
+      <slot />
+    </div>
+  </a>
+</div>
