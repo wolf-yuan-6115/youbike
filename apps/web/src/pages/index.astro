@@ -2,35 +2,85 @@
 import Base from "@layouts/main.astro";
 import Button from "@components/Button.astro";
 
+import { supabase } from "../lib/supabase";
+import { formatMinuteCount } from "../lib/formatter";
+
 import { Icon } from "astro-icon/components";
+
+const stations = (await supabase.from("stations").select("*")).data;
+const currentData = (await supabase.from("current").select("*")).data;
 ---
 
 <Base>
-  <main class="py-8">
-    <div class="mx-auto w-fit">
-      <h1>欸不是我的 YouBike 呢？</h1>
+  <main class="py-10">
+    <div class="flex items-center justify-center lg:space-x-16">
+      <div>
+        <Icon
+          name="fa7-regular:angry"
+          class="text-[10rem] text-red-400"
+        />
+      </div>
+      <div class="space-y-4">
+        <h1 class="text-4xl font-bold">
+          所以我說，我的 YouBike 呢？
+        </h1>
+
+        <p class="text-gray-400">
+          目前正在追蹤 {stations?.length ?? "!"} 個站點
+        </p>
+        <hr />
+        <div class="mt-6 flex items-end space-x-2">
+          <p class="text-3xl font-semibold text-amber-400">
+            {
+              formatMinuteCount(
+                currentData?.reduce(
+                  (prev, curr) => prev + curr.unavailable,
+                  0,
+                ) ?? 0,
+              )
+            }
+          </p>
+          <p class="text-lg text-gray-400">無車可借</p>
+        </div>
+        <div class="mt-6 flex items-end space-x-2">
+          <p class="text-3xl font-semibold text-indigo-400">
+            {
+              formatMinuteCount(
+                currentData?.reduce(
+                  (prev, curr) => prev + curr.full,
+                  0,
+                ) ?? 0,
+              )
+            }
+          </p>
+          <p class="text-lg text-gray-400">無位可還</p>
+        </div>
+      </div>
     </div>
   </main>
 
-  <section class="py-8">
-    <p
-      class="self-center pb-4 text-center text-xl font-semibold md:pb-0 md:text-2xl"
-    >
-      哦嗨，我是 Wolf Yuan
-    </p>
-
-    <Button
-      link="https://wolf-yuan.dev/"
-      className="mx-auto mt-6 border-violet-400 hover:bg-violet-400 hover:shadow-violet-400"
-      glow={true}
-    >
-      <Icon
-        name="material-symbols:arrow-back-rounded"
-        class="inline"
-      />
-      <p class="md:text-md inline text-sm">
-        Check out my main website
+  {
+    /*
+    <section class="py-8">
+      <p
+        class="self-center pb-4 text-center text-xl font-semibold md:pb-0 md:text-2xl"
+      >
+        哦嗨，我是 Wolf Yuan
       </p>
-    </Button>
-  </section>
+
+      <Button
+        link="https://wolf-yuan.dev/"
+        className="mx-auto mt-6 border-violet-400 hover:bg-violet-400 hover:shadow-violet-400"
+        glow={true}
+      >
+        <Icon
+          name="material-symbols:arrow-back-rounded"
+          class="inline"
+        />
+        <p class="md:text-md inline text-sm">
+          Check out my main website
+        </p>
+      </Button>
+    </section>*/
+  }
 </Base>
