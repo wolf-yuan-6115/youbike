@@ -106,9 +106,11 @@ const historicalData = (await supabase.from("history").select("*"))
         stationData?.map((station) => (
           <StationCard
             station={station}
-            history={historicalData.filter(
-              (k) => k.station_id === station.station_id,
-            )}
+            history={
+              historicalData?.filter(
+                (k) => k.station_id === station.station_id.id,
+              ) ?? []
+            }
           />
         ))
       }
