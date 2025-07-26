@@ -1,0 +1,51 @@
+---
+import { type Tables, type Enums } from "@lib/database.types";
+import { type ClassNameValue, twMerge } from "tailwind-merge";
+
+export interface Props {
+  station: Tables<"current"> & { station_id: Tables<"stations"> };
+}
+
+const stationColor: Record<Enums<"station_state">, ClassNameValue> = {
+  NORMAL: "border-green-400",
+  EMPTY: "border-red-400",
+  FULL: "border-yellow-400",
+};
+const stationBackground: Record<
+  Enums<"station_state">,
+  ClassNameValue
+> = {
+  NORMAL: "bg-green-400",
+  EMPTY: "bg-red-400",
+  FULL: "bg-yellow-400",
+};
+const stationText: Record<Enums<"station_state">, ClassNameValue> = {
+  NORMAL: "可借可還",
+  EMPTY: "可借數量 <5",
+  FULL: "可還空位 <3",
+};
+
+const station = Astro.props.station;
+---
+
+<div
+  class={twMerge(
+    "rounded-lg border-2  bg-gray-800 px-6 py-4",
+    stationColor[station.status],
+  )}
+>
+  <div class="inline-flex items-center justify-center gap-4">
+    <p class="text-lg font-semibold">{station.station_id.name}</p>
+    <p
+      class={twMerge(
+        "text-gray-900 rounded-full text-xs px-2 py-1",
+        stationBackground[station.status],
+      )}
+    >
+      {stationText[station.status]}
+    </p>
+    <p class="text-xs text-gray-400">
+      可借 {station.bikes} 臺，可還 {station.slots} 位
+    </p>
+  </div>
+</div>

@@ -2,6 +2,7 @@
 export const prerender = false;
 
 import Base from "@layouts/main.astro";
+import StationCard from "@/components/StationCard.astro";
 import Button from "@components/Button.astro";
 
 import { supabase } from "../lib/supabase";
@@ -88,6 +89,24 @@ const stationData = (
       </div>
     </div>
   </main>
+
+  <hr class="mx-auto max-w-2xl border-gray-600" />
+
+  <section class="mx-auto my-8 max-w-4xl">
+    <h2
+      class="border-gray-400 text-center text-xl font-bold md:text-2xl"
+    >
+      歷史資料
+    </h2>
+
+    <div class="mt-10">
+      {
+        stationData?.map((station) => (
+          <StationCard station={station} />
+        ))
+      }
+    </div>
+  </section>
 
   {
     /*
