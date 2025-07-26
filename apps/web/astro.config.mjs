@@ -4,32 +4,32 @@ import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
 
+import alpinejs from "@astrojs/alpinejs";
+
 // https://astro.build/config
 export default defineConfig({
   output: "static",
   adapter: cloudflare({
     imageService: "compile",
   }),
-  integrations: [
-    icon({
-      include: {
-        "simple-icons": [
-          "supabase",
-          "tailwindcss",
-          "astro",
-          "facebook",
-          "instagram",
-          "discord",
-          "gitlab",
-        ],
-        "material-symbols": [
-          "favorite-rounded",
-          "pedal-bike-outline-rounded",
-        ],
-        "fa7-regular": ["angry"],
-      },
-    }),
-  ],
+  integrations: [icon({
+    include: {
+      "simple-icons": [
+        "supabase",
+        "tailwindcss",
+        "astro",
+        "facebook",
+        "instagram",
+        "discord",
+        "gitlab",
+      ],
+      "material-symbols": [
+        "favorite-rounded",
+        "pedal-bike-outline-rounded",
+      ],
+      "fa7-regular": ["angry"],
+    },
+  }), alpinejs()],
   vite: {
     plugins: [tailwindcss()],
   },
