@@ -30,15 +30,17 @@ const station = Astro.props.station;
 
 <div
   class={twMerge(
-    "rounded-lg border-2  bg-gray-800 px-6 py-4 ",
+    "cursor-pointer rounded-lg border-2 bg-gray-800 px-6 py-4",
     stationColor[station.status],
   )}
   x-data="{ open: false }"
   x-on:click="open = !open"
 >
-  <div class="cursor-pointer">
-    <div class="inline-flex items-center justify-center gap-4">
-      <p class="text-lg font-semibold">{station.station_id.name}</p>
+  <div class="flex flex-col items-center gap-4 md:flex-row">
+    <div class="flex w-full place-items-center gap-4">
+      <p class="text-lg font-semibold">
+        {station.station_id.name}
+      </p>
       <p
         class={twMerge(
           "text-gray-900 rounded-full text-xs px-2 py-1",
@@ -47,9 +49,28 @@ const station = Astro.props.station;
       >
         {stationText[station.status]}
       </p>
+    </div>
+
+    <div
+      class="flex w-full grow place-items-center gap-4 md:justify-end"
+    >
       <p class="text-xs text-gray-400">
         可借 {station.bikes} 臺，可還 {station.slots} 位
       </p>
+      <div
+        class="h-1.5 grow rounded-full bg-gray-600 md:w-[50%] md:grow-0"
+      >
+        <div
+          class={twMerge(
+            "h-1.5 rounded-full",
+            stationBackground[station.status],
+          )}
+          style={{
+            width: `${(station.bikes / (station.bikes + station.slots)) * 100}%`,
+          }}
+        >
+        </div>
+      </div>
     </div>
   </div>
 
