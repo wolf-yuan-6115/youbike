@@ -93,29 +93,35 @@ export type Database = {
       stations: {
         Row: {
           address: string
+          address_en: string
           enabled: boolean
           id: number
           lat: number
           lng: number
           name: string
+          name_en: string
           total: number | null
         }
         Insert: {
           address: string
+          address_en: string
           enabled: boolean
           id: number
           lat: number
           lng: number
           name: string
+          name_en: string
           total?: number | null
         }
         Update: {
           address?: string
+          address_en?: string
           enabled?: boolean
           id?: number
           lat?: number
           lng?: number
           name?: string
+          name_en?: string
           total?: number | null
         }
         Relationships: []
