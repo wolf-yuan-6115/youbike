@@ -27,6 +27,7 @@ export default defineConfig({
         "material-symbols": [
           "favorite-rounded",
           "pedal-bike-outline-rounded",
+          "add-rounded",
         ],
         "fa7-regular": ["angry"],
       },
