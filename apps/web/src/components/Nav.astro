@@ -106,54 +106,42 @@ import { twMerge } from "tailwind-merge";
 </nav>
 
 <script>
-  document.addEventListener("astro:page-load", () => {
-    let navContainer = document.getElementsByClassName(
-      "js:nav-container",
-    )[0];
-    let navPaddingArea =
-      document.getElementsByClassName("js:nav-padding")[0];
-    let navTitleElement =
-      document.getElementsByClassName("js:nav-title")[0];
-    let currentState = false;
+  let navContainer = document.getElementsByClassName(
+    "js:nav-container",
+  )[0];
+  let navPaddingArea =
+    document.getElementsByClassName("js:nav-padding")[0];
+  let navTitleElement =
+    document.getElementsByClassName("js:nav-title")[0];
+  let currentState = false;
 
-    function compareScrollDistance() {
-      if (window.scrollY > 52) {
-        if (currentState) return;
-        currentState = true;
-        changeState(true);
-      } else if (window.scrollY < 38) {
-        currentState = false;
-        changeState(false);
-      }
+  function compareScrollDistance() {
+    if (window.scrollY > 52) {
+      if (currentState) return;
+      currentState = true;
+      changeState(true);
+    } else if (window.scrollY < 38) {
+      currentState = false;
+      changeState(false);
     }
+  }
 
-    function changeState(state: boolean) {
-      if (state) {
-        navContainer.classList.add("bg-top");
-        navContainer.classList.remove("bg-bottom");
+  function changeState(state: boolean) {
+    if (state) {
+      navContainer.classList.add("bg-top");
+      navContainer.classList.remove("bg-bottom");
 
-        navPaddingArea.classList.add("py-4");
-        navPaddingArea.classList.remove("py-6");
-      } else {
-        navContainer.classList.add("bg-bottom");
-        navContainer.classList.remove("bg-top");
+      navPaddingArea.classList.add("py-4");
+      navPaddingArea.classList.remove("py-6");
+    } else {
+      navContainer.classList.add("bg-bottom");
+      navContainer.classList.remove("bg-top");
 
-        navPaddingArea.classList.add("py-6");
-        navPaddingArea.classList.remove("py-4");
-      }
+      navPaddingArea.classList.add("py-6");
+      navPaddingArea.classList.remove("py-4");
     }
+  }
 
-    function removeListener() {
-      window.removeEventListener("scroll", compareScrollDistance);
-      document.removeEventListener(
-        "astro:before-swap",
-        removeListener,
-      );
-    }
-
-    window.addEventListener("scroll", compareScrollDistance);
-    compareScrollDistance();
-
-    document.addEventListener("astro:before-swap", removeListener);
-  });
+  window.addEventListener("scroll", compareScrollDistance);
+  compareScrollDistance();
 </script>
