@@ -1,8 +1,15 @@
 ---
 import { type Tables, type Enums } from "@lib/database.types";
+import Chart from "@components/preact/chart.tsx";
 import { Icon } from "astro-icon/components";
 import { type ClassNameValue, twMerge } from "tailwind-merge";
 import { formatMinuteCount } from "@lib/formatter";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export interface Props {
   station: Tables<"current"> & { station_id: Tables<"stations"> };
@@ -28,7 +35,13 @@ const stationText: Record<Enums<"station_state">, ClassNameValue> = {
   FULL: "可還空位 <3",
 };
 
-const station = Astro.props.station;
+const { station, history } = Astro.props;
+
+const processedHistory = history.map((h) => ({
+  at: dayjs.utc(h.at).tz("Asia/Taipei").format(),
+  available: h.available,
+  empty: h.empty,
+}));
 ---
 
 <div
@@ -123,8 +136,6 @@ const station = Astro.props.station;
           </div>
         </div>
       </div>
-
-      <div class="my-2"></div>
 
       <p class="text-sm text-gray-500">
         站點 ID：<span class="font-bold">{station.station_id.id}</span
