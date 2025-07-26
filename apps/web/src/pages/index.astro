@@ -9,8 +9,9 @@ import { formatMinuteCount } from "../lib/formatter";
 
 import { Icon } from "astro-icon/components";
 
-const stations = (await supabase.from("stations").select("*")).data;
-const currentData = (await supabase.from("current").select("*")).data;
+const stationData = (
+  await supabase.from("current").select("*, station_id(*)")
+).data;
 ---
 
 <Base>
@@ -39,7 +40,7 @@ const currentData = (await supabase.from("current").select("*")).data;
             class="mr-2 text-lg"
           />
           目前正在追蹤 <span class="mx-1 font-semibold text-white"
-            >{stations?.length ?? "!"}</span
+            >{stationData?.length ?? "!"}</span
           > 個站點
         </div>
       </div>
@@ -53,7 +54,7 @@ const currentData = (await supabase.from("current").select("*")).data;
           <p class="text-2xl font-bold">
             {
               formatMinuteCount(
-                currentData?.reduce(
+                stationData?.reduce(
                   (prev, curr) => prev + curr.unavailable,
                   0,
                 ) ?? 0,
@@ -72,7 +73,7 @@ const currentData = (await supabase.from("current").select("*")).data;
           <p class="text-2xl font-bold">
             {
               formatMinuteCount(
-                currentData?.reduce(
+                stationData?.reduce(
                   (prev, curr) => prev + curr.full,
                   0,
                 ) ?? 0,
