@@ -13,8 +13,12 @@ import { Icon } from "astro-icon/components";
 const stationData = (
   await supabase.from("current").select("*, station_id(*)")
 ).data;
-const historicalData = (await supabase.from("history").select("*"))
-  .data;
+const historicalData = (
+  await supabase
+    .from("history")
+    .select("*")
+    .order("at", { ascending: false })
+).data;
 ---
 
 <Base>
