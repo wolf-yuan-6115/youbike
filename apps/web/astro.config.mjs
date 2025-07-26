@@ -12,24 +12,27 @@ export default defineConfig({
   adapter: cloudflare({
     imageService: "compile",
   }),
-  integrations: [icon({
-    include: {
-      "simple-icons": [
-        "supabase",
-        "tailwindcss",
-        "astro",
-        "facebook",
-        "instagram",
-        "discord",
-        "gitlab",
-      ],
-      "material-symbols": [
-        "favorite-rounded",
-        "pedal-bike-outline-rounded",
-      ],
-      "fa7-regular": ["angry"],
-    },
-  }), alpinejs()],
+  integrations: [
+    icon({
+      include: {
+        "simple-icons": [
+          "supabase",
+          "tailwindcss",
+          "astro",
+          "facebook",
+          "instagram",
+          "discord",
+          "gitlab",
+        ],
+        "material-symbols": [
+          "favorite-rounded",
+          "pedal-bike-outline-rounded",
+        ],
+        "fa7-regular": ["angry"],
+      },
+    }),
+    alpinejs({ entrypoint: "/src/scripts/main" }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },
