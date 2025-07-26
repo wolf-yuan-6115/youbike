@@ -13,6 +13,8 @@ import { Icon } from "astro-icon/components";
 const stationData = (
   await supabase.from("current").select("*, station_id(*)")
 ).data;
+const historicalData = (await supabase.from("history").select("*"))
+  .data;
 ---
 
 <Base>
@@ -102,7 +104,12 @@ const stationData = (
     <div class="mt-10">
       {
         stationData?.map((station) => (
-          <StationCard station={station} />
+          <StationCard
+            station={station}
+            history={historicalData.filter(
+              (k) => k.station_id === station.station_id,
+            )}
+          />
         ))
       }
     </div>

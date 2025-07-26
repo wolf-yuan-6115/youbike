@@ -1,9 +1,12 @@
 ---
 import { type Tables, type Enums } from "@lib/database.types";
+import { Icon } from "astro-icon/components";
 import { type ClassNameValue, twMerge } from "tailwind-merge";
+import { formatMinuteCount } from "@lib/formatter";
 
 export interface Props {
   station: Tables<"current"> & { station_id: Tables<"stations"> };
+  history: Tables<"history">[];
 }
 
 const stationColor: Record<Enums<"station_state">, ClassNameValue> = {
@@ -38,7 +41,7 @@ const station = Astro.props.station;
 >
   <div class="flex flex-col items-center gap-4 md:flex-row">
     <div class="flex w-full place-items-center gap-4">
-      <p class="text-lg font-semibold">
+      <p class="text-xl font-semibold">
         {station.station_id.name}
       </p>
       <p
@@ -71,8 +74,62 @@ const station = Astro.props.station;
         >
         </div>
       </div>
+      <Icon
+        name="material-symbols:add-rounded"
+        class="text-xl transition-transform duration-200 motion-reduce:transition-none"
+        :class="{'rotate-[405deg]': open}"
+      />
     </div>
   </div>
 
-  <div x-show="open" x-collapse>Dropdown Contents...</div>
+  <div x-show="open" x-collapse>
+    <div class="pt-4">
+      <div class="border-t border-gray-500 pb-4"></div>
+      <div class="grid grid-cols-1 lg:grid-cols-2">
+        <div class="space-y-2">
+          <p>
+            位於 <span class="font-bold"
+              >{station.station_id.address}</span
+            >
+          </p>
+          <p>
+            總共有 <span class="font-bold"
+              >{station.station_id.total}</span
+            > 個車位
+          </p>
+          <p>
+            總追蹤時數 <span class="font-bold"
+              >{formatMinuteCount(station.success)}</span
+            >
+          </p>
+        </div>
+
+        <div class="my-6 flex gap-4 md:my-0 md:justify-end">
+          <div class="space-y-1.5">
+            <p class="text-5xl font-bold md:text-right">
+              {
+                Math.round(
+                  (station.unavailable / station.success) * 10000,
+                ) / 100
+              }%
+            </p>
+            <p class="text-sm text-gray-400">的時間 <5 臺車可以借</p>
+          </div>
+          <div class="space-y-1.5">
+            <p class="text-5xl font-bold md:text-right">
+              {Math.round((station.full / station.success) * 100)}%
+            </p>
+            <p class="text-sm text-gray-400">的時間 <3 位可還</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="my-2"></div>
+
+      <p class="text-sm text-gray-500">
+        站點 ID：<span class="font-bold">{station.station_id.id}</span
+        >
+      </p>
+    </div>
+  </div>
 </div>
