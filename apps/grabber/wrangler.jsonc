@@ -10,6 +10,12 @@
     "mode": "smart"
   },
   "triggers": {
-    "crons": ["* * * * *", "0 * * * *"]
+    "crons": [
+      "* * * * *",
+      "0 * * * *"
+    ]
+  },
+  "vars": {
+    "SKIP_DEPENDENCY_INSTALL": "true"
   }
 }
