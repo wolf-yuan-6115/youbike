@@ -3,6 +3,7 @@
   "name": "youbike-grabber",
   "main": "index.ts",
   "compatibility_date": "2025-07-26",
+  "workers_dev": false,
   "observability": {
     "enabled": true
   },
