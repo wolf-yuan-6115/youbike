@@ -1,25 +1,27 @@
-import dotenv from "dotenv";
-import cron from "node-cron";
+import { createClient } from "@supabase/supabase-js";
 import hourJob from "./jobs/hour.ts";
 import minuteJob from "./jobs/minute.ts";
-import { logCurrentTime } from "./utils/currentTime.ts";
-import { supabase } from "./utils/supabaseClient.ts";
+import type { Env } from "./types/env.types.ts";
 
-dotenv.config();
+export default {
+  async scheduled(
+    controller: ScheduledController,
+    env: Env,
+    ctx: ExecutionContext,
+  ) {
+    const supabase = createClient(
+      env.SUPABASE_URL,
+      env.SUPABASE_SERVICE_KEY,
+    );
+    const stations = await supabase.from("stations").select("*");
 
-const stations = await supabase.from("stations").select("*");
-
-if (!stations.data) {
-  console.error("No stations configured!");
-  process.exit(1);
-}
-
-cron.schedule("* * * * *", async () => {
-  await minuteJob(stations.data);
-});
-
-cron.schedule("0 * * * *", async () => {
-  await hourJob(stations.data);
-});
-
-logCurrentTime("Server started, waiting for next cron start");
+    switch (controller.cron) {
+      case "* * * * *":
+        await minuteJob(stations.data, env);
+        break;
+      case "0 * * * *":
+        await hourJob(stations.data, env);
+        break;
+    }
+  },
+};

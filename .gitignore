@@ -148,3 +148,6 @@ dist
 
 # End of https://www.toptal.com/developers/gitignore/api/node,astro
 
+# Weird cloudflare worker env
+
+**/.dev.vars

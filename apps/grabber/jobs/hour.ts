@@ -1,12 +1,18 @@
+import { createClient } from "@supabase/supabase-js";
 import type { Tables } from "../types/database.types.ts";
+import type { Env } from "../types/env.types.ts";
 import { parkingInfo } from "../utils/api.ts";
 import {
   getCurrentTimeISOString,
   logCurrentTime,
 } from "../utils/currentTime.ts";
-import { supabase } from "../utils/supabaseClient.ts";
 
-export default async (stations: Tables<"stations">[]) => {
+export default async (stations: Tables<"stations">[], env: Env) => {
+  const supabase = createClient(
+    env.SUPABASE_URL,
+    env.SUPABASE_SERVICE_KEY,
+  );
+
   logCurrentTime(" =HOUR= Updating availability");
 
   for (const station of stations) {
