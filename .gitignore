@@ -152,3 +152,6 @@ dist
 
 **/.dev.vars
 **/.wrangler/*
+
+# Weird IDEA files
+.idea/*
