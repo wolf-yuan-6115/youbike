@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import type { Tables } from "../types/database.types.ts";
+import type { Database, Tables } from "../types/database.types.ts";
 import type { Env } from "../types/env.types.ts";
 import { parkingInfo } from "../utils/api.ts";
 import {
@@ -7,15 +7,26 @@ import {
   logCurrentTime,
 } from "../utils/currentTime.ts";
 
-export default async (stations: Tables<"stations">[], env: Env) => {
-  const supabase = createClient(
+export default async (env: Env) => {
+  const supabase = createClient<Database>(
     env.SUPABASE_URL,
     env.SUPABASE_SERVICE_KEY,
   );
 
   logCurrentTime(" =MINUTE= Updating availability");
 
-  for (const station of stations) {
+  const { data: existingData } = await supabase
+    .from("current")
+    .select("*, station_id(*)");
+
+  const existingDataMap = new Map(
+    existingData?.map((item) => [item.station_id.id, item]) || [],
+  );
+
+  const upsertData: Tables<"current">[] = [];
+
+  for (const station of existingData?.map((k) => k.station_id) ||
+    []) {
     try {
       logCurrentTime(`Processing ${station.id}`);
       const data = await parkingInfo(station.lat, station.lng);
@@ -55,72 +66,70 @@ export default async (stations: Tables<"stations">[], env: Env) => {
       else
         logCurrentTime(`Station ${station.id} has available slots`);
 
-      const existingRecentlyData = await supabase
-        .from("current")
-        .select()
-        .eq("station_id", station.id)
-        .single();
-      const currentTime = getCurrentTimeISOString();
+      const existingRecord = existingDataMap.get(station.id);
 
-      if (!existingRecentlyData || !existingRecentlyData.data) {
+      const unavailableIncrement = isNoBike ? 1 : 0;
+      const fullIncrement = isNoSlot ? 1 : 0;
+
+      const commonData = {
+        station_id: station.id,
+        bikes: targetStation.available_spaces,
+        slots: targetStation.empty_spaces,
+        update: getCurrentTimeISOString(),
+      };
+
+      if (!existingRecord) {
         logCurrentTime(
           `Station ${station.id} is not in the database, adding entry`,
         );
 
-        await supabase.from("current").insert({
-          station_id: station.id,
-          bikes: targetStation.available_spaces,
-          slots: targetStation.empty_spaces,
-          unavailable: isNoBike ? 1 : 0,
-          full: isNoSlot ? 1 : 0,
+        upsertData.push({
+          ...commonData,
+          unavailable: unavailableIncrement,
+          full: fullIncrement,
           success: 1,
           fail: 0,
-          update: currentTime,
           status: isNoSlot ? "FULL" : isNoBike ? "EMPTY" : "NORMAL",
         });
-      } else if (isNoBike) {
-        // <= 5 bikes is available
-        await supabase
-          .from("current")
-          .update({
-            bikes: targetStation.available_spaces,
-            slots: targetStation.empty_spaces,
-            unavailable: existingRecentlyData.data.unavailable + 1,
-            success: existingRecentlyData.data.success + 1,
-            update: currentTime,
-            status: "EMPTY",
-          })
-          .eq("station_id", station.id);
-      } else if (isNoSlot) {
-        // <= 3 slots is available
-        await supabase
-          .from("current")
-          .update({
-            bikes: targetStation.available_spaces,
-            slots: targetStation.empty_spaces,
-            full: existingRecentlyData.data.full + 1,
-            success: existingRecentlyData.data.success + 1,
-            update: currentTime,
-            status: "FULL",
-          })
-          .eq("station_id", station.id);
       } else {
-        // Normal state
-        await supabase
-          .from("current")
-          .update({
-            bikes: targetStation.available_spaces,
-            slots: targetStation.empty_spaces,
-            success: existingRecentlyData.data.success + 1,
-            update: currentTime,
-            status: "NORMAL",
-          })
-          .eq("station_id", station.id);
+        upsertData.push({
+          ...commonData,
+          unavailable:
+            existingRecord.unavailable + unavailableIncrement,
+          full: existingRecord.full + fullIncrement,
+          success: existingRecord.success + 1,
+          fail: existingRecord.fail,
+          status: isNoSlot ? "FULL" : isNoBike ? "EMPTY" : "NORMAL",
+        });
       }
     } catch (error) {
       logCurrentTime(`Cooked when processing ${station.id}`);
       console.log(error);
     }
+  }
+
+  if (upsertData.length > 0) {
+    logCurrentTime(
+      `Performing batch upsert for ${upsertData.length} stations`,
+    );
+
+    const { error } = await supabase
+      .from("current")
+      .upsert(upsertData, {
+        onConflict: "station_id",
+      });
+
+    if (error) {
+      console.error("Batch upsert failed:", error);
+    } else {
+      logCurrentTime(
+        `Successfully updated ${upsertData.length} stations`,
+      );
+    }
+  } else {
+    logCurrentTime(
+      "Nothing to update, did you add stations to database?",
+    );
   }
 
   logCurrentTime(" =MINUTE= Finished updating availability");
