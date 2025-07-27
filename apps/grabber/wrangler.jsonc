@@ -8,5 +8,8 @@
   },
   "placement": {
     "mode": "smart"
+  },
+  "triggers": {
+    "crons": ["* * * * *", "0 * * * *"]
   }
 }
