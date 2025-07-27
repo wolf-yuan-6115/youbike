@@ -24,4 +24,8 @@ export default {
         break;
     }
   },
+
+  async fetch(_request: Request) {
+    return new Response("Grabber is running (probably)!");
+  },
 };
