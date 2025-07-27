@@ -151,3 +151,4 @@ dist
 # Weird cloudflare worker env
 
 **/.dev.vars
+**/.wrangler/*
