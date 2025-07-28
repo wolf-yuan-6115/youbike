@@ -1,13 +1,12 @@
 ---
-import { type Tables, type Enums } from "@lib/database.types";
-import Chart from "@components/preact/chart.tsx";
-import { Icon } from "astro-icon/components";
-import { type ClassNameValue, twMerge } from "tailwind-merge";
 import HistoryBar from "@components/HistoryBar.astro";
+import { type Enums, type Tables } from "@lib/database.types";
 import { formatMinuteCount } from "@lib/formatter";
+import { Icon } from "astro-icon/components";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+import { type ClassNameValue, twMerge } from "tailwind-merge";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -120,7 +119,7 @@ const processedHistory = history.map((h) => ({
 
         <div class="my-4 flex gap-4 md:my-0 md:justify-end">
           <div class="space-y-1.5">
-            <p class="text-5xl font-bold md:text-right">
+            <p class="text-4xl font-bold md:text-right md:text-5xl">
               {
                 Math.round(
                   (station.unavailable / station.success) * 10000,
@@ -130,7 +129,7 @@ const processedHistory = history.map((h) => ({
             <p class="text-sm text-gray-400">的時間 <5 臺車可以借</p>
           </div>
           <div class="space-y-1.5">
-            <p class="text-5xl font-bold md:text-right">
+            <p class="text-4xl font-bold md:text-right md:text-5xl">
               {Math.round((station.full / station.success) * 100)}%
             </p>
             <p class="text-sm text-gray-400">的時間 <3 位可還</p>
@@ -138,7 +137,7 @@ const processedHistory = history.map((h) => ({
         </div>
       </div>
 
-      <div class="my-4 divide-y divide-gray-500 rounded-sm">
+      <div class="divide-y divide-gray-500 rounded-sm md:my-2">
         {history.map((k) => <HistoryBar history={k} />)}
       </div>
 

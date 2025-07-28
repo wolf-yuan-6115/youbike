@@ -14,9 +14,10 @@ export default {
   insertPragma: false,
   proseWrap: "never",
   plugins: [
-    "prettier-plugin-astro",
     "prettier-plugin-organize-imports",
+    "prettier-plugin-astro",
     "prettier-plugin-tailwindcss",
+    "prettier-plugin-astro-organize-imports",
   ],
   overrides: [
     {
