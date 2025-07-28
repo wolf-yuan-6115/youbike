@@ -51,6 +51,7 @@ if (history.available <= 5) {
           class={twMerge(
             "h-8 w-2 rounded-full bg-gray-500",
             k + 1 <= filledBlocks && backgroundColor,
+            filledBlocks === 0 && "bg-red-400/50",
           )}
         />
       ))
