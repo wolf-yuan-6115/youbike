@@ -1,0 +1,149 @@
+---
+import Base from "@layouts/main.astro";
+import { supabase } from "@lib/supabase";
+import { Icon } from "astro-icon/components";
+import dayjs from "dayjs";
+import { type ClassNameValue, twMerge } from "tailwind-merge";
+import HistoryBar from "../../components/HistoryBar.astro";
+
+const { station: stationNumber } = Astro.params;
+if (!stationNumber) return;
+
+const stationData = (
+  await supabase
+    .from("current")
+    .select("*, station_id(*)")
+    .eq("station_id", Number(stationNumber))
+    .single()
+).data;
+if (!stationData) return Astro.rewrite("/404");
+
+const historicalData = (
+  await supabase
+    .from("history")
+    .select("*")
+    .eq("station_id", Number(stationNumber))
+    .order("at", { ascending: false })
+).data;
+
+const heroStatus: {
+  color: ClassNameValue;
+  icon: string;
+  text: string;
+} = {
+  color: "",
+  icon: "",
+  text: "",
+};
+
+if (stationData.slots === 0 || stationData.bikes === 0) {
+  heroStatus.color = "text-red-400";
+  heroStatus.icon = "fa7-regular:angry";
+  if (stationData.slots === 0) {
+    heroStatus.text =
+      '現在沒有任何 <span class="text-red-400">YouBike</span> 停車柱可以停';
+  } else {
+    heroStatus.text =
+      '完全沒有 <span class="text-red-400">YouBike</span> 可以借';
+  }
+} else if (
+  stationData.status === "FULL" ||
+  stationData.status === "EMPTY"
+) {
+  heroStatus.color = "text-yellow-400";
+  heroStatus.icon = "fa7-regular:sad-cry";
+  if (stationData.status === "FULL") {
+    heroStatus.text =
+      '快要沒有 <span class="text-amber-400">YouBike</span> 停車柱了';
+  } else {
+    heroStatus.text =
+      '可以借的 <span class="text-amber-400">YouBike</span> 數量少的可憐';
+  }
+} else {
+  heroStatus.color = "text-emerald-400";
+  heroStatus.icon = "fa7-regular:face-smile";
+  heroStatus.text =
+    '這裡的 <span class="text-emerald-400">YouBike</span> 可以借也可以還！';
+}
+---
+
+<Base>
+  <main class="py-16">
+    <div class="text-center">
+      <div class="mb-8">
+        <Icon
+          name={heroStatus.icon}
+          class={twMerge(
+            "mx-auto text-8xl md:text-9xl",
+            heroStatus.color,
+          )}
+        />
+      </div>
+
+      <div class="mx-auto space-y-4">
+        <p class="text-lg md:text-xl">
+          位於 <span class="font-bold"
+            >{stationData.station_id.name}</span
+          > 的 YouBike 站點
+        </p>
+        <h1
+          class="text-3xl leading-tight font-bold md:text-4xl"
+          set:html={heroStatus.text}
+        />
+      </div>
+    </div>
+
+    <div class="mt-10">
+      <div class="mx-auto grid max-w-xl grid-cols-2 gap-6">
+        <div
+          class={twMerge(
+            "space-y-2 rounded-lg border-2 border-indigo-400 bg-gray-800 px-6 py-4",
+            stationData.status === "EMPTY" && "border-red-400",
+          )}
+        >
+          <p class="text-2xl font-bold">
+            {stationData.bikes}
+          </p>
+
+          <p class="font-bold text-gray-400">臺車可借</p>
+        </div>
+
+        <div
+          class={twMerge(
+            "space-y-2 rounded-lg border-2 border-indigo-400 bg-gray-800 px-6 py-4",
+            stationData.status === "FULL" && "border-red-400",
+          )}
+        >
+          <p class="text-2xl font-bold">
+            {stationData.slots}
+          </p>
+
+          <p class="font-bold text-gray-400">個柱可還</p>
+        </div>
+      </div>
+
+      <p class="mt-8 text-center text-sm text-gray-400">
+        最後更新時間：<span class="font-bold"
+          >{
+            dayjs
+              .utc(stationData.update)
+              .tz("Asia/Taipei")
+              .format("YYYY/MM/DD HH:mm:ss")
+          }</span
+        >
+      </p>
+    </div>
+  </main>
+
+  <hr class="mx-auto max-w-4xl border-gray-600" />
+
+  <section class="mx-auto my-8 max-w-4xl">
+    <h2 class="border-gray-400 text-2xl font-bold md:text-center">
+      48 小時歷史紀錄
+    </h2>
+
+    <div class="mt-6 rounded-lg bg-gray-800 px-4 py-2">
+      {historicalData.map((k) => <HistoryBar history={k} />)}
+    </div>
+  </section>
+</Base>

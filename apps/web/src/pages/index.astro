@@ -1,11 +1,8 @@
 ---
-export const prerender = false;
-
-import Base from "@layouts/main.astro";
 import StationCard from "@/components/StationCard.astro";
-import Button from "@components/Button.astro";
-import { supabase } from "@lib/supabase";
+import Base from "@layouts/main.astro";
 import { formatMinuteCount } from "@lib/formatter";
+import { supabase } from "@lib/supabase";
 import { Icon } from "astro-icon/components";
 import { type ClassNameValue, twMerge } from "tailwind-merge";
 

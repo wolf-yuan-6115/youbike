@@ -1,6 +1,7 @@
 ---
 import { twMerge } from "tailwind-merge";
-const { className, link, target, glow } = Astro.props;
+const { className, link, target, glow, paddingOverride } =
+  Astro.props;
 
 let prefetch = {};
 if (Astro.props.prefetch) {
@@ -14,6 +15,7 @@ if (Astro.props.prefetch) {
     glow && "hover:shadow-[0_0_15px_4px]",
     className,
   )}
+  x-on:click.stop
 >
   <a
     href={link}
@@ -21,8 +23,6 @@ if (Astro.props.prefetch) {
     class="inline h-max w-max"
     {...prefetch}
   >
-    <div class="px-5 py-3">
-      <slot />
-    </div>
+    <div class={twMerge("px-5 py-3", paddingOverride)}><slot /></div>
   </a>
 </div>

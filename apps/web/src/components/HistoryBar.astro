@@ -1,8 +1,8 @@
 ---
 import { type Tables } from "@lib/database.types";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { ClassNameValue, twMerge } from "tailwind-merge";
 
 dayjs.extend(utc);
@@ -31,7 +31,7 @@ if (history.available <= 5) {
 
 <div class="flex flex-col justify-between py-2 sm:flex-row">
   <div class="space-y-1.5">
-    <p class="md:text-sm">
+    <p class="sm:text-sm">
       {
         dayjs
           .utc(history.at)
@@ -53,7 +53,7 @@ if (history.available <= 5) {
           class={twMerge(
             "bg-gray-500",
             k + 1 <= filledBlocks && backgroundColor,
-            filledBlocks === 0 && "bg-red-400/50",
+            filledBlocks === 0 && "bg-red-400/20",
           )}
         />
       ))
