@@ -1,7 +1,6 @@
 // @ts-check
 import alpinejs from "@astrojs/alpinejs";
 import cloudflare from "@astrojs/cloudflare";
-import preact from "@astrojs/preact";
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
@@ -35,7 +34,6 @@ export default defineConfig({
       },
     }),
     alpinejs({ entrypoint: "/src/scripts/main" }),
-    preact(),
   ],
   vite: {
     plugins: [tailwindcss()],

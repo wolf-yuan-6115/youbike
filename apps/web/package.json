@@ -12,7 +12,6 @@
     "@alpinejs/collapse": "^3.14.9",
     "@astrojs/alpinejs": "^0.4.8",
     "@astrojs/cloudflare": "^12.6.0",
-    "@astrojs/preact": "^4.1.0",
     "@fontsource-variable/jetbrains-mono": "^5.2.6",
     "@iconify-json/fa7-regular": "^1.2.0",
     "@iconify-json/material-symbols": "^1.2.29",
@@ -25,10 +24,7 @@
     "astro": "^5.12.0",
     "astro-icon": "^1.1.5",
     "astro-seo": "^0.8.4",
-    "chart.js": "^4.5.0",
     "dayjs": "^1.11.13",
-    "preact": "^10.26.9",
-    "react-chartjs-2": "^5.3.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11"
   },
