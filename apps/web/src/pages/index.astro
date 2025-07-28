@@ -87,7 +87,7 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
     <div class="mt-8">
       <div class="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
         <div
-          class="space-y-4 rounded-lg border-2 border-amber-400 bg-gray-800 px-6 py-4"
+          class="space-y-2 rounded-lg border-2 border-amber-400 bg-gray-800 px-6 py-4"
         >
           <p class="text-2xl font-bold">
             {
@@ -100,13 +100,13 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
             }
           </p>
 
-          <p class="mt-2 font-bold text-gray-400 md:text-lg">
-            無車可借
+          <p class="font-bold text-gray-400">
+            {"<5 臺車可借"}
           </p>
         </div>
 
         <div
-          class="space-y-4 rounded-lg border-2 border-indigo-400 bg-gray-800 px-6 py-4"
+          class="space-y-2 rounded-lg border-2 border-indigo-400 bg-gray-800 px-6 py-4"
         >
           <p class="text-2xl font-bold">
             {
@@ -119,8 +119,8 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
             }
           </p>
 
-          <p class="mt-2 font-bold text-gray-400 md:text-lg">
-            無位可還
+          <p class="font-bold text-gray-400">
+            {"<3 位可還"}
           </p>
         </div>
       </div>
@@ -130,10 +130,8 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
   <hr class="mx-auto max-w-2xl border-gray-600" />
 
   <section class="mx-auto my-8 max-w-4xl">
-    <h2
-      class="border-gray-400 text-center text-xl font-bold md:text-2xl"
-    >
-      歷史資料
+    <h2 class="border-gray-400 text-2xl font-bold md:text-center">
+      詳細站點資料
     </h2>
 
     <div class="mt-10 space-y-4">
