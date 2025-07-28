@@ -139,11 +139,11 @@ if (stationData.slots === 0 || stationData.bikes === 0) {
 
   <section class="mx-auto my-8 max-w-4xl">
     <h2 class="border-gray-400 text-2xl font-bold md:text-center">
-      48 小時歷史紀錄
+      整點車輛紀錄
     </h2>
 
     <div class="mt-6 rounded-lg bg-gray-800 px-4 py-2">
-      {historicalData.map((k) => <HistoryBar history={k} />)}
+      {historicalData?.map((k) => <HistoryBar history={k} />)}
     </div>
   </section>
 </Base>
