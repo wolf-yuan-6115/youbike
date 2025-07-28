@@ -59,7 +59,7 @@ const processedHistory = history.map((h) => ({
     stationColor[station.status],
   )}
   x-data="{ open: false }"
-  x-on:click="!$event.target.closest('a') && (open = true)"
+  x-on:click="!$event.target.closest('a') && (open = !open)"
   transition:name={`${station.station_id.id}:container`}
 >
   <div class="flex flex-col items-center gap-4 md:flex-row">
