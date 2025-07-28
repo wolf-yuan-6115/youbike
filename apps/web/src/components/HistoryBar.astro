@@ -15,7 +15,7 @@ export interface Props {
 const { history } = Astro.props;
 
 const filledBlocks = Math.floor(
-  (history.available / (history.available + history.empty)) * 35,
+  (history.available / (history.available + history.empty)) * 30,
 );
 
 let backgroundColor: ClassNameValue = "";
@@ -29,9 +29,9 @@ if (history.available <= 5) {
 }
 ---
 
-<div class="flex flex-col justify-between gap-2.5 py-2 md:flex-row">
+<div class="flex flex-col justify-between gap-2.5 py-2 sm:flex-row">
   <div class="space-y-1.5">
-    <p class="text-sm">
+    <p class="md:text-sm">
       {
         dayjs
           .utc(history.at)
@@ -44,12 +44,12 @@ if (history.available <= 5) {
     </p>
   </div>
 
-  <div class="inline-flex justify-between gap-1.5">
+  <div class="inline-flex place-items-center justify-between gap-1.5">
     {
-      [...Array(35).keys()].map((k) => (
+      [...Array(25).keys()].map((k) => (
         <div
           class={twMerge(
-            "h-8 w-2 rounded-full bg-gray-500 md:h-full",
+            "h-8 w-2 rounded-full bg-gray-500",
             k + 1 <= filledBlocks && backgroundColor,
             filledBlocks === 0 && "bg-red-400/50",
           )}
