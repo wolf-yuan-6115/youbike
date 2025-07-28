@@ -3,6 +3,7 @@ import { type Tables, type Enums } from "@lib/database.types";
 import Chart from "@components/preact/chart.tsx";
 import { Icon } from "astro-icon/components";
 import { type ClassNameValue, twMerge } from "tailwind-merge";
+import HistoryBar from "@components/HistoryBar.astro";
 import { formatMinuteCount } from "@lib/formatter";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -135,6 +136,10 @@ const processedHistory = history.map((h) => ({
             <p class="text-sm text-gray-400">的時間 <3 位可還</p>
           </div>
         </div>
+      </div>
+
+      <div class="my-4 divide-y divide-gray-500 rounded-sm">
+        {history.map((k) => <HistoryBar history={k} />)}
       </div>
 
       <p class="text-sm text-gray-500">

@@ -1,0 +1,59 @@
+---
+import { type Tables } from "@lib/database.types";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import { ClassNameValue, twMerge } from "tailwind-merge";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+export interface Props {
+  history: Tables<"history">;
+}
+
+const { history } = Astro.props;
+
+const filledBlocks = Math.floor(
+  (history.available / (history.available + history.empty)) * 40,
+);
+
+let backgroundColor: ClassNameValue = "";
+
+if (history.available <= 5) {
+  backgroundColor = "bg-red-400";
+} else if (history.empty <= 3) {
+  backgroundColor = "bg-yellow-400";
+} else {
+  backgroundColor = "bg-green-400";
+}
+---
+
+<div class="flex flex-col justify-between gap-2 py-2 sm:flex-row">
+  <div class="space-y-1.5">
+    <p class="text-sm">
+      {
+        dayjs
+          .utc(history.at)
+          .tz("Asia/Taipei")
+          .format("YYYY/MM/DD HH:mm")
+      }
+    </p>
+    <p class="text-xs text-gray-400">
+      可借 {history.available} 台，{history.empty} 位可還
+    </p>
+  </div>
+
+  <div class="inline-flex gap-1">
+    {
+      [...Array(40).keys()].map((k) => (
+        <div
+          class={twMerge(
+            "h-8 w-2 rounded-full bg-gray-500",
+            k + 1 <= filledBlocks && backgroundColor,
+          )}
+        />
+      ))
+    }
+  </div>
+</div>
