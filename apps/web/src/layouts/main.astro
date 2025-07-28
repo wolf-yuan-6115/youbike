@@ -1,10 +1,21 @@
 ---
+export interface Props {
+  station?: string;
+}
+
 import "@fontsource-variable/jetbrains-mono/wght.css";
 import "@styles/global.css";
 
-import Nav from "@components/Nav.astro";
 import Footer from "@components/Footer.astro";
+import Nav from "@components/Nav.astro";
 import { SEO } from "astro-seo";
+
+const siteTitle = Astro.props.station
+  ? `查 Bike：${Astro.props.station} 即時狀態與歷史紀錄`
+  : "查 Bike：YouBike 站點即時與歷史紀錄查詢";
+const seoSiteTitle = Astro.props.station
+  ? `${Astro.props.station} 現在可以借車還車嗎？你可以在這個網站上面看看這個 YouBike 站點是不是每天到某個時刻就沒車！`
+  : "你遇過一個 YouBike 的站點沒有任何一臺 YouBike 嗎？你可以在這個網站上面看看你的 YouBike 站點是不是每天到某個時刻就沒車！";
 ---
 
 <html
@@ -16,24 +27,23 @@ import { SEO } from "astro-seo";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>查 Bike: YouBike 站點歷史紀錄查詢</title>
+    <title>{siteTitle}</title>
     <SEO
-      description="你遇過一個 YouBike 的站點沒有任何一臺 YouBike 嗎？你可以在這個網站上面看看你那個站是不是每天到某個時候就沒車！"
+      description={seoSiteTitle}
       charset="UTF-8"
       openGraph={{
         basic: {
-          title: "查 Bike: YouBike 站點歷史紀錄查詢",
+          title: siteTitle,
           type: "website",
-          image: "https://youbike.wolf-yuan.dev/favicon-rounded.png",
+          image: "https://youbike.wolf-yuan.dev/favicon.png",
         },
       }}
       twitter={{
-        title: "查 Bike: YouBike 站點歷史紀錄查詢",
-        description:
-          "你遇過一個 YouBike 的站點沒有任何一臺 YouBike 嗎？你可以在這個網站上面看看你那個站是不是每天到某個時候就沒車！",
+        title: siteTitle,
+        description: seoSiteTitle,
         card: "summary",
         site: "@wolfyuan1135",
-        image: "https://youbike.wolf-yuan.dev/favicon-rounded.png",
+        image: "https://youbike.wolf-yuan.dev/favicon.png",
       }}
     />
   </head>
