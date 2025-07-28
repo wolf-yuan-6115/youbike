@@ -131,7 +131,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_history_with_limit: {
+        Args: { max_rows?: number }
+        Returns: {
+          id: string
+          station_id: number
+          available: number
+          empty: number
+          at: string
+        }[]
+      }
     }
     Enums: {
       station_state: "FULL" | "EMPTY" | "NORMAL"

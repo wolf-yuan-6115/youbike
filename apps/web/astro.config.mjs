@@ -1,10 +1,10 @@
 // @ts-check
+import alpinejs from "@astrojs/alpinejs";
 import cloudflare from "@astrojs/cloudflare";
+import preact from "@astrojs/preact";
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
-import alpinejs from "@astrojs/alpinejs";
-import preact from "@astrojs/preact";
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,25 +12,29 @@ export default defineConfig({
   adapter: cloudflare({
     imageService: "compile",
   }),
-  integrations: [icon({
-    include: {
-      "simple-icons": [
-        "supabase",
-        "tailwindcss",
-        "astro",
-        "facebook",
-        "instagram",
-        "discord",
-        "gitlab",
-      ],
-      "material-symbols": [
-        "favorite-rounded",
-        "pedal-bike-outline-rounded",
-        "add-rounded",
-      ],
-      "fa7-regular": ["angry"],
-    },
-  }), alpinejs({ entrypoint: "/src/scripts/main" }), preact()],
+  integrations: [
+    icon({
+      include: {
+        "simple-icons": [
+          "supabase",
+          "tailwindcss",
+          "astro",
+          "facebook",
+          "instagram",
+          "discord",
+          "gitlab",
+        ],
+        "material-symbols": [
+          "favorite-rounded",
+          "pedal-bike-outline-rounded",
+          "add-rounded",
+        ],
+        "fa7-regular": ["sad-cry", "angry", "face-smile"],
+      },
+    }),
+    alpinejs({ entrypoint: "/src/scripts/main" }),
+    preact(),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },
