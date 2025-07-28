@@ -1,9 +1,5 @@
 ---
-import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
-
-import avatarImage from "../assets/transparent_2000x2000.png";
-import { twMerge } from "tailwind-merge";
 ---
 
 {
@@ -16,17 +12,19 @@ import { twMerge } from "tailwind-merge";
   <div
     class="js:nav-padding z-30 w-full max-w-7xl px-5 py-6 duration-300"
   >
-    <div class="flex flex-row items-center gap-4">
-      <Icon
-        name="material-symbols:pedal-bike-outline-rounded"
-        class="text-3xl"
-      />
-      <div
-        class="js:nav-title text-lg font-bold transition-opacity duration-300"
-      >
-        查 Bike
-      </div>
-    </div>
+    <a href="/">
+      <div class="flex flex-row items-center gap-4">
+        <Icon
+          name="material-symbols:pedal-bike-outline-rounded"
+          class="text-3xl"
+        />
+        <div
+          class="js:nav-title text-lg font-bold transition-opacity duration-300"
+        >
+          查 Bike
+        </div>
+      </div></a
+    >
   </div>
 
   <div
