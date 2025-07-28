@@ -141,10 +141,28 @@ const processedHistory = history.map((h) => ({
         {history.map((k) => <HistoryBar history={k} />)}
       </div>
 
-      <p class="text-sm text-gray-500">
-        站點 ID：<span class="font-bold">{station.station_id.id}</span
-        >
-      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <div>
+          <p class="text-sm text-gray-500">
+            即時車數最後更新：<span class="font-bold"
+              >{
+                dayjs
+                  .utc(station.update)
+                  .tz("Asia/Taipei")
+                  .format("YYYY/MM/DD HH:mm:ss")
+              }</span
+            >
+          </p>
+          <p class="text-sm text-gray-500">
+            站點 ID：<span class="font-bold"
+              >{station.station_id.id}</span
+            >
+          </p>
+          <p class="text-sm text-gray-500">
+            站點總容量視現場狀況而定
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
