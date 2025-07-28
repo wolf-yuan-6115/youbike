@@ -77,6 +77,7 @@ if (stationData.slots === 0 || stationData.bikes === 0) {
             "mx-auto text-8xl md:text-9xl",
             heroStatus.color,
           )}
+          transition:name="emoji"
         />
       </div>
 
@@ -89,6 +90,7 @@ if (stationData.slots === 0 || stationData.bikes === 0) {
         <h1
           class="text-3xl leading-tight font-bold md:text-4xl"
           set:html={heroStatus.text}
+          transition:name="hero"
         />
       </div>
     </div>
@@ -100,6 +102,7 @@ if (stationData.slots === 0 || stationData.bikes === 0) {
             "space-y-2 rounded-lg border-2 border-indigo-400 bg-gray-800 px-6 py-4",
             stationData.status === "EMPTY" && "border-red-400",
           )}
+          transition:name="block:left"
         >
           <p class="text-2xl font-bold">
             {stationData.bikes}
@@ -113,6 +116,7 @@ if (stationData.slots === 0 || stationData.bikes === 0) {
             "space-y-2 rounded-lg border-2 border-indigo-400 bg-gray-800 px-6 py-4",
             stationData.status === "FULL" && "border-red-400",
           )}
+          transition:name="block:right"
         >
           <p class="text-2xl font-bold">
             {stationData.slots}
@@ -122,7 +126,10 @@ if (stationData.slots === 0 || stationData.bikes === 0) {
         </div>
       </div>
 
-      <p class="mt-8 text-center text-sm text-gray-400">
+      <p
+        class="mt-8 text-center text-sm text-gray-400"
+        transition:name="subtitle"
+      >
         最後更新時間：<span class="font-bold"
           >{
             dayjs
@@ -137,8 +144,14 @@ if (stationData.slots === 0 || stationData.bikes === 0) {
 
   <hr class="mx-auto max-w-4xl border-gray-600" />
 
-  <section class="mx-auto my-8 max-w-4xl">
-    <h2 class="border-gray-400 text-2xl font-bold md:text-center">
+  <section
+    class="mx-auto my-8 max-w-4xl"
+    transition:name={`${stationData.station_id.id}:container`}
+  >
+    <h2
+      class="border-gray-400 text-2xl font-bold md:text-center"
+      transition:name="section-title"
+    >
       整點車輛紀錄
     </h2>
 

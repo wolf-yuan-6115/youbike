@@ -53,6 +53,7 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
             "mx-auto text-8xl md:text-9xl",
             heroStatus.color,
           )}
+          transition:name="emoji"
         />
       </div>
 
@@ -60,8 +61,9 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
         <h1
           class="text-3xl leading-tight font-bold md:text-4xl"
           set:html={heroStatus.text}
+          transition:name="hero"
         />
-        <p class="text-lg text-gray-400">
+        <p class="text-lg text-gray-400" transition:name="subtitle">
           管什麼見車率，我要真實數據
         </p>
 
@@ -83,6 +85,7 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
       <div class="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
         <div
           class="space-y-2 rounded-lg border-2 border-amber-400 bg-gray-800 px-6 py-4"
+          transition:name="block:left"
         >
           <p class="text-2xl font-bold">
             {
@@ -102,6 +105,7 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
 
         <div
           class="space-y-2 rounded-lg border-2 border-indigo-400 bg-gray-800 px-6 py-4"
+          transition:name="block:right"
         >
           <p class="text-2xl font-bold">
             {
@@ -125,7 +129,10 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
   <hr class="mx-auto max-w-2xl border-gray-600" />
 
   <section class="mx-auto my-8 max-w-4xl">
-    <h2 class="border-gray-400 text-2xl font-bold md:text-center">
+    <h2
+      class="border-gray-400 text-2xl font-bold md:text-center"
+      transition:name="section-title"
+    >
       詳細站點資料
     </h2>
 

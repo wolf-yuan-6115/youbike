@@ -9,6 +9,7 @@ import "@styles/global.css";
 import Footer from "@components/Footer.astro";
 import Nav from "@components/Nav.astro";
 import { SEO } from "astro-seo";
+import { ClientRouter } from "astro:transitions";
 
 const siteTitle = Astro.props.station
   ? `查 Bike：${Astro.props.station} YouBike 站點即時狀態與歷史紀錄`
@@ -46,6 +47,8 @@ const seoSiteTitle = Astro.props.station
         image: "https://youbike.wolf-yuan.dev/favicon.png",
       }}
     />
+
+    <ClientRouter />
   </head>
   <body class="bg-gray-900 text-gray-50">
     <div class="flex min-h-screen flex-col">
@@ -68,6 +71,23 @@ const seoSiteTitle = Astro.props.station
     <style>
       :root {
         color-scheme: dark;
+      }
+
+      @keyframes astroFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes astroFadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
       }
     </style>
   </body>
