@@ -20,5 +20,11 @@
   "vars": {
     "BUN_VERSION": "1.2.18",
     "SKIP_DEPENDENCY_INSTALL": "true"
-  }
+  },
+  "routes": [
+    {
+      "pattern": "youbike-worker.wolf-yuan.dev",
+      "custom_domain": true
+    }
+  ]
 }
