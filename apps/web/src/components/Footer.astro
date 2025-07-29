@@ -1,8 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
-
-import notByAIImage from "@assets/not_developed_ai_chinese.svg";
 ---
 
 <footer
@@ -12,8 +10,8 @@ import notByAIImage from "@assets/not_developed_ai_chinese.svg";
 >
   <div class="mx-auto max-w-6xl px-6 py-6 lg:px-4">
     <div class="grid grid-flow-row grid-cols-1 gap-4 md:grid-cols-2">
-      <div>
-        <p class="pt-2 pb-7 text-xl font-bold md:pt-0 md:text-2xl">
+      <div class="flex flex-col justify-between gap-6">
+        <p class="pt-2 text-xl font-bold md:pt-0 md:text-2xl">
           <a
             href="https://w.wolf-yuan.dev/project/youbike"
             target="_blank"
@@ -102,10 +100,12 @@ import notByAIImage from "@assets/not_developed_ai_chinese.svg";
         </div>
 
         <Image
-          src={notByAIImage}
+          src="/not_developed_ai_chinese.svg"
           alt="Not developed by AI"
           loading="eager"
-          class="md:ml-auto"
+          class="h-full md:ml-auto md:w-auto"
+          width={131}
+          height={42}
         />
       </div>
     </div>
