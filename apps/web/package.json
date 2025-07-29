@@ -14,14 +14,14 @@
     "@astrojs/cloudflare": "^12.6.0",
     "@fontsource-variable/jetbrains-mono": "^5.2.6",
     "@iconify-json/fa7-regular": "^1.2.0",
-    "@iconify-json/material-symbols": "^1.2.29",
-    "@iconify-json/simple-icons": "^1.2.43",
-    "@supabase/supabase-js": "^2.52.0",
+    "@iconify-json/material-symbols": "^1.2.30",
+    "@iconify-json/simple-icons": "^1.2.44",
+    "@supabase/supabase-js": "^2.53.0",
     "@tailwindcss/vite": "^4.1.11",
     "@types/alpinejs": "^3.13.11",
     "@types/alpinejs__collapse": "^3.13.4",
     "alpinejs": "^3.14.9",
-    "astro": "^5.12.0",
+    "astro": "^5.12.4",
     "astro-icon": "^1.1.5",
     "astro-seo": "^0.8.4",
     "dayjs": "^1.11.13",
@@ -33,7 +33,7 @@
   "devDependencies": {
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.14",
-    "supabase": "^2.31.4",
+    "supabase": "^2.31.8",
     "wrangler": "^4.26.0"
   }
 }
