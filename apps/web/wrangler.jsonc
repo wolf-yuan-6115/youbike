@@ -22,7 +22,7 @@
   },
   "routes": [
     {
-      "pattern": "youbike-worker.wolf-yuan.dev",
+      "pattern": "youbike.wolf-yuan.dev",
       "custom_domain": true
     }
   ]
