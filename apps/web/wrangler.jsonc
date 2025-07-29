@@ -3,7 +3,9 @@
   "name": "youbike-web",
   "main": "./dist/_worker.js/index.js",
   "compatibility_date": "2025-07-26",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "workers_dev": false,
   "observability": {
     "enabled": true
@@ -14,5 +16,9 @@
   "assets": {
     "binding": "ASSETS",
     "directory": "./dist"
+  },
+  "vars": {
+    "BUN_VERSION": "1.2.18",
+    "SKIP_DEPENDENCY_INSTALL": "true"
   }
 }
