@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "youbike-web",
+  "name": "youbike-frontend",
   "main": "./dist/_worker.js/index.js",
   "compatibility_date": "2025-07-26",
   "workers_dev": false,

@@ -6,7 +6,7 @@
   "license": "AGPL-3.0-or-later",
   "workspaces": [
     "apps/grabber",
-    "apps/web"
+    "apps/frontend"
   ],
   "devDependencies": {
     "prettier": "^3.5.3"
