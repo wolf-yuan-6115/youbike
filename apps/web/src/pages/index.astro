@@ -17,6 +17,32 @@ const [stationDataRes, historicalDataRes] = await Promise.all([
 const stationData = stationDataRes.data;
 const historicalData = historicalDataRes.data;
 
+const historicalDataMap = new Map();
+if (historicalData) {
+  for (const item of historicalData) {
+    const stationId = item.station_id;
+    if (!historicalDataMap.has(stationId)) {
+      historicalDataMap.set(stationId, []);
+    }
+    historicalDataMap.get(stationId).push(item);
+  }
+}
+
+let hasEmpty = false;
+let hasFull = false;
+let totalUnavailable = 0;
+let totalFull = 0;
+const stationCount = stationData?.length ?? 0;
+
+if (stationData) {
+  for (const station of stationData) {
+    if (station.status === "EMPTY") hasEmpty = true;
+    if (station.status === "FULL") hasFull = true;
+    totalUnavailable += station.unavailable;
+    totalFull += station.full;
+  }
+}
+
 const heroStatus: {
   color: ClassNameValue;
   icon: string;
@@ -27,12 +53,12 @@ const heroStatus: {
   text: "",
 };
 
-if (stationData?.some((k) => k.status === "EMPTY")) {
+if (hasEmpty) {
   heroStatus.color = "text-red-400";
   heroStatus.icon = "fa7-regular:angry";
   heroStatus.text =
     '所以我說，我的 <span class="text-red-400">YouBike</span> 呢？';
-} else if (stationData?.some((k) => k.status === "FULL")) {
+} else if (hasFull) {
   heroStatus.color = "text-yellow-400";
   heroStatus.icon = "fa7-regular:sad-cry";
   heroStatus.text =
@@ -77,7 +103,7 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
             class="mr-2 text-lg"
           />
           目前正在追蹤 <span class="mx-1 font-semibold text-white"
-            >{stationData?.length ?? "!"}</span
+            >{stationCount}</span
           > 個站點
         </div>
       </div>
@@ -90,14 +116,7 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
           transition:name="block:left"
         >
           <p class="text-2xl font-bold">
-            {
-              formatMinuteCount(
-                stationData?.reduce(
-                  (prev, curr) => prev + curr.unavailable,
-                  0,
-                ) ?? 0,
-              )
-            }
+            {formatMinuteCount(totalUnavailable)}
           </p>
 
           <p class="font-bold text-gray-400">
@@ -110,14 +129,7 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
           transition:name="block:right"
         >
           <p class="text-2xl font-bold">
-            {
-              formatMinuteCount(
-                stationData?.reduce(
-                  (prev, curr) => prev + curr.full,
-                  0,
-                ) ?? 0,
-              )
-            }
+            {formatMinuteCount(totalFull)}
           </p>
 
           <p class="font-bold text-gray-400">
@@ -144,9 +156,7 @@ if (stationData?.some((k) => k.status === "EMPTY")) {
           <StationCard
             station={station}
             history={
-              historicalData?.filter(
-                (k) => k.station_id === station.station_id.id,
-              ) ?? []
+              historicalDataMap.get(station.station_id.id) ?? []
             }
           />
         ))

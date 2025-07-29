@@ -39,41 +39,47 @@ const heroStatus: {
   color: ClassNameValue;
   icon: string;
   text: string;
-} = {
-  color: "",
-  icon: "",
-  text: "",
-};
+} = (() => {
+  const { slots, bikes, status } = stationData;
 
-if (stationData.slots === 0 || stationData.bikes === 0) {
-  heroStatus.color = "text-red-400";
-  heroStatus.icon = "fa7-regular:angry";
-  if (stationData.slots === 0) {
-    heroStatus.text =
-      '現在沒有任何 <span class="text-red-400">YouBike</span> 停車柱可以停';
-  } else {
-    heroStatus.text =
-      '完全沒有 <span class="text-red-400">YouBike</span> 可以借';
+  if (slots === 0) {
+    return {
+      color: "text-red-400",
+      icon: "fa7-regular:angry",
+      text: '現在沒有任何 <span class="text-red-400">YouBike</span> 停車柱可以停',
+    };
   }
-} else if (
-  stationData.status === "FULL" ||
-  stationData.status === "EMPTY"
-) {
-  heroStatus.color = "text-yellow-400";
-  heroStatus.icon = "fa7-regular:sad-cry";
-  if (stationData.status === "FULL") {
-    heroStatus.text =
-      '快要沒有 <span class="text-amber-400">YouBike</span> 停車柱了';
-  } else {
-    heroStatus.text =
-      '可以借的 <span class="text-amber-400">YouBike</span> 數量少的可憐';
+
+  if (bikes === 0) {
+    return {
+      color: "text-red-400",
+      icon: "fa7-regular:angry",
+      text: '完全沒有 <span class="text-red-400">YouBike</span> 可以借',
+    };
   }
-} else {
-  heroStatus.color = "text-emerald-400";
-  heroStatus.icon = "fa7-regular:face-smile";
-  heroStatus.text =
-    '這裡的 <span class="text-emerald-400">YouBike</span> 可以借也可以還！';
-}
+
+  if (status === "FULL") {
+    return {
+      color: "text-yellow-400",
+      icon: "fa7-regular:sad-cry",
+      text: '快要沒有 <span class="text-amber-400">YouBike</span> 停車柱了',
+    };
+  }
+
+  if (status === "EMPTY") {
+    return {
+      color: "text-yellow-400",
+      icon: "fa7-regular:sad-cry",
+      text: '可以借的 <span class="text-amber-400">YouBike</span> 數量少的可憐',
+    };
+  }
+
+  return {
+    color: "text-emerald-400",
+    icon: "fa7-regular:face-smile",
+    text: '這裡的 <span class="text-emerald-400">YouBike</span> 可以借也可以還！',
+  };
+})();
 ---
 
 <Base station={stationData.station_id.name}>
