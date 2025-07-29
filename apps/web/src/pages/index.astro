@@ -6,14 +6,13 @@ import { supabase } from "@lib/supabase";
 import { Icon } from "astro-icon/components";
 import { type ClassNameValue, twMerge } from "tailwind-merge";
 
-const stationData = (
-  await supabase.from("current").select("*, station_id(*)")
-).data;
-const historicalData = (
-  await supabase.rpc("get_history_with_limit", {
-    max_rows: 3,
-  })
-).data;
+const [stationDataRes, historicalDataRes] = await Promise.all([
+  supabase.from("current").select("*, station_id(*)"),
+  supabase.rpc("get_history_with_limit", { max_rows: 3 }),
+]);
+
+const stationData = stationDataRes.data;
+const historicalData = historicalDataRes.data;
 
 const heroStatus: {
   color: ClassNameValue;

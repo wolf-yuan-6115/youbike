@@ -14,22 +14,26 @@ dayjs.extend(timezone);
 const { station: stationNumber } = Astro.params;
 if (!stationNumber) return;
 
-const stationData = (
-  await supabase
+const stationId = Number(stationNumber);
+
+const [stationDataRes, historicalDataRes] = await Promise.all([
+  supabase
     .from("current")
     .select("*, station_id(*)")
-    .eq("station_id", Number(stationNumber))
-    .single()
-).data;
-if (!stationData) return Astro.rewrite("/404");
+    .eq("station_id", stationId)
+    .single(),
 
-const historicalData = (
-  await supabase
+  supabase
     .from("history")
     .select("*")
-    .eq("station_id", Number(stationNumber))
-    .order("at", { ascending: false })
-).data;
+    .eq("station_id", stationId)
+    .order("at", { ascending: false }),
+]);
+
+const stationData = stationDataRes.data;
+if (!stationData) return Astro.rewrite("/404");
+
+const historicalData = historicalDataRes.data;
 
 const heroStatus: {
   color: ClassNameValue;
