@@ -17,6 +17,6 @@
     ]
   },
   "vars": {
-    "SKIP_DEPENDENCY_INSTALL": "true"
+    "BUN_VERSION": "1.2.19"
   }
 }

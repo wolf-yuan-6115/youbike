@@ -18,8 +18,7 @@
     "directory": "./dist"
   },
   "vars": {
-    "BUN_VERSION": "1.2.18",
-    "SKIP_DEPENDENCY_INSTALL": "true"
+    "BUN_VERSION": "1.2.19"
   },
   "routes": [
     {
