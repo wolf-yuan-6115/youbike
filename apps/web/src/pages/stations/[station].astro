@@ -1,10 +1,15 @@
 ---
+import HistoryBar from "@components/HistoryBar.astro";
 import Base from "@layouts/main.astro";
 import { supabase } from "@lib/supabase";
 import { Icon } from "astro-icon/components";
 import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { type ClassNameValue, twMerge } from "tailwind-merge";
-import HistoryBar from "../../components/HistoryBar.astro";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const { station: stationNumber } = Astro.params;
 if (!stationNumber) return;
