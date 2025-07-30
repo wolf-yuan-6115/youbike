@@ -54,8 +54,9 @@ export default async (env: Env) => {
         at: getCurrentTimeISOString(),
       });
     } catch (error) {
-      logCurrentTime(`Cooked when processing ${station.id}`);
-      console.log(error);
+      logCurrentTime(`Cooked when processing ${station.id}: ${error}`, {
+        isError: true,
+      });
     }
   }
 
@@ -69,7 +70,9 @@ export default async (env: Env) => {
       .insert(historyData);
 
     if (error) {
-      console.error("Batch insert failed:", error);
+      logCurrentTime("Batch insert failed:" + error, {
+        isError: true,
+      });
     } else {
       logCurrentTime(
         `Successfully inserted ${historyData.length} history records`,

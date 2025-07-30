@@ -27,9 +27,9 @@ export const parkingInfo = async (
       );
 
       if (!response.ok) {
-        console.error(
-          "Failed to fetch parking info:",
-          response.statusText,
+        logCurrentTime(
+          "Failed to fetch parking info: " + response.statusText,
+          { isError: true },
         );
         retry++;
         if (retry <= 3) {

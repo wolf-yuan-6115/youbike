@@ -89,8 +89,10 @@ export default async (env: Env) => {
         status: isNoSlot ? "FULL" : isNoBike ? "EMPTY" : "NORMAL",
       });
     } catch (error) {
-      logCurrentTime(`Cooked when processing ${station.id}`);
-      console.log(error);
+      logCurrentTime(
+        `Cooked when processing ${station.id}: ${error}`,
+        { isError: true },
+      );
     }
   }
 
@@ -106,7 +108,9 @@ export default async (env: Env) => {
       });
 
     if (error) {
-      console.error("Batch upsert failed:", error);
+      logCurrentTime("Batch upsert failed:" + error, {
+        isError: true,
+      });
     } else {
       logCurrentTime(
         `Successfully updated ${upsertData.length} stations`,
