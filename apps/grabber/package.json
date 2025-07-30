@@ -16,8 +16,8 @@
   },
   "devDependencies": {
     "prettier-plugin-organize-imports": "^4.1.0",
-    "supabase": "^2.31.8",
-    "wrangler": "^4.26.0"
+    "supabase": "^2.33.7",
+    "wrangler": "^4.26.1"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
