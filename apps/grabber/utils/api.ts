@@ -20,6 +20,8 @@ export const parkingInfo = async (
           }),
           headers: {
             "Content-Type": "application/json",
+            "User-Agent":
+              "youbike-grabber/1.0 (+https://youbike.wolf-yuan.dev)",
           },
         },
       );
