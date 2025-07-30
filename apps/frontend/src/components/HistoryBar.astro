@@ -1,9 +1,10 @@
 ---
 import { type Tables } from "@lib/database.types";
+import clsx from "clsx";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { ClassNameValue, twMerge } from "tailwind-merge";
+import { ClassNameValue } from "tailwind-merge";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -50,10 +51,12 @@ if (history.available <= 5) {
     {
       [...Array(25).keys()].map((k) => (
         <div
-          class={twMerge(
-            "bg-gray-500",
-            k + 1 <= filledBlocks && backgroundColor,
-            filledBlocks === 0 && "bg-red-400/20",
+          class={clsx(
+            filledBlocks === 0
+              ? "bg-red-400/20"
+              : k + 1 <= filledBlocks
+                ? backgroundColor
+                : "bg-gray-500",
           )}
         />
       ))

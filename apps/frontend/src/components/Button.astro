@@ -1,12 +1,12 @@
 ---
-import { twMerge } from "tailwind-merge";
+import clsx from "clsx";
 const { className, link, target, glow, paddingOverride } =
   Astro.props;
 ---
 
 <div
-  class={twMerge(
-    "w-fit bg-gray-800 border-2 border-emerald-400 border-solid hover:bg-emerald-400 hover:text-gray-800 hover:shadow-emerald-400 duration-300 rounded",
+  class={clsx(
+    "w-fit bg-gray-800 border-2  border-solid   duration-300 rounded",
     glow && "hover:shadow-[0_0_15px_4px]",
     className,
   )}
@@ -16,6 +16,6 @@ const { className, link, target, glow, paddingOverride } =
     target={target ?? "_self"}
     class="inline h-max w-max"
   >
-    <div class={twMerge("px-5 py-3", paddingOverride)}><slot /></div>
+    <div class={paddingOverride}><slot /></div>
   </a>
 </div>

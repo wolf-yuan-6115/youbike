@@ -3,10 +3,11 @@ import HistoryBar from "@components/HistoryBar.astro";
 import { type Enums, type Tables } from "@lib/database.types";
 import { formatMinuteCount } from "@lib/formatter";
 import { Icon } from "astro-icon/components";
+import clsx from "clsx";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { type ClassNameValue, twMerge } from "tailwind-merge";
+import { type ClassNameValue } from "tailwind-merge";
 import Button from "./Button.astro";
 
 dayjs.extend(utc);
@@ -54,7 +55,7 @@ const processedHistory = history.map((h) => ({
 ---
 
 <div
-  class={twMerge(
+  class={clsx(
     "cursor-pointer rounded-lg border-2 bg-gray-800 px-6 py-4",
     stationColor[station.status],
   )}
@@ -70,7 +71,7 @@ const processedHistory = history.map((h) => ({
         {station.station_id.name}
       </p>
       <p
-        class={twMerge(
+        class={clsx(
           "text-gray-900 rounded-full text-xs px-2 py-1 text-nowrap ml-auto md:ml-0",
           stationBackground[station.status],
         )}
@@ -89,7 +90,7 @@ const processedHistory = history.map((h) => ({
         class="h-1.5 grow rounded-full bg-gray-600 md:w-[50%] md:grow-0"
       >
         <div
-          class={twMerge(
+          class={clsx(
             "h-1.5 rounded-full",
             stationBackground[station.status],
           )}
@@ -179,8 +180,8 @@ const processedHistory = history.map((h) => ({
         <div class="flex place-items-end">
           <Button
             link={`/stations/${station.station_id.id}`}
-            className={twMerge(
-              "ml-auto h-fit w-full text-center md:w-fit",
+            className={clsx(
+              "ml-auto h-fit w-full text-center hover:text-black md:w-fit",
               stationColor[station.status],
               stationHoverColor[station.status],
             )}

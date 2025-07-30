@@ -3,10 +3,11 @@ import HistoryBar from "@components/HistoryBar.astro";
 import Base from "@layouts/main.astro";
 import { supabase } from "@lib/supabase";
 import { Icon } from "astro-icon/components";
+import clsx from "clsx";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { type ClassNameValue, twMerge } from "tailwind-merge";
+import { type ClassNameValue } from "tailwind-merge";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -88,7 +89,7 @@ const heroStatus: {
       <div class="mb-8">
         <Icon
           name={heroStatus.icon}
-          class={twMerge(
+          class={clsx(
             "mx-auto text-8xl md:text-9xl",
             heroStatus.color,
           )}
@@ -113,9 +114,11 @@ const heroStatus: {
     <div class="mt-10">
       <div class="mx-auto grid max-w-xl grid-cols-2 gap-6">
         <div
-          class={twMerge(
-            "space-y-2 rounded-lg border-2 border-indigo-400 bg-gray-800 px-6 py-4",
-            stationData.status === "EMPTY" && "border-red-400",
+          class={clsx(
+            "space-y-2 rounded-lg border-2 bg-gray-800 px-6 py-4",
+            stationData.status === "EMPTY"
+              ? "border-red-400"
+              : "border-indigo-400",
           )}
           transition:name="block:left"
         >
@@ -127,9 +130,11 @@ const heroStatus: {
         </div>
 
         <div
-          class={twMerge(
-            "space-y-2 rounded-lg border-2 border-indigo-400 bg-gray-800 px-6 py-4",
-            stationData.status === "FULL" && "border-red-400",
+          class={clsx(
+            "space-y-2 rounded-lg border-2 bg-gray-800 px-6 py-4",
+            stationData.status === "FULL"
+              ? "border-red-400"
+              : "border-indigo-400",
           )}
           transition:name="block:right"
         >
