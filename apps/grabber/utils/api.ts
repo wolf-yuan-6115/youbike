@@ -30,11 +30,13 @@ export const parkingInfo = async (
           response.statusText,
         );
         retry++;
-        if (retry < 3) {
+        if (retry <= 3) {
           logCurrentTime(
             `Retrying to fetch data, tried ${retry} times`,
           );
-          await new Promise((resolve) => setTimeout(resolve, 500));
+          await new Promise((resolve) =>
+            setTimeout(resolve, 500 + retry * 100),
+          );
           // Delaying too much probably will affect CPU time,
           // I don't know maybe
         } else break;
@@ -44,11 +46,13 @@ export const parkingInfo = async (
     } catch (error) {
       logCurrentTime("Error fetching parking info: " + error);
       retry++;
-      if (retry < 3) {
+      if (retry <= 3) {
         logCurrentTime(
           `Retrying to fetch data, tried ${retry} times`,
         );
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 500 + retry * 100),
+        );
         // Delaying too much probably will affect CPU time,
         // I don't know maybe
       } else break;
