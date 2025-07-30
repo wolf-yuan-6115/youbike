@@ -47,8 +47,6 @@ export default async (env: Env) => {
         `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}`,
       );
 
-      logCurrentTime(`Preparing ${station.id} hourly data`);
-
       historyData.push({
         station_id: station.id,
         available: targetStation.available_spaces,

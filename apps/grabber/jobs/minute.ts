@@ -18,15 +18,21 @@ export default async (env: Env) => {
   const { data: existingData } = await supabase
     .from("current")
     .select("*, station_id(*)");
+  if (!existingData) {
+    logCurrentTime(
+      "Nothing to add, did you create base record in table current?",
+    );
+    return;
+  }
 
   const existingDataMap = new Map(
-    existingData?.map((item) => [item.station_id.id, item]) || [],
+    existingData.map((item) => [item.station_id.id, item]) || [],
   );
 
   const upsertData: Tables<"current">[] = [];
 
-  for (const station of existingData?.map((k) => k.station_id) ||
-    []) {
+  for (const station of existingData.map((k) => k.station_id) || []) {
+    let retry = 0;
     try {
       logCurrentTime(`Processing ${station.id}`);
       const data = await parkingInfo(station.lat, station.lng);
@@ -49,24 +55,20 @@ export default async (env: Env) => {
         continue;
       }
 
-      logCurrentTime(
-        `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}`,
-      );
       const isNoBike = targetStation.available_spaces <= 5;
       const isNoSlot = targetStation.empty_spaces <= 3;
 
-      if (isNoBike)
-        logCurrentTime(`Station ${station.id} is unavailable`);
-      else logCurrentTime(`Station ${station.id} is available`);
-
-      if (isNoSlot)
-        logCurrentTime(
-          `Station ${station.id} has no available slots`,
-        );
-      else
-        logCurrentTime(`Station ${station.id} has available slots`);
+      logCurrentTime(
+        `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}, noBike: ${isNoBike} noSlot: ${isNoSlot}`,
+      );
 
       const existingRecord = existingDataMap.get(station.id);
+      if (!existingRecord) {
+        logCurrentTime(
+          `Something really went wrong, ${station.id} is not defined in the table but it's in the map`,
+        );
+        continue;
+      }
 
       const unavailableIncrement = isNoBike ? 1 : 0;
       const fullIncrement = isNoSlot ? 1 : 0;
@@ -78,30 +80,15 @@ export default async (env: Env) => {
         update: getCurrentTimeISOString(),
       };
 
-      if (!existingRecord) {
-        logCurrentTime(
-          `Station ${station.id} is not in the database, adding entry`,
-        );
-
-        upsertData.push({
-          ...commonData,
-          unavailable: unavailableIncrement,
-          full: fullIncrement,
-          success: 1,
-          fail: 0,
-          status: isNoSlot ? "FULL" : isNoBike ? "EMPTY" : "NORMAL",
-        });
-      } else {
-        upsertData.push({
-          ...commonData,
-          unavailable:
-            existingRecord.unavailable + unavailableIncrement,
-          full: existingRecord.full + fullIncrement,
-          success: existingRecord.success + 1,
-          fail: existingRecord.fail,
-          status: isNoSlot ? "FULL" : isNoBike ? "EMPTY" : "NORMAL",
-        });
-      }
+      upsertData.push({
+        ...commonData,
+        unavailable:
+          existingRecord.unavailable + unavailableIncrement,
+        full: existingRecord.full + fullIncrement,
+        success: existingRecord.success + 1,
+        fail: existingRecord.fail,
+        status: isNoSlot ? "FULL" : isNoBike ? "EMPTY" : "NORMAL",
+      });
     } catch (error) {
       logCurrentTime(`Cooked when processing ${station.id}`);
       console.log(error);
