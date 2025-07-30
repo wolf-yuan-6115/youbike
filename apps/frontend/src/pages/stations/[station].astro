@@ -5,7 +5,6 @@ import { supabase } from "@lib/supabase";
 import { Icon } from "astro-icon/components";
 import clsx from "clsx";
 import { formatInTimeZone } from "date-fns-tz";
-import { type ClassNameValue } from "tailwind-merge";
 
 const { station: stationNumber } = Astro.params;
 if (!stationNumber) return;

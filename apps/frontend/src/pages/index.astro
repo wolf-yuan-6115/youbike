@@ -5,7 +5,6 @@ import { formatMinuteCount } from "@lib/formatter";
 import { supabase } from "@lib/supabase";
 import { Icon } from "astro-icon/components";
 import clsx from "clsx";
-import { type ClassNameValue } from "tailwind-merge";
 
 const [stationDataRes, historicalDataRes] = await Promise.all([
   supabase
