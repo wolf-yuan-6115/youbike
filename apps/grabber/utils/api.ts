@@ -42,7 +42,7 @@ export const parkingInfo = async (
 
       return await response.json();
     } catch (error) {
-      console.error("Error fetching parking info:", error);
+      logCurrentTime("Error fetching parking info: " + error);
       retry++;
       if (retry < 3) {
         logCurrentTime(
