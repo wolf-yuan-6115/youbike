@@ -86,7 +86,6 @@ export default async (env: Env) => {
           existingRecord.unavailable + unavailableIncrement,
         full: existingRecord.full + fullIncrement,
         success: existingRecord.success + 1,
-        fail: existingRecord.fail,
         status: isNoSlot ? "FULL" : isNoBike ? "EMPTY" : "NORMAL",
       });
     } catch (error) {
