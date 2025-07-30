@@ -4,14 +4,8 @@ import { type Enums, type Tables } from "@lib/database.types";
 import { formatMinuteCount } from "@lib/formatter";
 import { Icon } from "astro-icon/components";
 import clsx from "clsx";
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
-import { type ClassNameValue } from "tailwind-merge";
+import { formatInTimeZone } from "date-fns-tz";
 import Button from "./Button.astro";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 export interface Props {
   station: Tables<"current"> & { station_id: Tables<"stations"> };
@@ -46,12 +40,6 @@ const stationText: Record<Enums<"station_state">, ClassNameValue> = {
 };
 
 const { station, history } = Astro.props;
-
-const processedHistory = history.map((h) => ({
-  at: dayjs.utc(h.at).tz("Asia/Taipei").format(),
-  available: h.available,
-  empty: h.empty,
-}));
 ---
 
 <div
@@ -161,10 +149,11 @@ const processedHistory = history.map((h) => ({
           <p class="text-sm text-gray-500">
             即時車數最後更新：<span class="font-bold"
               >{
-                dayjs
-                  .utc(station.update)
-                  .tz("Asia/Taipei")
-                  .format("YYYY/MM/DD HH:mm:ss")
+                formatInTimeZone(
+                  new Date(station.update),
+                  "Asia/Taipei",
+                  "yyyy/MM/dd HH:mm:ss",
+                )
               }</span
             >
           </p>

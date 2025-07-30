@@ -27,7 +27,6 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
-    "dayjs": "^1.11.13",
     "prettier-plugin-astro-organize-imports": "^0.4.11",
     "prettier-plugin-organize-imports": "^4.2.0",
     "tailwindcss": "^4.1.11"

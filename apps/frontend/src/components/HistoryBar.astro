@@ -1,13 +1,7 @@
 ---
 import { type Tables } from "@lib/database.types";
 import clsx from "clsx";
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
-import { ClassNameValue } from "tailwind-merge";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import { formatInTimeZone } from "date-fns-tz";
 
 export interface Props {
   history: Tables<"history">;
@@ -34,10 +28,11 @@ if (history.available <= 5) {
   <div class="space-y-1.5">
     <p class="sm:text-sm">
       {
-        dayjs
-          .utc(history.at)
-          .tz("Asia/Taipei")
-          .format("YYYY/MM/DD HH:mm")
+        formatInTimeZone(
+          new Date(history.at),
+          "Asia/Taipei",
+          "yyyy/MM/dd HH:mm:ss",
+        )
       }
     </p>
     <p class="text-xs text-gray-400">

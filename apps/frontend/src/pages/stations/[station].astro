@@ -4,13 +4,8 @@ import Base from "@layouts/main.astro";
 import { supabase } from "@lib/supabase";
 import { Icon } from "astro-icon/components";
 import clsx from "clsx";
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
+import { formatInTimeZone } from "date-fns-tz";
 import { type ClassNameValue } from "tailwind-merge";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 const { station: stationNumber } = Astro.params;
 if (!stationNumber) return;
@@ -152,10 +147,11 @@ const heroStatus: {
       >
         最後更新時間：<span class="font-bold"
           >{
-            dayjs
-              .utc(stationData.update)
-              .tz("Asia/Taipei")
-              .format("YYYY/MM/DD HH:mm:ss")
+            formatInTimeZone(
+              new Date(stationData.update),
+              "Asia/Taipei",
+              "yyyy/MM/dd HH:mm:ss",
+            )
           }</span
         >
       </p>
