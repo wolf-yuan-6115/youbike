@@ -40,6 +40,8 @@ const stationText: Record<Enums<"station_state">, ClassNameValue> = {
 };
 
 const { station, history } = Astro.props;
+const timezone =
+  Astro.request.headers.get("cf-timezone") ?? "Asia/Taipei";
 ---
 
 <div
@@ -151,7 +153,7 @@ const { station, history } = Astro.props;
               >{
                 formatInTimeZone(
                   new Date(station.update),
-                  "Asia/Taipei",
+                  timezone,
                   "yyyy/MM/dd HH:mm:ss",
                 )
               }</span

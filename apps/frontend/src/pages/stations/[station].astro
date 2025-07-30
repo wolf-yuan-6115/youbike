@@ -75,6 +75,9 @@ const heroStatus: {
     text: '這裡的 <span class="text-emerald-400">YouBike</span> 可以借也可以還！',
   };
 })();
+
+const timezone =
+  Astro.request.headers.get("cf-timezone") ?? "Asia/Taipei";
 ---
 
 <Base station={stationData.station_id.name}>
@@ -148,7 +151,7 @@ const heroStatus: {
           >{
             formatInTimeZone(
               new Date(stationData.update),
-              "Asia/Taipei",
+              timezone,
               "yyyy/MM/dd HH:mm:ss",
             )
           }</span
