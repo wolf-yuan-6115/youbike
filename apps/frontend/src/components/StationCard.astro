@@ -12,28 +12,22 @@ export interface Props {
   history: Tables<"history">[];
 }
 
-const stationColor: Record<Enums<"station_state">, ClassNameValue> = {
+const stationColor: Record<Enums<"station_state">, string> = {
   NORMAL: "border-green-400",
   EMPTY: "border-red-400",
   FULL: "border-yellow-400",
 };
-const stationHoverColor: Record<
-  Enums<"station_state">,
-  ClassNameValue
-> = {
+const stationHoverColor: Record<Enums<"station_state">, string> = {
   NORMAL: "hover:bg-green-400",
   EMPTY: "hover:bg-red-400",
   FULL: "hover:bg-yellow-400",
 };
-const stationBackground: Record<
-  Enums<"station_state">,
-  ClassNameValue
-> = {
+const stationBackground: Record<Enums<"station_state">, string> = {
   NORMAL: "bg-green-400",
   EMPTY: "bg-red-400",
   FULL: "bg-yellow-400",
 };
-const stationText: Record<Enums<"station_state">, ClassNameValue> = {
+const stationText: Record<Enums<"station_state">, string> = {
   NORMAL: "可借可還",
   EMPTY: "可借數量 <5",
   FULL: "可還空位 <3",

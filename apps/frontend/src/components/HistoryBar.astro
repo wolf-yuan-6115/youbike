@@ -13,7 +13,7 @@ const filledBlocks = Math.floor(
   (history.available / (history.available + history.empty)) * 30,
 );
 
-let backgroundColor: ClassNameValue = "";
+let backgroundColor = "";
 
 if (history.available <= 5) {
   backgroundColor = "bg-red-400";
