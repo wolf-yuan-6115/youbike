@@ -12,9 +12,12 @@ import { SEO } from "astro-seo";
 import { ClientRouter } from "astro:transitions";
 
 const siteTitle = Astro.props.station
+  ? `${Astro.props.station} 的站點歷史`
+  : "查 Bike";
+const seoSiteTitle = Astro.props.station
   ? `查 Bike：${Astro.props.station} YouBike 站點即時狀態與歷史紀錄`
   : "查 Bike：YouBike 站點即時與歷史紀錄查詢";
-const seoSiteTitle = Astro.props.station
+const seoSiteDescription = Astro.props.station
   ? `${Astro.props.station}的 YouBike 站現在可以借車還車嗎？你可以在這個網站上面看看這個 YouBike 站點是不是每天到某個時刻就沒車！`
   : "你遇過一個 YouBike 的站點沒有任何一臺 YouBike 嗎？你可以在這個網站上面看看你的 YouBike 站點是不是每天到某個時刻就沒車！";
 ---
@@ -28,20 +31,20 @@ const seoSiteTitle = Astro.props.station
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>{siteTitle}</title>
+    <title>{seoSiteTitle}</title>
     <SEO
-      description={seoSiteTitle}
+      description={seoSiteDescription}
       charset="UTF-8"
       openGraph={{
         basic: {
-          title: siteTitle,
+          title: seoSiteTitle,
           type: "website",
           image: "https://youbike.wolf-yuan.dev/favicon.png",
         },
       }}
       twitter={{
-        title: siteTitle,
-        description: seoSiteTitle,
+        title: seoSiteTitle,
+        description: seoSiteDescription,
         card: "summary",
         site: "@wolfyuan1135",
         image: "https://youbike.wolf-yuan.dev/favicon.png",
