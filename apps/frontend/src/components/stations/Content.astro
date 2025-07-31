@@ -1,0 +1,158 @@
+---
+import HistoryBar from "@components/HistoryBar.astro";
+import { type Tables } from "@lib/database.types";
+
+export interface Props {
+  stationData: Tables<"current"> & { station_id: Tables<"stations"> };
+  historicalData: Tables<"history">[] | null;
+}
+
+import { Icon } from "astro-icon/components";
+import clsx from "clsx";
+import { formatInTimeZone } from "date-fns-tz";
+
+const { stationData, historicalData } = Astro.props;
+
+const heroStatus: {
+  color: string;
+  icon: string;
+  text: string;
+} = (() => {
+  const { slots, bikes, status } = stationData;
+
+  if (slots === 0) {
+    return {
+      color: "text-red-400",
+      icon: "fa7-regular:angry",
+      text: '現在沒有任何 <span class="text-red-400">YouBike</span> 停車柱可以停',
+    };
+  }
+
+  if (bikes === 0) {
+    return {
+      color: "text-red-400",
+      icon: "fa7-regular:angry",
+      text: '完全沒有 <span class="text-red-400">YouBike</span> 可以借',
+    };
+  }
+
+  if (status === "FULL") {
+    return {
+      color: "text-yellow-400",
+      icon: "fa7-regular:sad-cry",
+      text: '快要沒有 <span class="text-amber-400">YouBike</span> 停車柱了',
+    };
+  }
+
+  if (status === "EMPTY") {
+    return {
+      color: "text-yellow-400",
+      icon: "fa7-regular:sad-cry",
+      text: '可以借的 <span class="text-amber-400">YouBike</span> 數量少的可憐',
+    };
+  }
+
+  return {
+    color: "text-emerald-400",
+    icon: "fa7-regular:face-smile",
+    text: '這裡的 <span class="text-emerald-400">YouBike</span> 可以借也可以還！',
+  };
+})();
+
+const timezone =
+  Astro.request.headers.get("cf-timezone") ?? "Asia/Taipei";
+---
+
+<main class="py-16">
+  <div class="text-center">
+    <div class="mb-8">
+      <Icon
+        name={heroStatus.icon}
+        class={clsx("mx-auto text-8xl md:text-9xl", heroStatus.color)}
+        transition:name="emoji"
+      />
+    </div>
+
+    <div class="mx-auto space-y-4">
+      <p class="text-lg md:text-xl">
+        位於 <span class="font-bold"
+          >{stationData.station_id.name}</span
+        > 的 YouBike 站點
+      </p>
+      <h1
+        class="text-3xl leading-tight font-bold md:text-4xl"
+        set:html={heroStatus.text}
+        transition:name="hero"
+      />
+    </div>
+  </div>
+
+  <div class="mt-10">
+    <div class="mx-auto grid max-w-xl grid-cols-2 gap-6">
+      <div
+        class={clsx(
+          "space-y-2 rounded-lg border-2 bg-gray-800 px-6 py-4",
+          stationData.status === "EMPTY"
+            ? "border-red-400"
+            : "border-indigo-400",
+        )}
+        transition:name="block:left"
+      >
+        <p class="text-2xl font-bold">
+          {stationData.bikes}
+        </p>
+
+        <p class="font-bold text-gray-400">臺車可借</p>
+      </div>
+
+      <div
+        class={clsx(
+          "space-y-2 rounded-lg border-2 bg-gray-800 px-6 py-4",
+          stationData.status === "FULL"
+            ? "border-red-400"
+            : "border-indigo-400",
+        )}
+        transition:name="block:right"
+      >
+        <p class="text-2xl font-bold">
+          {stationData.slots}
+        </p>
+
+        <p class="font-bold text-gray-400">個柱可還</p>
+      </div>
+    </div>
+
+    <p
+      class="mt-8 text-center text-sm text-gray-400"
+      transition:name="subtitle"
+    >
+      最後更新時間：<span class="font-bold"
+        >{
+          formatInTimeZone(
+            new Date(stationData.update),
+            timezone,
+            "yyyy/MM/dd HH:mm:ss",
+          )
+        }</span
+      >
+    </p>
+  </div>
+</main>
+
+<hr class="mx-auto max-w-4xl border-gray-600" />
+
+<section
+  class="mx-auto my-8 max-w-4xl"
+  transition:name={`${stationData.station_id.id}:container`}
+>
+  <h2
+    class="border-gray-400 text-2xl font-bold md:text-center"
+    transition:name="section-title"
+  >
+    整點車輛紀錄
+  </h2>
+
+  <div class="mt-6 rounded-lg bg-gray-800 px-4 py-2">
+    {historicalData?.map((k) => <HistoryBar history={k} />)}
+  </div>
+</section>
