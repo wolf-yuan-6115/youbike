@@ -7,7 +7,7 @@ export const parkingInfo = async (
 ): Promise<ParkingInfo | null> => {
   let returnData,
     retry = 0;
-  while (retry < 3) {
+  while (retry <= 3) {
     try {
       const response = await fetch(
         "https://apis.youbike.com.tw/tw2/parkingInfo",
