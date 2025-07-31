@@ -10,13 +10,13 @@
   "placement": {
     "mode": "smart"
   },
+  "vars": {
+    "SUPABASE_URL": "https://cjuaczvkvlxiursigzzb.supabase.co/"
+  },
   "triggers": {
     "crons": [
       "* * * * *",
       "0 * * * *"
     ]
-  },
-  "vars": {
-    "BUN_VERSION": "1.2.19"
   }
 }
