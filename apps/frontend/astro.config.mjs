@@ -3,7 +3,7 @@ import alpinejs from "@astrojs/alpinejs";
 import cloudflare from "@astrojs/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
-import { defineConfig, envField } from "astro/config";
+import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
@@ -35,18 +35,6 @@ export default defineConfig({
     }),
     alpinejs({ entrypoint: "/src/scripts/main" }),
   ],
-  env: {
-    schema: {
-      SUPABASE_URL: envField.string({
-        context: "server",
-        access: "public",
-      }),
-      SUPABASE_PUBLISHABLE: envField.string({
-        context: "server",
-        access: "public",
-      }),
-    },
-  },
   vite: {
     plugins: [tailwindcss()],
   },
