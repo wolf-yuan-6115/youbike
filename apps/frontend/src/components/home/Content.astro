@@ -2,9 +2,12 @@
 import StationCard from "@components/StationCard.astro";
 import { formatMinuteCount } from "@lib/formatter";
 import { createSupabaseClient } from "@lib/supabase";
+import fullLocale from "./locales";
+
 import { Icon } from "astro-icon/components";
 import clsx from "clsx";
 
+const locale = fullLocale[Astro.currentLocale ?? "zh-TW"];
 const supabase = createSupabaseClient(Astro.locals.runtime.env);
 
 const [stationDataRes, historicalDataRes] = await Promise.all([
@@ -57,18 +60,15 @@ const heroStatus: {
 if (hasEmpty) {
   heroStatus.color = "text-red-400";
   heroStatus.icon = "fa7-regular:angry";
-  heroStatus.text =
-    '所以我說，我的 <span class="text-red-400">YouBike</span> 呢？';
+  heroStatus.text = locale["dynamic:hasEmpty"];
 } else if (hasFull) {
   heroStatus.color = "text-yellow-400";
   heroStatus.icon = "fa7-regular:sad-cry";
-  heroStatus.text =
-    '有 <span class="text-amber-400">YouBike</span> 沒有地方可以停ㄌ';
+  heroStatus.text = locale["dynamic:hasFull"];
 } else {
   heroStatus.color = "text-emerald-400";
   heroStatus.icon = "fa7-regular:face-smile";
-  heroStatus.text =
-    '現在有 <span class="text-emerald-400">YouBike</span> 可以借！';
+  heroStatus.text = locale["dynamic:normal"];
 }
 ---
 
@@ -89,7 +89,7 @@ if (hasEmpty) {
         transition:name="hero"
       />
       <p class="text-lg text-gray-400" transition:name="subtitle">
-        管什麼見車率，我要真實數據
+        {locale["hero:subtitle"]}
       </p>
 
       <div
@@ -99,9 +99,11 @@ if (hasEmpty) {
           name="material-symbols:pedal-bike-outline-rounded"
           class="mr-2 text-lg"
         />
-        目前正在追蹤 <span class="mx-1 font-semibold text-white"
+        {locale["tracking:pre"]}
+        <span class="mx-1 font-semibold text-white"
           >{stationCount}</span
-        > 個站點
+        >
+        {locale["tracking:post"]}
       </div>
     </div>
   </div>
@@ -113,11 +115,11 @@ if (hasEmpty) {
         transition:name="block:left"
       >
         <p class="text-2xl font-bold">
-          {formatMinuteCount(totalUnavailable)}
+          {formatMinuteCount(totalUnavailable, Astro.currentLocale)}
         </p>
 
         <p class="font-bold text-gray-400">
-          {"<5 臺車可借"}
+          {locale["summary:empty"]}
         </p>
       </div>
 
@@ -126,11 +128,11 @@ if (hasEmpty) {
         transition:name="block:right"
       >
         <p class="text-2xl font-bold">
-          {formatMinuteCount(totalFull)}
+          {formatMinuteCount(totalFull, Astro.currentLocale)}
         </p>
 
         <p class="font-bold text-gray-400">
-          {"<3 位可還"}
+          {locale["summary:full"]}
         </p>
       </div>
     </div>
@@ -144,7 +146,7 @@ if (hasEmpty) {
     class="border-gray-400 text-2xl font-bold md:text-center"
     transition:name="section-title"
   >
-    詳細站點資料
+    {locale["detailed:title"]}
   </h2>
 
   <div class="mt-10 space-y-4">

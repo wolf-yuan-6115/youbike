@@ -34,7 +34,10 @@
       ],
       "@assets/*": [
         "./src/assets/*"
-      ]
+      ],
+       "@typing/*": [
+         "./src/typing/*"
+       ]
     }
   }
 }

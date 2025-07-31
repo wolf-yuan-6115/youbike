@@ -1,10 +1,11 @@
 ---
 import { Icon } from "astro-icon/components";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import fullLocale from "./commonLocales";
+
+const locale = fullLocale.nav[Astro.currentLocale ?? "zh-TW"];
 ---
 
-{
-  /* Setting raw class below, cuz dumb TailwindCSS treat bg-[100%_200%] as background-position*/
-}
 <nav
   class="js:nav-container sticky top-0 z-10 flex justify-center bg-linear-to-b from-gray-950/85 via-transparent to-transparent bg-bottom transition-all duration-300"
   style={{ backgroundSize: "100% 200%" }}
@@ -12,19 +13,46 @@ import { Icon } from "astro-icon/components";
   <div
     class="js:nav-padding z-30 w-full max-w-7xl px-5 py-6 duration-300"
   >
-    <a href="/" class="w-fit">
-      <div class="inline-flex flex-row items-center gap-4">
-        <Icon
-          name="material-symbols:pedal-bike-outline-rounded"
-          class="text-3xl"
-        />
-        <div
-          class="js:nav-title text-lg font-bold transition-opacity duration-300"
+    <div class="flex justify-between">
+      <div>
+        <a
+          href={getRelativeLocaleUrl(
+            Astro.currentLocale ?? "zh-TW",
+            "/",
+          )}
+          class="w-fit"
         >
-          查 Bike
-        </div>
-      </div></a
-    >
+          <div class="inline-flex flex-row items-center gap-4">
+            <Icon
+              name="material-symbols:pedal-bike-outline-rounded"
+              class="text-3xl"
+            />
+            <div
+              class="js:nav-title text-lg font-bold transition-opacity duration-300"
+            >
+              {locale["title"]}
+            </div>
+          </div></a
+        >
+      </div>
+      <div>
+        <a
+          href={getRelativeLocaleUrl(
+            Astro.currentLocale === "en" ? "zh-TW" : "en",
+            Astro.url.pathname.replace("/en", ""),
+          )}
+          class="text-gray-300 duration-300 hover:text-gray-50"
+        >
+          <div class="flex items-center justify-between md:gap-2">
+            <Icon
+              name="material-symbols:translate"
+              class="text-lg md:text-base"
+            />
+            <p class="sr-only md:not-sr-only">{locale["language"]}</p>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 
   <div

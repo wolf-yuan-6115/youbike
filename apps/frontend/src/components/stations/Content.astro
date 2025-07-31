@@ -1,6 +1,7 @@
 ---
 import HistoryBar from "@components/HistoryBar.astro";
-import { type Tables } from "@lib/database.types";
+import { type Tables } from "@typing/database.types";
+import fullLocale from "./locales";
 
 export interface Props {
   stationData: Tables<"current"> & { station_id: Tables<"stations"> };
@@ -11,6 +12,7 @@ import { Icon } from "astro-icon/components";
 import clsx from "clsx";
 import { formatInTimeZone } from "date-fns-tz";
 
+const locale = fullLocale[Astro.currentLocale ?? "zh-TW"];
 const { stationData, historicalData } = Astro.props;
 
 const heroStatus: {
@@ -24,7 +26,7 @@ const heroStatus: {
     return {
       color: "text-red-400",
       icon: "fa7-regular:angry",
-      text: '現在沒有任何 <span class="text-red-400">YouBike</span> 停車柱可以停',
+      text: locale["dynamic:noSlots"],
     };
   }
 
@@ -32,7 +34,7 @@ const heroStatus: {
     return {
       color: "text-red-400",
       icon: "fa7-regular:angry",
-      text: '完全沒有 <span class="text-red-400">YouBike</span> 可以借',
+      text: locale["dynamic:noBikes"],
     };
   }
 
@@ -40,7 +42,7 @@ const heroStatus: {
     return {
       color: "text-yellow-400",
       icon: "fa7-regular:sad-cry",
-      text: '快要沒有 <span class="text-amber-400">YouBike</span> 停車柱了',
+      text: locale["dynamic:almostFull"],
     };
   }
 
@@ -48,19 +50,23 @@ const heroStatus: {
     return {
       color: "text-yellow-400",
       icon: "fa7-regular:sad-cry",
-      text: '可以借的 <span class="text-amber-400">YouBike</span> 數量少的可憐',
+      text: locale["dynamic:almostEmpty"],
     };
   }
 
   return {
     color: "text-emerald-400",
     icon: "fa7-regular:face-smile",
-    text: '這裡的 <span class="text-emerald-400">YouBike</span> 可以借也可以還！',
+    text: locale["dynamic:normal"],
   };
 })();
 
 const timezone =
   Astro.request.headers.get("cf-timezone") ?? "Asia/Taipei";
+const stationName =
+  Astro.currentLocale === "zh-TW"
+    ? stationData.station_id.name
+    : stationData.station_id.name_en;
 ---
 
 <main class="py-16">
@@ -75,9 +81,9 @@ const timezone =
 
     <div class="mx-auto space-y-4">
       <p class="text-lg md:text-xl">
-        位於 <span class="font-bold"
-          >{stationData.station_id.name}</span
-        > 的 YouBike 站點
+        {locale["location:pre"]}
+        <span class="font-bold">{stationName}</span>
+        {locale["location:post"]}
       </p>
       <h1
         class="text-3xl leading-tight font-bold md:text-4xl"
@@ -102,7 +108,9 @@ const timezone =
           {stationData.bikes}
         </p>
 
-        <p class="font-bold text-gray-400">臺車可借</p>
+        <p class="font-bold text-gray-400">
+          {locale["summary:bikes"]}
+        </p>
       </div>
 
       <div
@@ -118,7 +126,9 @@ const timezone =
           {stationData.slots}
         </p>
 
-        <p class="font-bold text-gray-400">個柱可還</p>
+        <p class="font-bold text-gray-400">
+          {locale["summary:slots"]}
+        </p>
       </div>
     </div>
 
@@ -126,7 +136,7 @@ const timezone =
       class="mt-8 text-center text-sm text-gray-400"
       transition:name="subtitle"
     >
-      最後更新時間：<span class="font-bold"
+      {locale["update:text"]}<span class="font-bold"
         >{
           formatInTimeZone(
             new Date(stationData.update),
@@ -149,7 +159,7 @@ const timezone =
     class="border-gray-400 text-2xl font-bold md:text-center"
     transition:name="section-title"
   >
-    整點車輛紀錄
+    {locale["oclock:title"]}
   </h2>
 
   <div class="mt-6 rounded-lg bg-gray-800 px-4 py-2">

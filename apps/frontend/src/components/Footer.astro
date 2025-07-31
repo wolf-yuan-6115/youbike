@@ -1,6 +1,13 @@
 ---
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
+import fullLocale from "./commonLocales";
+
+const locale = fullLocale.footer[Astro.currentLocale ?? "zh-TW"];
+const notAISvg =
+  Astro.currentLocale === "zh-TW"
+    ? "/not_developed_ai_chinese.svg"
+    : "/not_developed_ai_english.svg";
 ---
 
 <footer
@@ -22,7 +29,7 @@ import { Image } from "astro:assets";
           </a>
         </p>
         <p class="text-lg font-bold text-gray-400">
-          使用
+          {locale["made:pre"]}
           <a href="https://supabase.com/" target="_blank">
             <Icon
               name="simple-icons:supabase"
@@ -41,11 +48,12 @@ import { Image } from "astro:assets";
               class="inline text-[#BC52EE]"
             /><span class="sr-only">Astro</span></a
           >
-          和
+          {locale["made:connect"]}
           <Icon
             name="material-symbols:favorite-rounded"
             class="inline text-red-500"
-          /> 製作而成
+          />
+          {locale["made:post"]}
         </p>
       </div>
       <div
@@ -94,7 +102,7 @@ import { Image } from "astro:assets";
         </div>
 
         <Image
-          src="/not_developed_ai_chinese.svg"
+          src={notAISvg}
           alt="Not developed by AI"
           loading="eager"
           class="h-full md:ml-auto md:w-auto"

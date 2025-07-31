@@ -1,0 +1,35 @@
+---
+import Content from "@components/stations/Content.astro";
+import Base from "@layouts/main.astro";
+import { createSupabaseClient } from "@lib/supabase";
+
+const supabase = createSupabaseClient(Astro.locals.runtime.env);
+
+const { station: stationNumber } = Astro.params;
+if (!stationNumber) return;
+
+const stationId = Number(stationNumber);
+
+const [stationDataRes, historicalDataRes] = await Promise.all([
+  supabase
+    .from("current")
+    .select("*, station_id(*)")
+    .eq("station_id", stationId)
+    .single(),
+
+  supabase
+    .from("history")
+    .select("*")
+    .eq("station_id", stationId)
+    .order("at", { ascending: false }),
+]);
+
+if (!stationDataRes.data) return Astro.rewrite("/404");
+---
+
+<Base station={stationDataRes.data.station_id.name}>
+  <Content
+    stationData={stationDataRes.data}
+    historicalData={historicalDataRes.data}
+  />
+</Base>

@@ -1,11 +1,15 @@
 ---
 import HistoryBar from "@components/HistoryBar.astro";
-import { type Enums, type Tables } from "@lib/database.types";
 import { formatMinuteCount } from "@lib/formatter";
+import { type Enums, type Tables } from "@typing/database.types";
 import { Icon } from "astro-icon/components";
+import { getRelativeLocaleUrl } from "astro:i18n";
 import clsx from "clsx";
 import { formatInTimeZone } from "date-fns-tz";
 import Button from "./Button.astro";
+import fullLocale from "./commonLocales";
+
+const locale = fullLocale.stationCard[Astro.currentLocale ?? "zh-TW"];
 
 export interface Props {
   station: Tables<"current"> & { station_id: Tables<"stations"> };
@@ -28,14 +32,22 @@ const stationBackground: Record<Enums<"station_state">, string> = {
   FULL: "bg-yellow-400",
 };
 const stationText: Record<Enums<"station_state">, string> = {
-  NORMAL: "可借可還",
-  EMPTY: "可借數量 <5",
-  FULL: "可還空位 <3",
+  NORMAL: locale["status:normal"],
+  EMPTY: locale["status:empty"],
+  FULL: locale["status:full"],
 };
 
 const { station, history } = Astro.props;
 const timezone =
   Astro.request.headers.get("cf-timezone") ?? "Asia/Taipei";
+const stationName =
+  Astro.currentLocale === "zh-TW"
+    ? station.station_id.name
+    : station.station_id.name_en;
+const stationAddress =
+  Astro.currentLocale === "zh-TW"
+    ? station.station_id.address
+    : station.station_id.address_en;
 ---
 
 <div
@@ -52,7 +64,7 @@ const timezone =
   >
     <div class="flex w-full place-items-center gap-4 md:w-auto">
       <p class="truncate text-xl font-bold">
-        {station.station_id.name}
+        {stationName}
       </p>
       <p
         class={clsx(
@@ -68,7 +80,11 @@ const timezone =
       class="flex w-full grow place-items-center gap-4 md:max-w-md md:justify-end"
     >
       <p class="text-xs text-gray-400">
-        可借 {station.bikes} 臺，可還 {station.slots} 位
+        {locale["details:pre"]}
+        {station.bikes}
+        {locale["details:connect"]}
+        {station.slots}
+        {locale["details:post"]}
       </p>
       <div
         class="h-1.5 grow rounded-full bg-gray-600 md:w-[50%] md:grow-0"
@@ -99,19 +115,25 @@ const timezone =
         <div class="space-y-2">
           <p>
             <span class="font-bold">
-              {station.station_id.name}
-            </span> 站點位於 <span class="font-bold"
-              >{station.station_id.address}</span
-            >
+              {stationName}
+            </span>
+            {locale["location:connect"]}
+            <span class="font-bold">{stationAddress}</span>
           </p>
           <p>
-            總共有 <span class="font-bold"
-              >{station.station_id.total}</span
-            > 個車位
+            {locale["station:total:pre"]}
+            <span class="font-bold">{station.station_id.total}</span>
+            {locale["station:total:post"]}
           </p>
           <p>
-            總追蹤時數 <span class="font-bold"
-              >{formatMinuteCount(station.success)}</span
+            {locale["station:tracked"]}
+            <span class="font-bold"
+              >{
+                formatMinuteCount(
+                  station.success,
+                  Astro.currentLocale,
+                )
+              }</span
             >
           </p>
         </div>
@@ -125,13 +147,17 @@ const timezone =
                 ) / 100
               }%
             </p>
-            <p class="text-sm text-gray-400">的時間 <5 臺車可以借</p>
+            <p class="text-sm text-gray-400">
+              {locale["time:noBike"]}
+            </p>
           </div>
           <div class="space-y-1.5">
             <p class="text-4xl font-bold md:text-right md:text-5xl">
               {Math.round((station.full / station.success) * 100)}%
             </p>
-            <p class="text-sm text-gray-400">的時間 <3 位可還</p>
+            <p class="text-sm text-gray-400">
+              {locale["time:noSlot"]}
+            </p>
           </div>
         </div>
       </div>
@@ -143,7 +169,8 @@ const timezone =
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
           <p class="text-sm text-gray-500">
-            即時車數最後更新：<span class="font-bold"
+            {locale["update:text"]}
+            <span class="font-bold"
               >{
                 formatInTimeZone(
                   new Date(station.update),
@@ -154,17 +181,19 @@ const timezone =
             >
           </p>
           <p class="text-sm text-gray-500">
-            站點 ID：<span class="font-bold"
-              >{station.station_id.id}</span
-            >
+            {locale["update:id"]}
+            <span class="font-bold">{station.station_id.id}</span>
           </p>
           <p class="text-sm text-gray-500">
-            站點總容量視現場狀況而定
+            {locale["update:notice"]}
           </p>
         </div>
         <div class="flex place-items-end">
           <Button
-            link={`/stations/${station.station_id.id}`}
+            link={getRelativeLocaleUrl(
+              Astro.currentLocale ?? "zh-TW",
+              `/stations/${station.station_id.id}`,
+            )}
             className={clsx(
               "ml-auto h-fit w-full text-center hover:text-black md:w-fit",
               stationColor[station.status],
@@ -172,7 +201,7 @@ const timezone =
             )}
             paddingOverride="py-2 px-6"
           >
-            <p class="text-sm">查看更多歷史資料</p>
+            <p class="text-sm">{locale["button:text"]}</p>
           </Button>
         </div>
       </div>

@@ -1,0 +1,23 @@
+---
+import Button from "@components/Button.astro";
+import Base from "@layouts/main.astro";
+---
+
+<Base>
+  <div
+    class="flex h-screen flex-col items-center justify-center gap-y-12"
+  >
+    <div>
+      <p class="text-center text-5xl font-bold md:text-6xl">
+        你真的迷路了
+      </p>
+    </div>
+    <Button
+      link="/"
+      className="mx-auto border-emerald-400 hover:bg-emerald-400 hover:text-black hover:shadow-emerald-400"
+      paddingOverride="px-5 py-3"
+    >
+      <p>回去看你的 YouBike 在哪</p>
+    </Button>
+  </div>
+</Base>

@@ -29,6 +29,7 @@ export default defineConfig({
           "favorite-rounded",
           "pedal-bike-outline-rounded",
           "add-rounded",
+          "translate",
         ],
         "fa7-regular": ["sad-cry", "angry", "face-smile"],
       },
@@ -37,5 +38,12 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+  },
+  i18n: {
+    locales: ["zh-TW", "en"],
+    defaultLocale: "zh-TW",
+    routing: {
+      prefixDefaultLocale: false,
+    },
   },
 });

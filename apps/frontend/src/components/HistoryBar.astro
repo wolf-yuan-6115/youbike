@@ -1,12 +1,14 @@
 ---
-import { type Tables } from "@lib/database.types";
+import { type Tables } from "@typing/database.types";
 import clsx from "clsx";
 import { formatInTimeZone } from "date-fns-tz";
+import fullLocale from "./commonLocales";
 
 export interface Props {
   history: Tables<"history">;
 }
 
+const locale = fullLocale.historyBar[Astro.currentLocale ?? "zh-TW"];
 const { history } = Astro.props;
 
 const filledBlocks = Math.floor(
@@ -39,7 +41,11 @@ const timezone =
       }
     </p>
     <p class="text-xs text-gray-400">
-      可借 {history.available} 台，{history.empty} 位可還
+      {locale["text:pre"]}
+      {history.available}
+      {locale["text:connect"]}
+      {history.empty}
+      {locale["text:post"]}
     </p>
   </div>
 
