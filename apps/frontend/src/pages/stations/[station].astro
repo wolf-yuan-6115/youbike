@@ -1,10 +1,12 @@
 ---
 import HistoryBar from "@components/HistoryBar.astro";
 import Base from "@layouts/main.astro";
-import { supabase } from "@lib/supabase";
+import { createSupabaseClient } from "@lib/supabase";
 import { Icon } from "astro-icon/components";
 import clsx from "clsx";
 import { formatInTimeZone } from "date-fns-tz";
+
+const supabase = createSupabaseClient(Astro.locals.runtime.env);
 
 const { station: stationNumber } = Astro.params;
 if (!stationNumber) return;

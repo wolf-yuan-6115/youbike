@@ -2,9 +2,11 @@
 import StationCard from "@/components/StationCard.astro";
 import Base from "@layouts/main.astro";
 import { formatMinuteCount } from "@lib/formatter";
-import { supabase } from "@lib/supabase";
+import { createSupabaseClient } from "@lib/supabase";
 import { Icon } from "astro-icon/components";
 import clsx from "clsx";
+
+const supabase = createSupabaseClient(Astro.locals.runtime.env);
 
 const [stationDataRes, historicalDataRes] = await Promise.all([
   supabase

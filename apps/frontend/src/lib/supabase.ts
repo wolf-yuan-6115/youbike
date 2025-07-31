@@ -1,8 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
-import { SUPABASE_PUBLISHABLE, SUPABASE_URL } from "astro:env/server";
 import type { Database } from "./database.types";
 
-export const supabase = createClient<Database>(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE,
-);
+interface Env {
+  SUPABASE_URL: string;
+  SUPABASE_PUBLISHABLE: string;
+}
+
+export function createSupabaseClient(env: Env) {
+  return createClient<Database>(
+    env.SUPABASE_URL,
+    env.SUPABASE_PUBLISHABLE,
+  );
+}
