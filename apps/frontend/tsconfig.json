@@ -35,8 +35,6 @@
       "@assets/*": [
         "./src/assets/*"
       ]
-    },
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact"
+    }
   }
 }
