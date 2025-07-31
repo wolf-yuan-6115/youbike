@@ -23,7 +23,9 @@ export default async (env: Env) => {
 
   for (const station of existingData ?? []) {
     try {
+      const t0 = performance.now();
       const data = await parkingInfo(station.lat, station.lng);
+      const t1 = performance.now();
 
       if (!data) {
         logCurrentTime(
@@ -44,7 +46,7 @@ export default async (env: Env) => {
       }
 
       logCurrentTime(
-        `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}`,
+        `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}, API call ${t1 - t0}ms`,
       );
 
       historyData.push({
@@ -54,9 +56,12 @@ export default async (env: Env) => {
         at: getCurrentTimeISOString(),
       });
     } catch (error) {
-      logCurrentTime(`Cooked when processing ${station.id}: ${error}`, {
-        isError: true,
-      });
+      logCurrentTime(
+        `Cooked when processing ${station.id}: ${error}`,
+        {
+          isError: true,
+        },
+      );
     }
   }
 

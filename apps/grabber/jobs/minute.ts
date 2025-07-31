@@ -34,8 +34,9 @@ export default async (env: Env) => {
   for (const station of existingData.map((k) => k.station_id) || []) {
     let retry = 0;
     try {
-      logCurrentTime(`Processing ${station.id}`);
+      const t0 = performance.now();
       const data = await parkingInfo(station.lat, station.lng);
+      const t1 = performance.now();
 
       if (!data) {
         logCurrentTime(
@@ -59,7 +60,7 @@ export default async (env: Env) => {
       const isNoSlot = targetStation.empty_spaces <= 3;
 
       logCurrentTime(
-        `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}, noBike: ${isNoBike} noSlot: ${isNoSlot}`,
+        `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}, noBike: ${isNoBike} noSlot: ${isNoSlot}, API call ${t1 - t0}ms`,
       );
 
       const existingRecord = existingDataMap.get(station.id);
