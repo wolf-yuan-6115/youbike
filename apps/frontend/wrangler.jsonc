@@ -15,7 +15,7 @@
     "directory": "./dist"
   },
   "vars": {
-    "BUN_VERSION": "1.2.19"
+    "SUPABASE_URL": "https://cjuaczvkvlxiursigzzb.supabase.co/"
   },
   "routes": [
     {
