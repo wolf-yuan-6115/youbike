@@ -8,7 +8,7 @@ interface Env {
 
 export function createSupabaseClient(env: Env) {
   return createClient<Database>(
-    env.SUPABASE_URL,
-    env.SUPABASE_PUBLISHABLE,
+    env.SUPABASE_URL || import.meta.env.SUPABASE_URL,
+    env.SUPABASE_PUBLISHABLE || import.meta.env.SUPABASE_PUBLISHABLE,
   );
 }
