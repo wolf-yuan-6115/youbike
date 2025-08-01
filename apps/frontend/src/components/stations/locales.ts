@@ -21,6 +21,8 @@ const locales: Locales = {
 
     "update:text": "最後更新時間：",
 
+    "card:empty": "個時段無車可借",
+
     "oclock:title": "整點車輛紀錄",
   },
   en: {
@@ -42,6 +44,8 @@ const locales: Locales = {
     "summary:slots": "slots available",
 
     "update:text": "Last updated:",
+
+    "card:empty": "times with no bikes",
 
     "oclock:title": "Hourly bike historical data",
   },

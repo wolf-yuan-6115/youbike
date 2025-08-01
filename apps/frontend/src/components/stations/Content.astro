@@ -10,6 +10,7 @@ export interface Props {
 
 import { Icon } from "astro-icon/components";
 import clsx from "clsx";
+import { format } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 
 const locale = fullLocale[Astro.currentLocale ?? "zh-TW"];
@@ -60,6 +61,14 @@ const heroStatus: {
     text: locale["dynamic:normal"],
   };
 })();
+
+const processedData = historicalData?.reduce<{
+  [key: string]: Tables<"history">[];
+}>((final, item) => {
+  const date = format(new Date(item.at), "yyyy/MM/dd");
+  (final[date] ||= []).push(item);
+  return final;
+}, {});
 
 const timezone =
   Astro.request.headers.get("cf-timezone") ?? "Asia/Taipei";
@@ -162,7 +171,39 @@ const stationName =
     {locale["oclock:title"]}
   </h2>
 
-  <div class="mt-6 rounded-lg bg-gray-800 px-4 py-2">
-    {historicalData?.map((k) => <HistoryBar history={k} />)}
-  </div>
+  {
+    processedData && (
+      <div class="mt-6 space-y-2 rounded-lg">
+        {Object.entries(processedData).map(([key, value], index) => (
+          <div
+            class="cursor-pointer"
+            x-data={`{ open: ${index === 0 ? "true" : "false"}}`}
+            x-on:click="open = !open"
+          >
+            <div class="flex flex-col justify-between gap-1 rounded-lg border-2 border-gray-500 bg-gray-800 px-4 py-3 md:flex-row md:place-items-center">
+              <p class="font-bold">{key}</p>
+              <p class="text-sm text-gray-400">
+                {value.reduce(
+                  (total, item) =>
+                    total + (item.available <= 5 ? 1 : 0),
+                  0,
+                )}
+                {locale["card:empty"]}
+              </p>
+            </div>
+
+            <div
+              class="my-4 divide-y divide-gray-500 rounded-lg bg-gray-800 px-4 py-2"
+              x-show="open"
+              x-collapse
+            >
+              {value.map((k) => (
+                <HistoryBar history={k} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
 </section>
