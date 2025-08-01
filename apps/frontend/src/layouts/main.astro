@@ -11,15 +11,34 @@ import Nav from "@components/Nav.astro";
 import { SEO } from "astro-seo";
 import { ClientRouter } from "astro:transitions";
 
-const siteTitle = Astro.props.station
-  ? `${Astro.props.station} 的站點歷史`
-  : "查 Bike";
-const seoSiteTitle = Astro.props.station
-  ? `查 Bike：${Astro.props.station} YouBike 站點即時狀態與歷史紀錄`
-  : "查 Bike：YouBike 站點即時與歷史紀錄查詢";
-const seoSiteDescription = Astro.props.station
-  ? `${Astro.props.station}的 YouBike 站現在可以借車還車嗎？你可以在這個網站上面看看這個 YouBike 站點是不是每天到某個時刻就沒車！`
-  : "你遇過一個 YouBike 的站點沒有任何一臺 YouBike 嗎？你可以在這個網站上面看看你的 YouBike 站點是不是每天到某個時刻就沒車！";
+const [siteTitle, seoSiteTitle, seoSiteDescription] = (() => {
+  switch (Astro.currentLocale) {
+    case "en":
+      return [
+        Astro.props.station
+          ? `${Astro.props.station} YouBike station history`
+          : "Cha Bike",
+        Astro.props.station
+          ? `Cha Bike: Live & Historical Status for ${Astro.props.station} YouBike Station`
+          : "Cha Bike: Real-Time YouBike Availability & History Tracker",
+        Astro.props.station
+          ? `View real-time availability for bikes and docks at ${Astro.props.station} YouBike station, along with historical trends showing when bikes or docks tend to run out.`
+          : "Cha Bike lets you track the live status of any YouBike station and analyze historical data to see when bikes or docks are most often unavailable.",
+      ];
+    default:
+      return [
+        Astro.props.station
+          ? `${Astro.props.station} 的站點歷史`
+          : "查 Bike",
+        Astro.props.station
+          ? `查 Bike：${Astro.props.station} YouBike 即時狀態與歷史紀錄`
+          : "查 Bike：YouBike 即時狀態與歷史資料查詢",
+        Astro.props.station
+          ? `${Astro.props.station} YouBike 站點目前車位與可借數量一目了然，並提供歷史資料分析每天何時最容易沒車可借、沒位可還。`
+          : "查 Bike 幫你查看各 YouBike 站點目前的可借與可還狀態，並分析歷史資料，找出每天最容易沒車沒位的時段。",
+      ];
+  }
+})();
 ---
 
 <html

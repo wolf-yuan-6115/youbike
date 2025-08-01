@@ -27,7 +27,7 @@ const [stationDataRes, historicalDataRes] = await Promise.all([
 if (!stationDataRes.data) return Astro.rewrite("/404");
 ---
 
-<Base station={stationDataRes.data.station_id.name}>
+<Base station={stationDataRes.data.station_id.name_en}>
   <Content
     stationData={stationDataRes.data}
     historicalData={historicalDataRes.data}
