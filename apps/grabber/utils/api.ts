@@ -7,7 +7,7 @@ export const parkingInfo = async (
 ): Promise<ParkingInfo | null> => {
   let returnData,
     retry = 0;
-  while (retry <= 3) {
+  while (retry <= 5) {
     try {
       const response = await fetch(
         "https://apis.youbike.com.tw/tw2/parkingInfo",
@@ -28,37 +28,33 @@ export const parkingInfo = async (
 
       if (!response.ok) {
         logCurrentTime(
-          "Failed to fetch parking info: " + response.statusText,
+          `API returned abnormal status: ${response.status} - ${response.statusText}`,
           { isError: true },
         );
-        retry++;
-        if (retry <= 3) {
-          logCurrentTime(
-            `Retrying to fetch data, tried ${retry} times`,
-          );
-          await new Promise((resolve) =>
-            setTimeout(resolve, 500 + retry * 100),
-          );
-          // Delaying too much probably will affect CPU time,
-          // I don't know maybe
-        } else break;
-      }
 
-      return await response.json();
-    } catch (error) {
-      logCurrentTime("Error fetching parking info: " + error);
-      retry++;
-      if (retry <= 3) {
+        retry++;
         logCurrentTime(
           `Retrying to fetch data, tried ${retry} times`,
         );
         await new Promise((resolve) =>
-          setTimeout(resolve, 500 + retry * 100),
+          setTimeout(resolve, 500 + retry * 200),
         );
-        // Delaying too much probably will affect CPU time,
-        // I don't know maybe
-      } else break;
-      return null;
+
+        // Ahh current data is broken
+        continue;
+      }
+
+      return await response.json();
+    } catch (error) {
+      logCurrentTime(`Error when fetching parking info: ${error}`, {
+        isError: true,
+      });
+
+      retry++;
+      logCurrentTime(`Retrying to fetch data, tried ${retry} times`);
+      await new Promise((resolve) =>
+        setTimeout(resolve, 500 + retry * 200),
+      );
     }
   }
 
