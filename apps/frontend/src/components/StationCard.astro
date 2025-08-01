@@ -60,9 +60,9 @@ const stationAddress =
   transition:name={`${station.station_id.id}:container`}
 >
   <div
-    class="flex flex-col items-center justify-between gap-4 md:flex-row"
+    class="grid grid-cols-1 items-center justify-between gap-4 md:grid-cols-7 md:flex-row"
   >
-    <div class="flex w-full place-items-center gap-4 md:w-auto">
+    <div class="flex place-items-center gap-4 md:col-span-4">
       <p class="truncate text-xl font-bold">
         {stationName}
       </p>
@@ -77,9 +77,9 @@ const stationAddress =
     </div>
 
     <div
-      class="flex w-full grow place-items-center gap-4 md:max-w-md md:justify-end"
+      class="flex place-items-center gap-4 md:col-span-3 md:max-w-md md:justify-end"
     >
-      <p class="text-xs text-gray-400">
+      <p class="text-xs text-nowrap text-gray-400">
         {locale["details:pre"]}
         {station.bikes}
         {locale["details:connect"]}
