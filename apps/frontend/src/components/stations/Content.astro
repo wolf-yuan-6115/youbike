@@ -26,7 +26,7 @@ const heroStatus: {
   if (slots === 0) {
     return {
       color: "text-red-400",
-      icon: "fa7-solid:angry",
+      icon: "fa7-regular:angry",
       text: locale["dynamic:noSlots"],
     };
   }
@@ -34,7 +34,7 @@ const heroStatus: {
   if (bikes === 0) {
     return {
       color: "text-red-400",
-      icon: "fa7-solid:angry",
+      icon: "fa7-regular:angry",
       text: locale["dynamic:noBikes"],
     };
   }
@@ -42,7 +42,7 @@ const heroStatus: {
   if (status === "FULL") {
     return {
       color: "text-yellow-400",
-      icon: "fa7-solid:sad-cry",
+      icon: "fa7-regular:sad-cry",
       text: locale["dynamic:almostFull"],
     };
   }
@@ -50,14 +50,14 @@ const heroStatus: {
   if (status === "EMPTY") {
     return {
       color: "text-yellow-400",
-      icon: "fa7-solid:sad-cry",
+      icon: "fa7-regular:sad-cry",
       text: locale["dynamic:almostEmpty"],
     };
   }
 
   return {
     color: "text-emerald-400",
-    icon: "fa7-solid:face-smile",
+    icon: "fa7-regular:face-smile",
     text: locale["dynamic:normal"],
   };
 })();

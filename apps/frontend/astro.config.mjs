@@ -31,7 +31,7 @@ export default defineConfig({
           "add-rounded",
           "translate",
         ],
-        "fa7-solid": ["sad-cry", "angry", "face-smile"],
+        "fa7-regular": ["sad-cry", "angry", "face-smile"],
       },
     }),
     alpinejs({ entrypoint: "/src/scripts/main" }),
