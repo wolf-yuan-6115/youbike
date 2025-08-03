@@ -18,6 +18,11 @@ const locales: Locales = {
     "summary:full": "<3 位可還",
 
     "detailed:title": "詳細站點資料",
+
+    "info:title": "哦嗨，我是",
+    "info:subtitle": "我做了你現在正在看的這個網站",
+    "info:add": "我想加站點！",
+    "info:blog": "看看這個網頁誕生的故事",
   },
   en: {
     "dynamic:hasEmpty":
@@ -37,6 +42,11 @@ const locales: Locales = {
     "summary:full": "<3 docks empty for returning bikes",
 
     "detailed:title": "Stations",
+
+    "info:title": "Oh hi, I'm",
+    "info:subtitle": "I built the site you're seeing right now",
+    "info:add": "I want to add a station!",
+    "info:blog": "Read the story behind this site",
   },
 };
 

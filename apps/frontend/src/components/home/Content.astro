@@ -160,3 +160,48 @@ if (hasEmpty) {
     }
   </div>
 </section>
+
+<section class="py-16">
+  <div class="mx-auto w-fit rounded-lg bg-gray-800 px-8 py-6">
+    <p class="pb-2 text-center text-xl font-semibold md:text-2xl">
+      {locale["info:title"]}
+      <a
+        href="https://wolf-yuan.dev"
+        class="underline decoration-gray-500 decoration-dotted underline-offset-4 transition-colors duration-100 hover:decoration-white"
+        target="_blank"
+      >
+        Wolf Yuan
+      </a>
+    </p>
+    <p class="pb-6 text-center">
+      {locale["info:subtitle"]}
+    </p>
+
+    <div
+      class="flex flex-col place-items-center justify-center gap-4 text-gray-400 md:flex-row"
+    >
+      <p>
+        <a
+          href={Astro.currentLocale === "zh-TW"
+            ? "https://wolf-yuan.dev/zh-tw/blog/cha-bike/#%E6%80%8E%E9%BA%BC%E5%8A%A0%E7%AB%99%E9%BB%9E"
+            : "https://wolf-yuan.dev/blog/cha-bike/#can-i-add-my-station"}
+          class="underline decoration-gray-500 decoration-dotted underline-offset-4 transition-colors duration-100 hover:decoration-white"
+          target="_blank"
+        >
+          {locale["info:add"]}
+        </a>
+      </p>
+      <p>
+        <a
+          href={Astro.currentLocale === "zh-TW"
+            ? "https://wolf-yuan.dev/zh-tw/blog/cha-bike/"
+            : "https://wolf-yuan.dev/blog/cha-bike/"}
+          class="underline decoration-gray-500 decoration-dotted underline-offset-4 transition-colors duration-100 hover:decoration-white"
+          target="_blank"
+        >
+          {locale["info:blog"]}
+        </a>
+      </p>
+    </div>
+  </div>
+</section>
