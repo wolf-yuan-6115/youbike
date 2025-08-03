@@ -62,20 +62,20 @@ const heroStatus: {
   };
 })();
 
-const processedData = historicalData?.reduce<{
-  [key: string]: Tables<"history">[];
-}>((final, item) => {
-  const date = format(new Date(item.at), "yyyy/MM/dd");
-  (final[date] ||= []).push(item);
-  return final;
-}, {});
-
 const timezone =
   Astro.request.headers.get("cf-timezone") ?? "Asia/Taipei";
 const stationName =
   Astro.currentLocale === "zh-TW"
     ? stationData.station_id.name
     : stationData.station_id.name_en;
+
+const processedData = historicalData?.reduce<{
+  [key: string]: Tables<"history">[];
+}>((final, item) => {
+  const date = formatInTimeZone(item.at, timezone, "yyyy/MM/dd");
+  (final[date] ||= []).push(item);
+  return final;
+}, {});
 ---
 
 <main class="py-16">
