@@ -6,10 +6,11 @@ import fullLocale from "./commonLocales";
 
 export interface Props {
   history: Tables<"history">;
+  timeOverride?: string;
 }
 
 const locale = fullLocale.historyBar[Astro.currentLocale ?? "zh-TW"];
-const { history } = Astro.props;
+const { history, timeOverride } = Astro.props;
 
 const filledBlocks = Math.floor(
   (history.available / (history.available + history.empty)) * 30,
@@ -33,11 +34,13 @@ const timezone =
   <div class="space-y-1.5">
     <p class="sm:text-sm">
       {
-        formatInTimeZone(
-          new Date(history.at),
-          timezone,
-          "yyyy/MM/dd HH:mm",
-        )
+        timeOverride
+          ? timeOverride
+          : formatInTimeZone(
+              new Date(history.at),
+              timezone,
+              "yyyy/MM/dd HH:mm",
+            )
       }
     </p>
     <p class="text-xs text-gray-400">

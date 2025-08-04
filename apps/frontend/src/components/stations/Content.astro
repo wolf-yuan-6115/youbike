@@ -299,7 +299,10 @@ const processedData = formattedData?.reduce<{
                   x-collapse
                 >
                   {value.map((k) => (
-                    <HistoryBar history={k} />
+                    <HistoryBar
+                      history={k}
+                      timeOverride={k.formatted}
+                    />
                   ))}
                 </div>
               </div>
