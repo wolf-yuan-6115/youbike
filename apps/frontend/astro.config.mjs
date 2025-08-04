@@ -1,6 +1,6 @@
 // @ts-check
 import alpinejs from "@astrojs/alpinejs";
-import cloudflare from "@astrojs/cloudflare";
+import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
 import { defineConfig } from "astro/config";
@@ -8,8 +8,10 @@ import { defineConfig } from "astro/config";
 // https://astro.build/config
 export default defineConfig({
   output: "server",
-  adapter: cloudflare({
-    imageService: "passthrough",
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
   }),
   integrations: [
     icon({

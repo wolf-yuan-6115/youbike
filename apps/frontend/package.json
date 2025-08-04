@@ -11,7 +11,7 @@
   "dependencies": {
     "@alpinejs/collapse": "^3.14.9",
     "@astrojs/alpinejs": "^0.4.8",
-    "@astrojs/cloudflare": "^12.6.0",
+    "@astrojs/vercel": "^8.2.5",
     "@fontsource-variable/jetbrains-mono": "^5.2.6",
     "@iconify-json/fa7-regular": "^1.2.0",
     "@iconify-json/material-symbols": "^1.2.30",
