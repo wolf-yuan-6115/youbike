@@ -30,7 +30,26 @@ const serializedOptions = JSON.stringify(options);
 </div>
 
 <script>
-  import * as echarts from "echarts/dist/echarts.esm.min";
+  import { LineChart } from "echarts/charts";
+  import {
+    DataZoomComponent,
+    DataZoomInsideComponent,
+    GridComponent,
+    TooltipComponent,
+    VisualMapComponent,
+  } from "echarts/components";
+  import * as echarts from "echarts/core";
+  import { SVGRenderer } from "echarts/renderers";
+
+  echarts.use([
+    LineChart,
+    TooltipComponent,
+    GridComponent,
+    VisualMapComponent,
+    DataZoomComponent,
+    DataZoomInsideComponent,
+    SVGRenderer,
+  ]);
 
   document.addEventListener("astro:page-load", async () => {
     const chartContainer = document.getElementById("chart");
