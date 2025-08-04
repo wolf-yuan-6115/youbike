@@ -20,8 +20,8 @@ export default defineConfig({
           "instagram",
           "discord",
           "gitlab",
-          "cloudflarepages",
           "cloudflareworkers",
+          "vercel",
         ],
         "material-symbols": [
           "favorite-rounded",
