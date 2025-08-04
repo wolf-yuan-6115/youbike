@@ -13,13 +13,10 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import { SEO } from "astro-seo";
 import { ClientRouter } from "astro:transitions";
 
-const [siteTitle, seoSiteTitle, seoSiteDescription] = (() => {
+const [seoSiteTitle, seoSiteDescription] = (() => {
   switch (Astro.currentLocale) {
     case "en":
       return [
-        Astro.props.station
-          ? `${Astro.props.station} YouBike station history`
-          : "Cha Bike",
         Astro.props.station
           ? `Cha Bike: Live & Historical Status for ${Astro.props.station} YouBike Station`
           : "Cha Bike: Real-Time YouBike Availability & History Tracker",
@@ -29,9 +26,6 @@ const [siteTitle, seoSiteTitle, seoSiteDescription] = (() => {
       ];
     default:
       return [
-        Astro.props.station
-          ? `${Astro.props.station} 的站點歷史`
-          : "查 Bike",
         Astro.props.station
           ? `查 Bike：${Astro.props.station} YouBike 即時狀態與歷史紀錄`
           : "查 Bike：YouBike 即時狀態與歷史資料查詢",
@@ -52,7 +46,7 @@ const [siteTitle, seoSiteTitle, seoSiteDescription] = (() => {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>{siteTitle}</title>
+    <title>{seoSiteTitle}</title>
     <SEO
       description={seoSiteDescription}
       charset="UTF-8"
