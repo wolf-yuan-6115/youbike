@@ -20,6 +20,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "@types/alpinejs": "^3.13.11",
     "@types/alpinejs__collapse": "^3.13.4",
+    "@vercel/speed-insights": "^1.2.0",
     "alpinejs": "^3.14.9",
     "astro": "^5.12.6",
     "astro-icon": "^1.1.5",
