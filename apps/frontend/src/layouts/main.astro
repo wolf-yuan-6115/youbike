@@ -8,6 +8,7 @@ import "@styles/global.css";
 
 import Footer from "@components/Footer.astro";
 import Nav from "@components/Nav.astro";
+import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 import { SEO } from "astro-seo";
 import { ClientRouter } from "astro:transitions";
@@ -114,6 +115,7 @@ const [siteTitle, seoSiteTitle, seoSiteDescription] = (() => {
       }
     </style>
 
+    <Analytics />
     <SpeedInsights />
   </body>
 </html>
