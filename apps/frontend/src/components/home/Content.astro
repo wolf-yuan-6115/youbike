@@ -7,7 +7,7 @@ import fullLocale from "./locales";
 import { Icon } from "astro-icon/components";
 import clsx from "clsx";
 
-const locale = fullLocale[Astro.currentLocale ??
+const locale = fullLocale[Astro.currentLocale ?? "zh-TW"];
 
 const [stationDataRes, historicalDataRes] = await Promise.all([
   supabase
