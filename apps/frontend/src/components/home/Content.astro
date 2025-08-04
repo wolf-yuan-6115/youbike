@@ -1,14 +1,13 @@
 ---
 import StationCard from "@components/StationCard.astro";
 import { formatMinuteCount } from "@lib/formatter";
-import { createSupabaseClient } from "@lib/supabase";
+import { supabase } from "@lib/supabase";
 import fullLocale from "./locales";
 
 import { Icon } from "astro-icon/components";
 import clsx from "clsx";
 
-const locale = fullLocale[Astro.currentLocale ?? "zh-TW"];
-const supabase = createSupabaseClient(Astro.locals.runtime.env);
+const locale = fullLocale[Astro.currentLocale ??
 
 const [stationDataRes, historicalDataRes] = await Promise.all([
   supabase

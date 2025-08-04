@@ -1,9 +1,7 @@
 ---
 import Content from "@components/stations/Content.astro";
 import Base from "@layouts/main.astro";
-import { createSupabaseClient } from "@lib/supabase";
-
-const supabase = createSupabaseClient(Astro.locals.runtime.env);
+import { supabase } from "@lib/supabase";
 
 const { station: stationNumber } = Astro.params;
 if (!stationNumber) return;
