@@ -31,13 +31,12 @@ const serializedOptions = JSON.stringify(options);
 
 <script>
   import * as echarts from "echarts";
-  document.addEventListener("DOMContentLoaded", async () => {
+  document.addEventListener("astro:page-load", async () => {
     const chartContainer = document.getElementById("chart");
     const chart = echarts.init(chartContainer, null, {
       renderer: "svg",
     });
 
-    console.log(chartContainer.dataset.options);
     const options = JSON.parse(chartContainer.dataset.options);
     chart.setOption(options);
 
