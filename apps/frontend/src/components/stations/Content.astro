@@ -10,8 +10,8 @@ export interface Props {
 
 import { Icon } from "astro-icon/components";
 import clsx from "clsx";
-import { format } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
+import Chart from "../Chart.astro";
 
 const locale = fullLocale[Astro.currentLocale ?? "zh-TW"];
 const { stationData, historicalData } = Astro.props;
@@ -69,11 +69,15 @@ const stationName =
     ? stationData.station_id.name
     : stationData.station_id.name_en;
 
-const processedData = historicalData?.reduce<{
-  [key: string]: Tables<"history">[];
+const formattedData = historicalData?.map((k) => {
+  const date = formatInTimeZone(k.at, timezone, "yyyy/MM/dd HH:mm");
+  return { ...k, formatted: date };
+});
+
+const processedData = formattedData?.reduce<{
+  [key: string]: (Tables<"history"> & { formatted: string })[];
 }>((final, item) => {
-  const date = formatInTimeZone(item.at, timezone, "yyyy/MM/dd");
-  (final[date] ||= []).push(item);
+  (final[item.formatted.split(" ")[0]] ||= []).push(item);
   return final;
 }, {});
 ---
@@ -161,7 +165,7 @@ const processedData = historicalData?.reduce<{
 <hr class="mx-auto max-w-4xl border-gray-600" />
 
 <section
-  class="mx-auto my-8 max-w-4xl"
+  class="my-8"
   transition:name={`${stationData.station_id.id}:container`}
 >
   <h2
@@ -171,39 +175,135 @@ const processedData = historicalData?.reduce<{
     {locale["oclock:title"]}
   </h2>
 
-  {
-    processedData && (
-      <div class="mt-6 space-y-2 rounded-lg">
-        {Object.entries(processedData).map(([key, value], index) => (
-          <div
-            class="cursor-pointer"
-            x-data={`{ open: ${index === 0 ? "true" : "false"}}`}
-            x-on:click="open = !open"
-          >
-            <div class="flex flex-col justify-between gap-1 rounded-lg border-2 border-gray-500 bg-gray-800 px-4 py-3 md:flex-row md:place-items-center">
-              <p class="font-bold">{key}</p>
-              <p class="text-sm text-gray-400">
-                {value.reduce(
-                  (total, item) =>
-                    total + (item.available <= 5 ? 1 : 0),
-                  0,
-                )}
-                {locale["card:empty"]}
-              </p>
-            </div>
+  <div>
+    <Chart
+      options={{
+        visualMap: {
+          type: "continuous",
+          show: false,
+          dimension: 1,
+          seriesIndex: 0,
+          min: 0,
+          max: stationData.station_id.total,
+          inRange: {
+            color: [
+              "#f87171",
+              "#4ade80",
+              "#4ade80",
+              "#4ade80",
+              "#facc15",
+            ],
+          },
+        },
+        xAxis: {
+          type: "category",
+          axisLabel: {
+            color: "#94a3b8",
+          },
+          boundaryGap: false,
+        },
+        yAxis: {
+          type: "value",
+          axisLabel: {
+            color: "#94A3B8",
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "#94A3B8",
+              width: 1,
+              type: "dashed",
+            },
+          },
+          boundaryGap: false,
+        },
+        series: [
+          {
+            type: "line",
+            smooth: true,
+            data: formattedData?.map((k) => [
+              k.formatted,
+              k.available,
+            ]),
+            lineStyle: {
+              width: 2.5,
+            },
+            showSymbol: false,
+          },
+        ],
+        tooltip: {
+          trigger: "axis",
+          backgroundColor: "#1F2937",
+          borderColor: "#475569",
+          textStyle: {
+            color: "#FFF",
+            fontFamily: "'JetBrains Mono Variable'",
+            fontSize: 12,
+          },
+        },
+        textStyle: {
+          fontFamily: "'JetBrains Mono Variable'",
+          fontSize: 12,
+          color: "#94A3B8",
+        },
+        dataZoom: [
+          {
+            type: "inside",
+            xAxisIndex: 0,
+            start: 0,
+            end: 100,
+          },
+        ],
+      }}
+    />
+  </div>
 
-            <div
-              class="my-4 divide-y divide-gray-500 rounded-lg bg-gray-800 px-4 py-2"
-              x-show="open"
-              x-collapse
-            >
-              {value.map((k) => (
-                <HistoryBar history={k} />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    )
-  }
+  <div
+    class="flex place-items-center justify-center gap-2 text-sm text-gray-400"
+  >
+    <Icon name="material-symbols:touch-app-rounded" />
+    {locale["chart:draggable"]}
+  </div>
+
+  <hr class="mx-auto mt-8 max-w-4xl border-gray-600" />
+
+  <div class="mx-auto max-w-4xl">
+    {
+      processedData && (
+        <div class="mt-6 space-y-2.5 rounded-lg">
+          {Object.entries(processedData).map(
+            ([key, value], index) => (
+              <div
+                class="cursor-pointer"
+                x-data={`{ open: ${index === 0 ? "true" : "false"}}`}
+                x-on:click="open = !open"
+              >
+                <div class="flex flex-col justify-between gap-1 rounded-lg border-2 border-gray-500 bg-gray-800 px-4 py-3 md:flex-row md:place-items-center">
+                  <p class="font-bold">{key}</p>
+                  <p class="text-sm text-gray-400">
+                    {value.reduce(
+                      (total, item) =>
+                        total + (item.available <= 5 ? 1 : 0),
+                      0,
+                    )}
+                    {locale["card:empty"]}
+                  </p>
+                </div>
+
+                <div
+                  class="my-4 divide-y divide-gray-500 rounded-lg bg-gray-800 px-4 py-2"
+                  x-show="open"
+                  x-collapse
+                >
+                  {value.map((k) => (
+                    <HistoryBar history={k} />
+                  ))}
+                </div>
+              </div>
+            ),
+          )}
+        </div>
+      )
+    }
+  </div>
 </section>

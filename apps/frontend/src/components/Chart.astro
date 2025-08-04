@@ -1,0 +1,48 @@
+---
+import fullLocale from "./commonLocales";
+
+interface Props {
+  width?: string;
+  height?: string;
+  options?: Record<string, any>;
+}
+
+const {
+  width = "100%",
+  height = "400px",
+  options = {},
+} = Astro.props;
+
+const locale = fullLocale.chart[Astro.currentLocale ?? "zh-TW"];
+const serializedOptions = JSON.stringify(options);
+---
+
+<div
+  id="chart"
+  style={`width: ${width}; height: ${height};`}
+  data-options={serializedOptions}
+>
+  <noscript class="flex h-full place-items-center justify-center">
+    <p class="text-gray-400">
+      {locale["javascript"]}
+    </p>
+  </noscript>
+</div>
+
+<script>
+  import * as echarts from "echarts";
+  document.addEventListener("DOMContentLoaded", async () => {
+    const chartContainer = document.getElementById("chart");
+    const chart = echarts.init(chartContainer, null, {
+      renderer: "svg",
+    });
+
+    console.log(chartContainer.dataset.options);
+    const options = JSON.parse(chartContainer.dataset.options);
+    chart.setOption(options);
+
+    window.addEventListener("resize", () => {
+      chart.resize();
+    });
+  });
+</script>

@@ -30,6 +30,7 @@ export default defineConfig({
           "pedal-bike-outline-rounded",
           "add-rounded",
           "translate",
+          "touch-app-rounded",
         ],
         "fa7-regular": ["sad-cry", "angry", "face-smile"],
       },

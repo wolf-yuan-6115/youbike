@@ -24,6 +24,7 @@ const locales: Locales = {
     "card:empty": "個時段無車可借",
 
     "oclock:title": "整點車輛紀錄",
+    "chart:draggable": "可以用手縮放、拖曳",
   },
   en: {
     "dynamic:noSlots":
@@ -48,6 +49,7 @@ const locales: Locales = {
     "card:empty": "times with no bikes",
 
     "oclock:title": "Hourly bike historical data",
+    "chart:draggable": "Draggable and zoomable!",
   },
 };
 

@@ -83,6 +83,14 @@ const locales: { [k: string]: Locales } = {
       "text:post": " docks",
     },
   },
+  chart: {
+    "zh-TW": {
+      javascript: "JavaScript 已關閉",
+    },
+    en: {
+      javascript: "JavaScript is disabled",
+    },
+  },
 };
 
 export default locales;
