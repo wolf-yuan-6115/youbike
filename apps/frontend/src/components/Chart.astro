@@ -31,8 +31,10 @@ const serializedOptions = JSON.stringify(options);
 
 <script>
   import * as echarts from "echarts";
+
   document.addEventListener("astro:page-load", async () => {
     const chartContainer = document.getElementById("chart");
+    if (!chartContainer) return;
     const chart = echarts.init(chartContainer, null, {
       renderer: "svg",
     });
