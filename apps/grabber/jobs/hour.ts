@@ -19,22 +19,39 @@ export default async (env: Env) => {
     .from("stations")
     .select("*");
 
+  if (!existingData || existingData.length === 0) {
+    logCurrentTime(
+      "Nothing to add, did you add stations to database?",
+    );
+    return;
+  }
+
+  const stationIds = existingData.map((station) =>
+    station.id.toString(),
+  );
+
+  logCurrentTime(
+    `Fetching data for ${stationIds.length} stations in batch`,
+  );
+
+  const t0 = performance.now();
+  const data = await parkingInfo(stationIds);
+  const t1 = performance.now();
+
+  if (!data) {
+    logCurrentTime("Unable to fetch batch data");
+    return;
+  }
+
+  logCurrentTime(`Batch API call completed in ${t1 - t0}ms`);
+
   const historyData = [];
 
-  for (const station of existingData ?? []) {
+  console.log(data);
+
+  for (const station of existingData) {
     try {
-      const t0 = performance.now();
-      const data = await parkingInfo(station.lat, station.lng);
-      const t1 = performance.now();
-
-      if (!data) {
-        logCurrentTime(
-          `Unable to fetch data for station ${station.id}`,
-        );
-        continue;
-      }
-
-      const targetStation = data.retVal.find(
+      const targetStation = data.retVal.data.find(
         (k) => k.station_no === station.id.toString(),
       );
 
@@ -46,7 +63,7 @@ export default async (env: Env) => {
       }
 
       logCurrentTime(
-        `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}, API call ${t1 - t0}ms`,
+        `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}`,
       );
 
       historyData.push({
@@ -54,6 +71,7 @@ export default async (env: Env) => {
         available: targetStation.available_spaces,
         empty: targetStation.empty_spaces,
         at: getCurrentTimeISOString(),
+        types: targetStation.available_spaces_detail,
       });
     } catch (error) {
       logCurrentTime(

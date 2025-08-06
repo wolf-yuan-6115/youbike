@@ -29,23 +29,29 @@ export default async (env: Env) => {
     existingData.map((item) => [item.station_id.id, item]) || [],
   );
 
+  const stations = existingData.map((k) => k.station_id);
+  const stationIds = stations.map((station) => station.id.toString());
+
+  logCurrentTime(
+    `Fetching data for ${stationIds.length} stations in batch`,
+  );
+
+  const t0 = performance.now();
+  const data = await parkingInfo(stationIds);
+  const t1 = performance.now();
+
+  if (!data) {
+    logCurrentTime("Unable to fetch batch data");
+    return;
+  }
+
+  logCurrentTime(`Batch API call completed in ${t1 - t0}ms`);
+
   const upsertData: Tables<"current">[] = [];
 
-  for (const station of existingData.map((k) => k.station_id) || []) {
-    let retry = 0;
+  for (const station of stations) {
     try {
-      const t0 = performance.now();
-      const data = await parkingInfo(station.lat, station.lng);
-      const t1 = performance.now();
-
-      if (!data) {
-        logCurrentTime(
-          `Unable to fetch data for station ${station.id}`,
-        );
-        continue;
-      }
-
-      const targetStation = data.retVal.find(
+      const targetStation = data.retVal.data.find(
         (k) => k.station_no === station.id.toString(),
       );
 
@@ -60,7 +66,7 @@ export default async (env: Env) => {
       const isNoSlot = targetStation.empty_spaces <= 3;
 
       logCurrentTime(
-        `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}, noBike: ${isNoBike} noSlot: ${isNoSlot}, API call ${t1 - t0}ms`,
+        `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}, noBike: ${isNoBike} noSlot: ${isNoSlot}`,
       );
 
       const existingRecord = existingDataMap.get(station.id);
@@ -88,6 +94,7 @@ export default async (env: Env) => {
         full: existingRecord.full + fullIncrement,
         success: existingRecord.success + 1,
         status: isNoSlot ? "FULL" : isNoBike ? "EMPTY" : "NORMAL",
+        types: targetStation.available_spaces_detail,
       });
     } catch (error) {
       logCurrentTime(
