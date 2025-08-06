@@ -35,6 +35,10 @@ const [seoSiteTitle, seoSiteDescription] = (() => {
       ];
   }
 })();
+
+const siteName =
+  Astro.currentLocale === "en" ? "Cha Bike" : "查 Bike";
+const localeCode = Astro.currentLocale === "en" ? "en_US" : "zh_Hant";
 ---
 
 <html
@@ -46,6 +50,7 @@ const [seoSiteTitle, seoSiteDescription] = (() => {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-rounded.ico" sizes="any" />
     <title>{seoSiteTitle}</title>
     <SEO
       description={seoSiteDescription}
@@ -55,6 +60,12 @@ const [seoSiteTitle, seoSiteDescription] = (() => {
           title: seoSiteTitle,
           type: "website",
           image: "https://youbike.wolf-yuan.dev/favicon.png",
+        },
+        optional: {
+          siteName,
+          description: seoSiteDescription,
+          locale: localeCode,
+          localeAlternate: ["en_US", "zh_Hant"],
         },
       }}
       twitter={{
