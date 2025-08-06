@@ -2,11 +2,9 @@ import type { ParkingInfo } from "../types/youbike.types.ts";
 import { logCurrentTime } from "./currentTime.ts";
 
 export const parkingInfo = async (
-  lat: number,
-  lng: number,
+  stationIds: string[],
 ): Promise<ParkingInfo | null> => {
-  let returnData,
-    retry = 0;
+  let retry = 0;
   while (retry <= 5) {
     try {
       const response = await fetch(
@@ -14,9 +12,7 @@ export const parkingInfo = async (
         {
           method: "POST",
           body: JSON.stringify({
-            lat,
-            lng,
-            maxDistance: 250,
+            station_no: stationIds,
           }),
           headers: {
             "Content-Type": "application/json",
