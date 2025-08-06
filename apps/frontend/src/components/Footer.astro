@@ -3,11 +3,12 @@ import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 import fullLocale from "./commonLocales";
 
+import notAIChinese from "@assets/not_developed_ai_chinese.svg";
+import notAIEnglish from "@assets/not_developed_ai_english.svg";
+
 const locale = fullLocale.footer[Astro.currentLocale ?? "zh-TW"];
 const notAISvg =
-  Astro.currentLocale === "zh-TW"
-    ? "/not_developed_ai_chinese.svg"
-    : "/not_developed_ai_english.svg";
+  Astro.currentLocale === "zh-TW" ? notAIChinese : notAIEnglish;
 ---
 
 <footer
@@ -118,8 +119,6 @@ const notAISvg =
           alt="Not developed by AI"
           loading="eager"
           class="h-full md:ml-auto md:w-auto"
-          width={131}
-          height={42}
         />
       </div>
     </div>
