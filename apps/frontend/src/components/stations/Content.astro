@@ -221,10 +221,9 @@ const processedData = formattedData?.reduce<{
           {
             type: "line",
             smooth: true,
-            data: formattedData?.map((k) => [
-              k.formatted,
-              k.available,
-            ]),
+            data: formattedData
+              ?.map((k) => [k.formatted, k.available])
+              .reverse(),
             lineStyle: {
               width: 2.5,
             },
