@@ -10,28 +10,119 @@ export type Database = {
   // Allows to automatically instanciate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.4"
+    PostgrestVersion: "12.2.3 (519615d)"
   }
   public: {
     Tables: {
-      users: {
+      current: {
         Row: {
-          created_at: string
-          password: string
-          stations: Json
-          uuid: string
+          bikes: number
+          full: number
+          slots: number
+          station_id: number
+          status: Database["public"]["Enums"]["station_state"]
+          success: number
+          types: Json | null
+          unavailable: number
+          update: string
         }
         Insert: {
-          created_at?: string
-          password: string
-          stations: Json
-          uuid?: string
+          bikes?: number
+          full?: number
+          slots?: number
+          station_id: number
+          status?: Database["public"]["Enums"]["station_state"]
+          success?: number
+          types?: Json | null
+          unavailable?: number
+          update?: string
         }
         Update: {
-          created_at?: string
-          password?: string
-          stations?: Json
-          uuid?: string
+          bikes?: number
+          full?: number
+          slots?: number
+          station_id?: number
+          status?: Database["public"]["Enums"]["station_state"]
+          success?: number
+          types?: Json | null
+          unavailable?: number
+          update?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "history_station_id_fkey"
+            columns: ["station_id"]
+            isOneToOne: true
+            referencedRelation: "stations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      history: {
+        Row: {
+          at: string
+          available: number
+          empty: number
+          id: string
+          station_id: number
+          types: Json | null
+        }
+        Insert: {
+          at: string
+          available: number
+          empty: number
+          id?: string
+          station_id: number
+          types?: Json | null
+        }
+        Update: {
+          at?: string
+          available?: number
+          empty?: number
+          id?: string
+          station_id?: number
+          types?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recently_station_id_fkey"
+            columns: ["station_id"]
+            isOneToOne: false
+            referencedRelation: "stations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stations: {
+        Row: {
+          address: string
+          address_en: string
+          id: number
+          lat: number
+          lng: number
+          name: string
+          name_en: string
+          total: number
+        }
+        Insert: {
+          address: string
+          address_en: string
+          id: number
+          lat: number
+          lng: number
+          name: string
+          name_en: string
+          total?: number
+        }
+        Update: {
+          address?: string
+          address_en?: string
+          id?: number
+          lat?: number
+          lng?: number
+          name?: string
+          name_en?: string
+          total?: number
         }
         Relationships: []
       }
@@ -40,10 +131,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_history_with_limit: {
+        Args: { max_rows?: number }
+        Returns: {
+          id: string
+          station_id: number
+          available: number
+          empty: number
+          at: string
+        }[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      station_state: "FULL" | "EMPTY" | "NORMAL"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -170,6 +270,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      station_state: ["FULL", "EMPTY", "NORMAL"],
+    },
   },
 } as const
