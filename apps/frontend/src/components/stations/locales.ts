@@ -16,8 +16,12 @@ const locales: Locales = {
     "location:pre": "位於",
     "location:post": "的 YouBike 站點",
 
-    "summary:bikes": "臺車可借",
-    "summary:slots": "個柱可還",
+    "summary:bikes:quantifier": "輛",
+    "summary:bikes:text": "YouBike 2.0 可借",
+    "summary:bikes:unsupported": "不適用",
+    "summary:electric:text": "YouBike 電輔車可借",
+    "summary:slots:quantifier": "個",
+    "summary:slots:text": "柱可還",
 
     "update:text": "最後更新時間：",
 

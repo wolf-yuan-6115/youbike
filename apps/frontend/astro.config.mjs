@@ -27,6 +27,7 @@ export default defineConfig({
           "favorite-rounded",
           "pedal-bike-outline-rounded",
           "bolt-rounded",
+          "bike-dock-outline-rounded",
           "bike-dock-rounded",
           "add-rounded",
           "translate",

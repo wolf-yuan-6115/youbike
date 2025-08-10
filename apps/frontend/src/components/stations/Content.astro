@@ -62,6 +62,9 @@ const heroStatus: {
   };
 })();
 
+const hasYb2 = "yb2" in stationData.types;
+const hasEyb = "eyb" in stationData.types;
+
 const timezone =
   Astro.request.headers.get("cf-timezone") ?? "Asia/Taipei";
 const stationName =
@@ -107,41 +110,100 @@ const processedData = formattedData?.reduce<{
   </div>
 
   <div class="mt-10">
-    <div class="mx-auto grid max-w-xl grid-cols-2 gap-6">
+    <div class="mx-auto grid max-w-4xl grid-cols-3 gap-6">
       <div
         class={clsx(
-          "space-y-2 rounded-lg border-2 bg-gray-800 px-6 py-4",
-          stationData.status === "EMPTY"
-            ? "border-red-400"
-            : "border-indigo-400",
+          "relative -z-20 space-y-2 overflow-hidden rounded-lg border-2 bg-gray-800 px-6 py-4",
+          hasYb2
+            ? stationData.types?.yb2 <= 5
+              ? "border-red-400"
+              : "border-indigo-400"
+            : "border-gray-600",
         )}
-        transition:name="block:left"
       >
-        <p class="text-2xl font-bold">
-          {stationData.bikes}
-        </p>
+        <div class="space-y-2 pr-8">
+          <p class="text-2xl font-bold">
+            {
+              hasYb2
+                ? stationData.types?.yb2
+                : locale["summary:bikes:unsupported"]
+            }
+            {locale["summary:bikes:quantifier"]}
+          </p>
 
-        <p class="font-bold text-gray-400">
-          {locale["summary:bikes"]}
-        </p>
+          <p class="font-bold text-gray-400">
+            {locale["summary:bikes:text"]}
+          </p>
+        </div>
+
+        <div class="absolute -right-4 -bottom-4 -z-10">
+          <Icon
+            name="material-symbols:pedal-bike-outline-rounded"
+            class="text-[5rem] text-gray-600"
+          />
+        </div>
       </div>
 
       <div
         class={clsx(
-          "space-y-2 rounded-lg border-2 bg-gray-800 px-6 py-4",
-          stationData.status === "FULL"
-            ? "border-red-400"
-            : "border-indigo-400",
+          "relative -z-20 space-y-2 overflow-hidden rounded-lg border-2 bg-gray-800 px-6 py-4",
+          hasEyb
+            ? stationData.types?.eyb <= 5
+              ? "border-yellow-400"
+              : "border-indigo-400"
+            : "border-gray-600",
         )}
-        transition:name="block:right"
       >
-        <p class="text-2xl font-bold">
-          {stationData.slots}
-        </p>
+        <div class="space-y-2 pr-8">
+          <p class="text-2xl font-bold">
+            {
+              hasEyb
+                ? stationData.types?.eyb
+                : locale["summary:bikes:unsupported"]
+            }
+            {locale["summary:bikes:quantifier"]}
+          </p>
 
-        <p class="font-bold text-gray-400">
-          {locale["summary:slots"]}
-        </p>
+          <p class="font-bold text-gray-400">
+            {locale["summary:electric:text"]}
+          </p>
+        </div>
+
+        <div class="absolute -right-4 -bottom-4 -z-10">
+          <Icon
+            name="material-symbols:bolt-rounded"
+            class="text-[5rem] text-gray-600"
+          />
+        </div>
+      </div>
+
+      <div
+        class={clsx(
+          "relative -z-20 space-y-2 overflow-hidden rounded-lg border-2  bg-gray-800 px-6 py-4",
+          stationData.status === "FULL"
+            ? stationData.slots <= 3
+              ? "border-red-400"
+              : "border-yellow-400"
+            : "border-gray-600",
+        )}
+      >
+        <div class="space-y-2 pr-8">
+          <p class="text-2xl font-bold">
+            {stationData.slots}
+            {locale["summary:slots:quantifier"]}
+          </p>
+
+          <p class="font-bold text-gray-400">
+            {locale["summary:slots:text"]}
+          </p>
+        </div>
+
+        <div class="absolute -right-4 -bottom-4 -z-10">
+          <Icon
+            name="material-symbols:bike-dock-outline-rounded"
+            class="text-[5rem] text-gray-600"
+          />
+        </div>
       </div>
     </div>
 
