@@ -148,7 +148,7 @@ const processedData = formattedData?.reduce<{
         class={clsx(
           "relative -z-20 space-y-2 overflow-hidden rounded-lg border-2 bg-gray-800 px-6 py-4",
           hasEyb
-            ? stationData.types?.eyb <= 5
+            ? stationData.types?.eyb === 0
               ? "border-yellow-400"
               : "border-indigo-400"
             : "border-gray-600",
