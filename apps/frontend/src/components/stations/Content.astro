@@ -149,7 +149,8 @@ const processedData = formattedData?.reduce<{
       class="mt-8 text-center text-sm text-gray-400"
       transition:name="subtitle"
     >
-      {locale["update:text"]}<span class="font-bold"
+      {locale["update:text"]}
+      <span class="font-bold"
         >{
           formatInTimeZone(
             new Date(stationData.update),
