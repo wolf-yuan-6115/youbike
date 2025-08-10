@@ -36,6 +36,10 @@ const stationText: Record<Enums<"station_state">, string> = {
   EMPTY: locale["status:empty"],
   FULL: locale["status:full"],
 };
+const bikeIcon: Record<string, string> = {
+  yb2: "material-symbols:pedal-bike-outline-rounded",
+  eyb: "material-symbols:bolt-rounded",
+};
 
 const { station, history } = Astro.props;
 const timezone =
@@ -79,13 +83,24 @@ const stationAddress =
     <div
       class="flex place-items-center gap-4 md:col-span-3 md:max-w-md md:justify-end"
     >
-      <p class="text-xs text-nowrap text-gray-400">
-        {locale["details:pre"]}
-        {station.bikes}
-        {locale["details:connect"]}
-        {station.slots}
-        {locale["details:post"]}
-      </p>
+      <div class="flex gap-3 text-sm text-gray-400">
+        {
+          Object.entries(station.types)
+            .sort(([a], [b]) =>
+              a === "yb2" ? -1 : b === "yb2" ? 1 : 0,
+            )
+            .map(([type, count]) => (
+              <div class="inline-flex items-center gap-1.5">
+                <Icon name={bikeIcon[type]} />
+                <p class="font-bold">{count}</p>
+              </div>
+            ))
+        }
+        <div class="inline-flex items-center gap-1">
+          <Icon name="material-symbols:bike-dock-rounded" />
+          <p class="font-bold">{station.bikes}</p>
+        </div>
+      </div>
       <div
         class="h-1.5 grow rounded-full bg-gray-600 md:w-[50%] md:grow-0"
       >

@@ -26,6 +26,8 @@ export default defineConfig({
         "material-symbols": [
           "favorite-rounded",
           "pedal-bike-outline-rounded",
+          "bolt-rounded",
+          "bike-dock-rounded",
           "add-rounded",
           "translate",
           "touch-app-rounded",
