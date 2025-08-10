@@ -22,6 +22,7 @@ export type Database = {
           station_id: number
           status: Database["public"]["Enums"]["station_state"]
           success: number
+          types: Json | null
           unavailable: number
           update: string
         }
@@ -32,6 +33,7 @@ export type Database = {
           station_id: number
           status?: Database["public"]["Enums"]["station_state"]
           success?: number
+          types?: Json | null
           unavailable?: number
           update?: string
         }
@@ -42,6 +44,7 @@ export type Database = {
           station_id?: number
           status?: Database["public"]["Enums"]["station_state"]
           success?: number
+          types?: Json | null
           unavailable?: number
           update?: string
         }
@@ -62,6 +65,7 @@ export type Database = {
           empty: number
           id: string
           station_id: number
+          types: Json | null
         }
         Insert: {
           at: string
@@ -69,6 +73,7 @@ export type Database = {
           empty: number
           id?: string
           station_id: number
+          types?: Json | null
         }
         Update: {
           at?: string
@@ -76,6 +81,7 @@ export type Database = {
           empty?: number
           id?: string
           station_id?: number
+          types?: Json | null
         }
         Relationships: [
           {
