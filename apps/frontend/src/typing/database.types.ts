@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instanciate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
@@ -22,7 +22,7 @@ export type Database = {
           station_id: number
           status: Database["public"]["Enums"]["station_state"]
           success: number
-          types: Json | null
+          types: Json
           unavailable: number
           update: string
         }
@@ -33,7 +33,7 @@ export type Database = {
           station_id: number
           status?: Database["public"]["Enums"]["station_state"]
           success?: number
-          types?: Json | null
+          types: Json
           unavailable?: number
           update?: string
         }
@@ -44,7 +44,7 @@ export type Database = {
           station_id?: number
           status?: Database["public"]["Enums"]["station_state"]
           success?: number
-          types?: Json | null
+          types?: Json
           unavailable?: number
           update?: string
         }
@@ -65,7 +65,7 @@ export type Database = {
           empty: number
           id: string
           station_id: number
-          types: Json | null
+          types: Json
         }
         Insert: {
           at: string
@@ -73,7 +73,7 @@ export type Database = {
           empty: number
           id?: string
           station_id: number
-          types?: Json | null
+          types: Json
         }
         Update: {
           at?: string
@@ -81,7 +81,7 @@ export type Database = {
           empty?: number
           id?: string
           station_id?: number
-          types?: Json | null
+          types?: Json
         }
         Relationships: [
           {
