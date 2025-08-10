@@ -21,7 +21,7 @@ const locales: Locales = {
     "summary:bikes:unsupported": "不適用",
     "summary:electric:text": "YouBike 電輔車可借",
     "summary:slots:quantifier": "個",
-    "summary:slots:text": "柱可還",
+    "summary:slots:text": "還車柱可還",
 
     "update:text": "最後更新時間：",
 
@@ -45,8 +45,12 @@ const locales: Locales = {
     "location:pre": "YouBike station at",
     "location:post": "",
 
-    "summary:bikes": "bikes available",
-    "summary:slots": "slots available",
+    "summary:bikes:quantifier": "",
+    "summary:bikes:text": "YouBike 2.0 available",
+    "summary:bikes:unsupported": "N/A",
+    "summary:electric:text": "YouBike 2.0E available",
+    "summary:slots:quantifier": "",
+    "summary:slots:text": "slots available for return",
 
     "update:text": "Last updated:",
 
