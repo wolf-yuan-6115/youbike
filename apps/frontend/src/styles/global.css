@@ -3,7 +3,7 @@
 @source "../";
 
 @theme {
-    --font-sans: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', LiHei Pro, 黑體-繁, 微軟正黑體;
+    --font-sans: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', LiHei Pro, 黑體-繁, 微軟正黑體, "Noto Sans CJK TC", "Noto Sans CJK SC", "Noto Sans CJK JP", "Noto Sans CJK KR";
 }
 
 @layer base {
