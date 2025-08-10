@@ -14,8 +14,12 @@ const locales: Locales = {
     "tracking:pre": "目前正在追蹤",
     "tracking:post": "個站點",
 
-    "summary:empty": "<5 臺車可借",
-    "summary:full": "<3 位可還",
+    "summary:empty:quantifier": "個",
+    "summary:empty:text": "站無車可借",
+    "summary:full:quantifier": "個",
+    "summary:full:text": "站無位可還",
+    "summary:bikes:quantifier": "臺",
+    "summary:bikes:text": "可借車數",
 
     "detailed:title": "詳細站點資料",
 
@@ -38,8 +42,12 @@ const locales: Locales = {
     "tracking:pre": "Currently tracking",
     "tracking:post": "stations",
 
-    "summary:empty": "<5 bikes available for rent",
-    "summary:full": "<3 docks empty for returning bikes",
+    "summary:empty:quantifier": "",
+    "summary:empty:text": "stations without bikes available",
+    "summary:full:quantifier": "",
+    "summary:full:text": "stations without returns available",
+    "summary:bikes:quantifier": "",
+    "summary:bikes:text": "bikes available",
 
     "detailed:title": "Stations",
 
