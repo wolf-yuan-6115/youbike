@@ -139,6 +139,7 @@ export type Database = {
           available: number
           empty: number
           at: string
+          types: Json
         }[]
       }
     }
