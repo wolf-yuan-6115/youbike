@@ -1,20 +1,24 @@
 ---
 import { type Tables } from "@typing/database.types";
+import { Icon } from "astro-icon/components";
 import clsx from "clsx";
 import { formatInTimeZone } from "date-fns-tz";
-import fullLocale from "./commonLocales";
 
 export interface Props {
   history: Tables<"history">;
   timeOverride?: string;
 }
 
-const locale = fullLocale.historyBar[Astro.currentLocale ?? "zh-TW"];
 const { history, timeOverride } = Astro.props;
 
 const filledBlocks = Math.floor(
   (history.available / (history.available + history.empty)) * 30,
 );
+
+const bikeIcon: Record<string, string> = {
+  yb2: "material-symbols:pedal-bike-outline-rounded",
+  eyb: "material-symbols:bolt-rounded",
+};
 
 let backgroundColor = "";
 
@@ -25,6 +29,8 @@ if (history.available <= 5) {
 } else {
   backgroundColor = "bg-green-400";
 }
+
+console.log(history);
 
 const timezone =
   Astro.request.headers.get("cf-timezone") ?? "Asia/Taipei";
@@ -43,13 +49,24 @@ const timezone =
             )
       }
     </p>
-    <p class="text-xs text-gray-400">
-      {locale["text:pre"]}
-      {history.available}
-      {locale["text:connect"]}
-      {history.empty}
-      {locale["text:post"]}
-    </p>
+    <div class="flex items-center gap-2 text-xs text-gray-400">
+      {
+        Object.entries(history.types)
+          .sort(([a], [b]) =>
+            a === "yb2" ? -1 : b === "yb2" ? 1 : 0,
+          )
+          .map(([type, count]) => (
+            <div class="inline-flex items-center gap-1.5">
+              <Icon name={bikeIcon[type]} />
+              <p class="font-bold">{count}</p>
+            </div>
+          ))
+      }
+      <div class="inline-flex items-center gap-1">
+        <Icon name="material-symbols:bike-dock-rounded" />
+        <p class="font-bold">{history.empty}</p>
+      </div>
+    </div>
   </div>
 
   <div

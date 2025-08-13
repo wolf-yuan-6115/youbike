@@ -63,18 +63,6 @@ const locales: { [k: string]: Locales } = {
       "button:text": "View more historical data",
     },
   },
-  historyBar: {
-    "zh-TW": {
-      "text:pre": "可借",
-      "text:connect": "台，",
-      "text:post": "位可還",
-    },
-    en: {
-      "text:pre": "",
-      "text:connect": " bikes, and",
-      "text:post": " docks",
-    },
-  },
   chart: {
     "zh-TW": {
       javascript: "JavaScript 已關閉",
