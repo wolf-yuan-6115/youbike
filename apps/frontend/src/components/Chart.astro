@@ -15,10 +15,12 @@ const {
 
 const locale = fullLocale.chart[Astro.currentLocale ?? "zh-TW"];
 const serializedOptions = JSON.stringify(options);
+const chartId = `chart-${Math.random().toString(36).substring(2, 11)}`;
 ---
 
 <div
-  id="chart"
+  id={chartId}
+  class="echarts-container"
   style={`width: ${width}; height: ${height};`}
   data-options={serializedOptions}
 >
@@ -51,9 +53,11 @@ const serializedOptions = JSON.stringify(options);
     SVGRenderer,
   ]);
 
-  document.addEventListener("astro:page-load", async () => {
-    const chartContainer = document.getElementById("chart");
-    if (!chartContainer) return;
+  const charts = new Map();
+
+  function initializeChart(chartContainer) {
+    if (!chartContainer || charts.has(chartContainer.id)) return;
+
     const chart = echarts.init(chartContainer, null, {
       renderer: "svg",
     });
@@ -61,8 +65,37 @@ const serializedOptions = JSON.stringify(options);
     const options = JSON.parse(chartContainer.dataset.options);
     chart.setOption(options);
 
-    window.addEventListener("resize", () => {
+    charts.set(chartContainer.id, chart);
+
+    const resizeHandler = () => {
       chart.resize();
+    };
+
+    window.addEventListener("resize", resizeHandler);
+
+    chartContainer._resizeHandler = resizeHandler;
+  }
+
+  function initializeAllCharts() {
+    const chartContainers = document.querySelectorAll(
+      ".echarts-container",
+    );
+    chartContainers.forEach(initializeChart);
+  }
+
+  document.addEventListener("astro:page-load", initializeAllCharts);
+
+  document.addEventListener("astro:before-preparation", () => {
+    charts.forEach((chart, id) => {
+      const container = document.getElementById(id);
+      if (container && container._resizeHandler) {
+        window.removeEventListener(
+          "resize",
+          container._resizeHandler,
+        );
+      }
+      chart.dispose();
     });
+    charts.clear();
   });
 </script>
