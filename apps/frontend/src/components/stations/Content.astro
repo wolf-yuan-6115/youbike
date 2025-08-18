@@ -455,14 +455,24 @@ const processedData = formattedData?.reduce<{
               >
                 <div class="flex flex-col justify-between gap-1 rounded-lg border-2 border-gray-500 bg-gray-800 px-4 py-3 md:flex-row md:place-items-center">
                   <p class="font-bold">{key}</p>
-                  <p class="text-sm text-gray-400">
-                    {value.reduce(
-                      (total, item) =>
-                        total + (item.available <= 5 ? 1 : 0),
-                      0,
-                    )}
-                    {locale["card:empty"]}
-                  </p>
+                  <div class="space-y-1 text-sm">
+                    <p class="text-sm text-gray-400">
+                      {value.reduce(
+                        (total, item) =>
+                          total + (item.available <= 5 ? 1 : 0),
+                        0,
+                      )}
+                      {locale["card:empty"]}
+                    </p>
+                    <p class="text-sm text-gray-400">
+                      {value.reduce(
+                        (total, item) =>
+                          total + (item.empty <= 3 ? 1 : 0),
+                        0,
+                      )}
+                      {locale["card:full"]}
+                    </p>
+                  </div>
                 </div>
 
                 <div
