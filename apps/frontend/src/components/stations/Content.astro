@@ -1,6 +1,7 @@
 ---
 import HistoryBar from "@components/HistoryBar.astro";
 import { type Tables } from "@typing/database.types";
+import { supabase } from "../../lib/supabase";
 import fullLocale from "./locales";
 
 export interface Props {
@@ -15,6 +16,16 @@ import Chart from "../Chart.astro";
 
 const locale = fullLocale[Astro.currentLocale ?? "zh-TW"];
 const { stationData, historicalData } = Astro.props;
+
+let { data: analyzedData } = await supabase.rpc("station_predict", {
+  p_station_id: stationData.station_id.id,
+});
+
+analyzedData = analyzedData.map((d) => ({
+  hour: d.hour,
+  p_low_bike: d.p_low_bike * 100,
+  p_low_dock: d.p_low_dock * 100,
+}));
 
 const heroStatus: {
   color: string;
@@ -332,9 +343,105 @@ const processedData = formattedData?.reduce<{
     <Icon name="material-symbols:touch-app-rounded" />
     {locale["chart:draggable"]}
   </div>
+</section>
 
-  <hr class="mx-auto mt-8 max-w-4xl border-gray-600" />
+<hr class="mx-auto mt-8 max-w-4xl border-gray-600" />
 
+<section class="my-8">
+  <h2
+    class="border-gray-400 text-2xl font-bold md:text-center"
+    transition:name="section-title"
+  >
+    {locale["predict:title"]}
+  </h2>
+
+  <div>
+    <Chart
+      options={{
+        xAxis: {
+          type: "category",
+          axisLabel: {
+            color: "#94a3b8",
+            formatter: "{value}:00",
+          },
+          boundaryGap: false,
+          data: analyzedData.map((d) => d.hour),
+        },
+        yAxis: {
+          type: "value",
+          axisLabel: {
+            color: "#94A3B8",
+            formatter: "{value}%",
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: "#94A3B8",
+              width: 1,
+              type: "dashed",
+            },
+          },
+          boundaryGap: false,
+          min: 0,
+          max: 100,
+        },
+        series: [
+          {
+            type: "line",
+            smooth: true,
+            data: analyzedData.map((d) => d.p_low_bike),
+            lineStyle: { width: 2.5, color: "#3b82f6" },
+            showSymbol: false,
+          },
+          {
+            type: "line",
+            smooth: true,
+            data: analyzedData.map((d) => d.p_low_dock),
+            lineStyle: { width: 2.5, color: "#f59e0b" },
+            showSymbol: false,
+          },
+        ],
+        textStyle: {
+          fontFamily: "'JetBrains Mono Variable'",
+          fontSize: 12,
+          color: "#94A3B8",
+        },
+        dataZoom: [
+          {
+            type: "inside",
+            xAxisIndex: 0,
+            start: 0,
+            end: 100,
+            minValueSpan: 2,
+            moveOnMouseWheel: false,
+            preventDefaultMouseMove: true,
+          },
+        ],
+      }}
+    />
+  </div>
+
+  <div class="mx-auto max-w-4xl text-xs text-gray-400">
+    <div
+      class="ml-auto flex w-fit flex-col place-items-end space-y-2"
+    >
+      <div class="flex items-center gap-2">
+        <div class="h-0.5 w-12 bg-[#3b82f6]"></div>
+        <p>{locale["predict:noBike"]}</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="h-0.5 w-12 bg-[#f59e0b]"></div>
+        <p>{locale["predict:noSlot"]}</p>
+      </div>
+
+      <p class="text-right">{locale["predict:notice"]}</p>
+    </div>
+  </div>
+</section>
+
+<hr class="mx-auto mt-8 max-w-4xl border-gray-600" />
+
+<section>
   <div class="mx-auto max-w-4xl">
     {
       processedData && (

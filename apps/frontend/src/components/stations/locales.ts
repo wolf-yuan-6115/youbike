@@ -29,6 +29,11 @@ const locales: Locales = {
 
     "oclock:title": "整點車輛紀錄",
     "chart:draggable": "可以用手縮放、拖曳",
+
+    "predict:title": "不那麼聰明的預測",
+    "predict:noBike": "無車可借機率",
+    "predict:noSlot": "無位可還機率",
+    "predict:notice": "預測只用五天資料，準確性有但不多",
   },
   en: {
     "dynamic:noSlots":
@@ -58,6 +63,12 @@ const locales: Locales = {
 
     "oclock:title": "Hourly bike historical data",
     "chart:draggable": "Draggable and zoomable!",
+
+    "predict:title": "Not so smart prediction",
+    "predict:noBike": "No bike available probability",
+    "predict:noSlot": "No slot available probability",
+    "predict:notice":
+      "Prediction is based on only five days of data, accuracy is (very) limited",
   },
 };
 
