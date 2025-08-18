@@ -10,14 +10,14 @@
     "typegen": "wrangler types"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.50.0",
+    "@supabase/supabase-js": "^2.55.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0"
   },
   "devDependencies": {
-    "prettier-plugin-organize-imports": "^4.1.0",
-    "supabase": "^2.33.9",
-    "wrangler": "^4.26.1"
+    "prettier-plugin-organize-imports": "^4.2.0",
+    "supabase": "^2.34.3",
+    "wrangler": "^4.30.0"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"

@@ -10,5 +10,9 @@
   ],
   "devDependencies": {
     "prettier": "^3.5.3"
-  }
+  },
+  "trustedDependencies": [
+    "@tailwindcss/oxide",
+    "@vercel/speed-insights"
+  ]
 }
