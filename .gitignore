@@ -344,3 +344,7 @@ buck-out/
 .vercel
 
 # End of https://www.toptal.com/developers/gitignore/api/vercel,node,astro,reactnative
+
+# Local env files
+
+.dev.vars
