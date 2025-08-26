@@ -21,8 +21,6 @@ const locales: Locales = {
     "summary:bikes:quantifier": "臺",
     "summary:bikes:text": "可借車數",
 
-    "detailed:title": "詳細站點資料",
-
     "info:title": "哦嗨，我是",
     "info:subtitle": "我做了你現在正在看的這個網站",
     "info:add": "我想加站點！",
@@ -48,8 +46,6 @@ const locales: Locales = {
     "summary:full:text": "stations without returns available",
     "summary:bikes:quantifier": "",
     "summary:bikes:text": "bikes available",
-
-    "detailed:title": "Stations",
 
     "info:title": "Oh hi, I'm",
     "info:subtitle": "I built the site you're seeing right now",

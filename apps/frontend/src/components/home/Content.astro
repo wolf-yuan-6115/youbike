@@ -1,5 +1,6 @@
 ---
 import StationCard from "@components/StationCard.astro";
+import { en as enArea, zh as zhArea } from "@lib/stationCity";
 import { supabase } from "@lib/supabase";
 import fullLocale from "./locales";
 
@@ -18,6 +19,10 @@ const [stationDataRes, historicalDataRes] = await Promise.all([
 
 const stationData = stationDataRes.data;
 const historicalData = historicalDataRes.data;
+
+if (!stationData || !historicalData) {
+  throw new Error("Failed to fetch data from Supabase");
+}
 
 const historicalDataMap = new Map();
 if (historicalData) {
@@ -78,6 +83,11 @@ if (hasEmpty) {
   heroStatus.icon = "fa7-regular:face-smile";
   heroStatus.text = locale["dynamic:normal"];
 }
+
+const groupedStations = Object.groupBy(stationData, (k) =>
+  k.station_id.id.toString().substring(2, 4),
+);
+const areaName = Astro.currentLocale === "zh-TW" ? zhArea : enArea;
 ---
 
 <main class="py-16">
@@ -190,23 +200,25 @@ if (hasEmpty) {
   </div>
 </main>
 
-<hr class="mx-auto max-w-2xl border-gray-600" />
-
-<section class="mx-auto my-8 max-w-4xl">
-  <h2
-    class="border-gray-400 text-2xl font-bold md:text-center"
-    transition:name="section-title"
-  >
-    {locale["detailed:title"]}
-  </h2>
-
+<section class="mx-auto my-6 max-w-4xl">
   <div class="mt-10 space-y-4">
     {
-      stationData?.map((station) => (
-        <StationCard
-          station={station}
-          history={historicalDataMap.get(station.station_id.id) ?? []}
-        />
+      Object.entries(groupedStations).map(([areaCode, stations]) => (
+        <div class="my-8">
+          <h2 class="mb-4 border-b border-gray-600 pb-1 text-2xl font-bold">
+            {areaName[areaCode as keyof typeof areaName] ?? areaCode}
+          </h2>
+          <div class="space-y-3">
+            {stations?.map((station) => (
+              <StationCard
+                station={station}
+                history={
+                  historicalDataMap.get(station.station_id.id) ?? []
+                }
+              />
+            ))}
+          </div>
+        </div>
       ))
     }
   </div>

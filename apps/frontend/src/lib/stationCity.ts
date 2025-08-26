@@ -1,0 +1,33 @@
+export const zh = {
+  "01": "臺北市",
+  "02": "新北市",
+  "03": "桃園市",
+  "05": "新竹縣",
+  "04": "新竹市",
+  "82": "新竹科學園區",
+  "07": "苗栗縣",
+  "06": "臺中市",
+  "11": "嘉義縣",
+  "10": "嘉義市",
+  "13": "臺南市",
+  "12": "高雄市",
+  "14": "屏東縣",
+  "15": "臺東縣",
+};
+
+export const en = {
+  "01": "Taipei City",
+  "02": "New Taipei City",
+  "03": "Taoyuan City",
+  "05": "Hsinchu County",
+  "04": "Hsinchu City",
+  "82": "Hsinchu Science Park",
+  "07": "Miaoli County",
+  "06": "Taichung City",
+  "11": "Chiayi County",
+  "10": "Chiayi City",
+  "13": "Tainan City",
+  "12": "Kaohsiung City",
+  "14": "Pingtung County",
+  "15": "Taitung County",
+};
