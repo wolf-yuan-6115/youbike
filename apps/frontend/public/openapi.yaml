@@ -13,9 +13,9 @@ info:
     name: AGPL-3.0
     url: 'https://www.gnu.org/licenses/agpl-3.0.en.html'
 servers:
-  - url: 'https://youbike.wolf-yuan.dev'
+  - url: 'https://youbike.wolf-yuan.dev/api'
     description: Production server
-  - url: 'http://localhost:4321'
+  - url: 'http://localhost:4321/api'
     description: Development server
 paths:
   /stations:
@@ -102,7 +102,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RealtimeRecord'
+                $ref: '#/components/schemas/RealtimeRecordWithInfo'
         '400':
           description: Bad Request
         '404':
@@ -150,6 +150,12 @@ paths:
       operationId: get-history-id
       x-stoplight:
         id: e71jfdfnon3pp
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          description: Limit the results
 components:
   schemas:
     StationInfo:
@@ -256,13 +262,37 @@ components:
           x-stoplight:
             id: w7sp3fkifwidq
         status:
-          type: string
+          $ref: '#/components/schemas/StationStatus'
           x-stoplight:
             id: kehsjm0sasph6
         types:
           $ref: '#/components/schemas/BikeType'
           x-stoplight:
             id: h4onppfjpqw0u
+    RealtimeRecordWithInfo:
+      title: RealtimeRecordWithInfo
+      x-stoplight:
+        id: 3kn6oruhm3us5
+      type: object
+      properties:
+        station_id:
+          $ref: '#/components/schemas/StationInfo'
+        unavailable:
+          type: string
+        success:
+          type: string
+        update:
+          type: string
+        bikes:
+          type: string
+        slots:
+          type: string
+        full:
+          type: string
+        status:
+          $ref: '#/components/schemas/StationStatus'
+        types:
+          $ref: '#/components/schemas/BikeType'
     BikeType:
       title: BikeType
       x-stoplight:
@@ -277,5 +307,13 @@ components:
           type: integer
           x-stoplight:
             id: hraa9uzl3tfs4
+    StationStatus:
+      title: StationStatus
+      x-stoplight:
+        id: owb5cztxehs0i
+      enum:
+        - NORMAL
+        - EMPTY
+        - FULL
   parameters: {}
 x-internal: false
