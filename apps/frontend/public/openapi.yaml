@@ -1,29 +1,275 @@
-openapi: 3.0.4
-
+openapi: 3.1.0
+x-stoplight:
+  id: dbstosdbcs99x
 info:
-  title: Sample API
-  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
-  version: 0.1.9
-
-
+  title: Cha Bike API
+  version: '1.0'
+  summary: An set of API that queries data straight from Cha Bike's database
+  contact:
+    name: Wolf Yuan
+    url: 'https://wolf-yuan.dev/'
+    email: me@wolf-yuan.dev
+  license:
+    name: AGPL-3.0
+    url: 'https://www.gnu.org/licenses/agpl-3.0.en.html'
 servers:
-  - url: http://api.example.com/v1
-    description: Optional server description, e.g. Main (production) server
-  - url: http://staging-api.example.com
-    description: Optional server description, e.g. Internal staging server for testing
-
-
+  - url: 'https://youbike.wolf-yuan.dev'
+    description: Production server
+  - url: 'http://localhost:4321'
+    description: Development server
 paths:
-  /users:
+  /stations:
+    parameters: []
     get:
-      summary: Returns a list of users.
-      description: Optional extended description in CommonMark or HTML.
+      summary: Get all stations
+      tags:
+        - Station Info
       responses:
-        "200": # status code
-          description: A JSON array of user names
+        '200':
+          description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: string
+                  $ref: '#/components/schemas/StationInfo'
+                  x-stoplight:
+                    id: 9mhu7umluaynx
+        '500':
+          description: Internal Server Error
+      operationId: get-stations
+      x-stoplight:
+        id: niu8a8g9iqz29
+      description: Get all stations currently tracked by Cha Bike
+  '/stations/{id}':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get station info
+      tags:
+        - Station Info
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationInfo'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-stations-with-id
+      description: Get station info by station ID
+      x-stoplight:
+        id: djfl2kggehiok
+  /current:
+    get:
+      summary: Get all realtime data
+      tags:
+        - Realtime data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RealtimeRecord'
+                  x-stoplight:
+                    id: 9i2u5atfchp53
+        '500':
+          description: Internal Server Error
+      operationId: get-current
+      x-stoplight:
+        id: h1lc2dnod1hcb
+      description: Get all realtime data recorded in database
+  '/current/{id}':
+    get:
+      summary: Get station realtime data
+      tags:
+        - Realtime data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RealtimeRecord'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-current-with-id
+      description: Get station realtime data by station ID
+      x-stoplight:
+        id: s58fi2hv6ye2u
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+  '/history/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get station history data
+      tags:
+        - Historical Data
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistoryRecord'
+                  x-stoplight:
+                    id: j4kbvs0w1id19
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-history-id
+      x-stoplight:
+        id: e71jfdfnon3pp
+components:
+  schemas:
+    StationInfo:
+      title: StationInfo
+      x-stoplight:
+        id: ayhcls61h0pnw
+      type: object
+      properties:
+        id:
+          type: integer
+          x-stoplight:
+            id: 5jqf4uo9w8gmm
+        name:
+          type: string
+          x-stoplight:
+            id: j8o5eougppya9
+        lat:
+          type: number
+          x-stoplight:
+            id: 8lf2jeixxvtdf
+        lng:
+          type: number
+          x-stoplight:
+            id: lls8d7ejo5m83
+        address:
+          type: string
+          x-stoplight:
+            id: n21tfkuirxzyr
+        total:
+          type: string
+          x-stoplight:
+            id: o1wfzx14cfnip
+        name_en:
+          type: string
+          x-stoplight:
+            id: atbafnrjpeaw6
+        address_en:
+          type: string
+          x-stoplight:
+            id: m9atdi0z0nvrw
+    HistoryRecord:
+      title: HistoryRecord
+      x-stoplight:
+        id: h3421282sgv3l
+      type: object
+      properties:
+        id:
+          type: string
+          x-stoplight:
+            id: mhbapbakkhcn7
+        station_id:
+          type: integer
+          x-stoplight:
+            id: 13htwk6iko4x8
+        available:
+          type: integer
+          x-stoplight:
+            id: vdwkl7m3xiovx
+        empty:
+          type: integer
+          x-stoplight:
+            id: rvajg8osvddko
+        at:
+          type: string
+          x-stoplight:
+            id: kcadg4ah156ut
+          format: date-time
+        types:
+          $ref: '#/components/schemas/BikeType'
+          x-stoplight:
+            id: skkz2x2pov82s
+    RealtimeRecord:
+      title: RealtimeRecord
+      x-stoplight:
+        id: y075lk9ussofl
+      type: object
+      properties:
+        station_id:
+          type: string
+          x-stoplight:
+            id: p8jil4lz0tyj5
+        unavailable:
+          type: string
+          x-stoplight:
+            id: avwfs4zvq6tyf
+        success:
+          type: string
+          x-stoplight:
+            id: mi5lt144jnwe6
+        update:
+          type: string
+          x-stoplight:
+            id: d739jfrjj7b5h
+        bikes:
+          type: string
+          x-stoplight:
+            id: m4w0174qv3oia
+        slots:
+          type: string
+          x-stoplight:
+            id: d4ksfx54l7xci
+        full:
+          type: string
+          x-stoplight:
+            id: w7sp3fkifwidq
+        status:
+          type: string
+          x-stoplight:
+            id: kehsjm0sasph6
+        types:
+          $ref: '#/components/schemas/BikeType'
+          x-stoplight:
+            id: h4onppfjpqw0u
+    BikeType:
+      title: BikeType
+      x-stoplight:
+        id: scn6v9b2kzjm7
+      type: object
+      properties:
+        yb2:
+          type: integer
+          x-stoplight:
+            id: n6sc166dqjx1b
+        eyb:
+          type: integer
+          x-stoplight:
+            id: hraa9uzl3tfs4
+  parameters: {}
+x-internal: false
