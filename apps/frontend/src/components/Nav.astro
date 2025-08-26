@@ -13,7 +13,7 @@ const locale = fullLocale.nav[Astro.currentLocale ?? "zh-TW"];
   <div
     class="js:nav-padding z-30 w-full max-w-7xl px-5 py-6 duration-300"
   >
-    <div class="flex justify-between place-items-center">
+    <div class="flex place-items-center justify-between">
       <div>
         <a
           href={getRelativeLocaleUrl(
@@ -35,22 +35,40 @@ const locale = fullLocale.nav[Astro.currentLocale ?? "zh-TW"];
           </div></a
         >
       </div>
-      <div>
-        <a
-          href={getRelativeLocaleUrl(
-            Astro.currentLocale === "en" ? "zh-TW" : "en",
-            Astro.url.pathname.replace("/en", ""),
-          )}
-          class="text-gray-300 duration-300 hover:text-gray-50"
-        >
-          <div class="flex items-center justify-between md:gap-2">
-            <Icon
-              name="material-symbols:translate"
-              class="text-lg md:text-base"
-            />
-            <p class="sr-only md:not-sr-only">{locale["language"]}</p>
-          </div>
-        </a>
+      <div class="flex items-center gap-4">
+        <div>
+          <a
+            href={getRelativeLocaleUrl(
+              Astro.currentLocale === "en" ? "zh-TW" : "en",
+              Astro.url.pathname.replace("/en", ""),
+            )}
+            class="text-gray-300 duration-300 hover:text-gray-50"
+          >
+            <div class="flex items-center justify-between md:gap-2">
+              <Icon
+                name="material-symbols:translate"
+                class="text-lg md:text-base"
+              />
+              <p class="sr-only md:not-sr-only">
+                {locale["language"]}
+              </p>
+            </div>
+          </a>
+        </div>
+        <div>
+          <a
+            href="/api"
+            class="text-gray-300 duration-300 hover:text-gray-50"
+          >
+            <div class="flex items-center justify-between md:gap-2">
+              <Icon
+                name="material-symbols:code-rounded"
+                class="text-lg md:text-base"
+              />
+              <p class="sr-only md:not-sr-only">API</p>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
   </div>

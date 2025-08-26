@@ -32,6 +32,7 @@ export default defineConfig({
           "add-rounded",
           "translate",
           "touch-app-rounded",
+          "code-rounded",
         ],
         "fa7-regular": [
           "sad-cry",
