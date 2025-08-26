@@ -59,6 +59,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StationInfo'
+        '400':
+          description: Bad Request
         '404':
           description: Not Found
         '500':
@@ -101,6 +103,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RealtimeRecord'
+        '400':
+          description: Bad Request
         '404':
           description: Not Found
         '500':
@@ -137,6 +141,8 @@ paths:
                   $ref: '#/components/schemas/HistoryRecord'
                   x-stoplight:
                     id: j4kbvs0w1id19
+        '400':
+          description: Bad Request
         '404':
           description: Not Found
         '500':
