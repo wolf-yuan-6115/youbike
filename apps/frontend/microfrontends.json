@@ -4,6 +4,13 @@
     "youbike-frontend": {
       "development": {
         "fallback": "youbike.wolf-yuan.dev"
+      },
+      "youbike-api": {
+        "routing": [
+          {
+            "paths": ["/api"]
+          }
+        ]
       }
     }
   }
