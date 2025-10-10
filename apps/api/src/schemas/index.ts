@@ -78,7 +78,7 @@ export const IdParamSchema = z.object({
         name: "id",
         in: "path",
       },
-      example: "1",
+      example: "500306017",
     }),
 });
 
