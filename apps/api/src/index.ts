@@ -1,16 +1,19 @@
+import { Hono } from "hono";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { Scalar } from "@scalar/hono-api-reference";
 import stationsRoutes from "./routes/stations";
 import currentRoutes from "./routes/current";
 import historyRoutes from "./routes/history";
 
-const app = new OpenAPIHono();
+// Weird Vercel, a weird workaround
+const app = new Hono();
+const api = new OpenAPIHono();
 
-app.route("/api/stations", stationsRoutes);
-app.route("/api/current", currentRoutes);
-app.route("/api/history", historyRoutes);
+api.route("/api/stations", stationsRoutes);
+api.route("/api/current", currentRoutes);
+api.route("/api/history", historyRoutes);
 
-app.get(
+api.get(
   "/api/",
   Scalar({
     theme: "deepSpace",
@@ -18,7 +21,7 @@ app.get(
   }),
 );
 
-app.doc("/api/openapi.json", {
+api.doc("/api/openapi.json", {
   openapi: "3.0.0",
   info: {
     version: "1.0.0",
@@ -37,5 +40,7 @@ app.doc("/api/openapi.json", {
     },
   ],
 });
+
+app.route("/", api);
 
 export default app;
