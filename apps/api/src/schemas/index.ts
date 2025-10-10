@@ -18,7 +18,7 @@ export const StationSchema = z
     lat: z.number(),
     lng: z.number(),
     address: z.string(),
-    total: z.string(),
+    total: z.number().int(),
     name_en: z.string(),
     address_en: z.string(),
   })
