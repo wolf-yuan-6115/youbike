@@ -2,7 +2,7 @@ import { Elysia, t } from "elysia";
 import { supabase } from "../lib/supabase";
 import { HistorySchema, ErrorSchema } from "../schemas";
 
-export const historyRoutes = new Elysia({ prefix: "/api/history" }).get(
+export const historyRoutes = new Elysia({ prefix: "/history" }).get(
   "/:id",
   async ({ params, query, set }) => {
     const { id } = params;

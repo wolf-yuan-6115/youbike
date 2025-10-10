@@ -2,7 +2,7 @@ import { Elysia, t } from "elysia";
 import { supabase } from "../lib/supabase";
 import { StationSchema, ErrorSchema } from "../schemas";
 
-export const stationsRoutes = new Elysia({ prefix: "/api/stations" })
+export const stationsRoutes = new Elysia({ prefix: "/stations" })
   .get(
     "/",
     async () => {

@@ -6,7 +6,7 @@ import {
   ErrorSchema,
 } from "../schemas";
 
-export const currentRoutes = new Elysia({ prefix: "/api/current" })
+export const currentRoutes = new Elysia({ prefix: "/current" })
   .get(
     "/",
     async () => {

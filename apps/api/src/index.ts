@@ -26,6 +26,7 @@ const app = new Elysia()
         ],
       },
       path: "/",
+      specPath: "/openapi.json",
       scalar: {
         theme: "deepSpace",
       },
