@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/microfrontends.json",
+  "applications": {
+    "youbike-frontend": {
+      "development": {
+        "fallback": "youbike.wolf-yuan.dev"
+      }
+    }
+  }
+}
