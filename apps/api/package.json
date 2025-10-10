@@ -1,6 +1,9 @@
 {
   "name": "youbike-api",
   "type": "module",
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist/ --outfile=api --minify"
+  },
   "dependencies": {
     "@elysiajs/openapi": "^1.4.11",
     "@supabase/supabase-js": "^2.75.0",
