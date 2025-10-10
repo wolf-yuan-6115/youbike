@@ -1,6 +1,9 @@
 {
-  "name": "hono",
+  "name": "youbike-api",
   "type": "module",
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist --minify"
+  },
   "dependencies": {
     "@elysiajs/openapi": "^1.4.11",
     "@supabase/supabase-js": "^2.75.0",
@@ -9,6 +12,7 @@
   "devDependencies": {
     "@types/bun": "^1.2.23",
     "supabase": "^2.48.3",
+    "tsdown": "^0.15.6",
     "tsx": "^4.7.1",
     "typescript": "^5.8.3"
   }
