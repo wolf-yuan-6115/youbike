@@ -25,7 +25,7 @@ const app = new Elysia()
           },
         ],
       },
-      path: "/api",
+      path: "/",
       scalar: {
         theme: "deepSpace",
       },
