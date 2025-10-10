@@ -1,98 +1,55 @@
-import { z } from "@hono/zod-openapi";
+import { t } from "elysia";
 
-export const StationStatusSchema = z
-  .enum(["NORMAL", "EMPTY", "FULL"])
-  .openapi("StationStatus");
+export const StationStatusSchema = t.Union([
+  t.Literal("NORMAL"),
+  t.Literal("EMPTY"),
+  t.Literal("FULL"),
+]);
 
-export const BikeTypeSchema = z
-  .object({
-    yb2: z.number().int().describe("YouBike 2.0"),
-    eyb: z.number().int().describe("Electric YouBike (2.0E)"),
-  })
-  .openapi("BikeType");
-
-export const StationSchema = z
-  .object({
-    id: z.number().int(),
-    name: z.string(),
-    lat: z.number(),
-    lng: z.number(),
-    address: z.string(),
-    total: z.number().int(),
-    name_en: z.string(),
-    address_en: z.string(),
-  })
-  .openapi("StationInfo");
-
-export const CurrentSchema = z
-  .object({
-    station_id: z.number().int(),
-    unavailable: z.number().int(),
-    success: z.number().int(),
-    update: z.string(),
-    bikes: z.number().int(),
-    slots: z.number().int(),
-    full: z.number().int(),
-    status: StationStatusSchema,
-    types: BikeTypeSchema,
-  })
-  .openapi("RealtimeRecord");
-
-export const CurrentWithStationSchema = z
-  .object({
-    station_id: StationSchema,
-    unavailable: z.number().int(),
-    success: z.number().int(),
-    update: z.string(),
-    bikes: z.number().int(),
-    slots: z.number().int(),
-    full: z.number().int(),
-    status: StationStatusSchema,
-    types: BikeTypeSchema,
-  })
-  .openapi("RealtimeRecordWithInfo");
-
-export const HistorySchema = z
-  .object({
-    id: z.string(),
-    station_id: z.number().int(),
-    available: z.number().int(),
-    empty: z.number().int(),
-    at: z.string(),
-    types: BikeTypeSchema,
-  })
-  .openapi("HistoryRecord");
-
-export const ErrorSchema = z
-  .object({
-    error: z.string(),
-  })
-  .openapi("Error");
-
-export const IdParamSchema = z.object({
-  id: z
-    .string()
-    .regex(/^\d+$/, "ID must be a number")
-    .openapi({
-      param: {
-        name: "id",
-        in: "path",
-      },
-      example: "500306017",
-    }),
+export const StationSchema = t.Object({
+  id: t.Number(),
+  name: t.String(),
+  lat: t.Number(),
+  lng: t.Number(),
+  address: t.String(),
+  total: t.Number(),
+  name_en: t.String(),
+  address_en: t.String(),
 });
 
-export const LimitQuerySchema = z.object({
-  limit: z
-    .string()
-    .regex(/^\d+$/, "Limit must be a number")
-    .optional()
-    .openapi({
-      param: {
-        name: "limit",
-        in: "query",
-      },
-      example: "10",
-      description: "Limit the results",
-    }),
+export const CurrentSchema = t.Object({
+  station_id: t.Number(),
+  unavailable: t.Number(),
+  success: t.Number(),
+  update: t.String(),
+  bikes: t.Number(),
+  slots: t.Number(),
+  full: t.Number(),
+  status: StationStatusSchema,
+  types: t.Any(),
+});
+
+export const CurrentWithStationSchema = t.Object({
+  station_id: StationSchema,
+  unavailable: t.Number(),
+  success: t.Number(),
+  update: t.String(),
+  bikes: t.Number(),
+  slots: t.Number(),
+  full: t.Number(),
+  status: StationStatusSchema,
+  types: t.Any(),
+});
+
+export const HistorySchema = t.Object({
+  id: t.String(),
+  station_id: t.Number(),
+  available: t.Number(),
+  empty: t.Number(),
+  at: t.String(),
+  types: t.Any(),
+});
+
+export const ErrorSchema = t.Object({
+  error: t.String(),
 });

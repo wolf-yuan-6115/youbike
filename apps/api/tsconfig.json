@@ -4,7 +4,7 @@
     "module": "Preserve",
     "strict": true,
     "skipLibCheck": true,
-    "types": ["node", "bun"],
+    "types": ["bun"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
     "outDir": "./dist"

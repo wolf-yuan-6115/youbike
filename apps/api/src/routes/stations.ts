@@ -1,106 +1,71 @@
-import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
-import { z } from "@hono/zod-openapi";
+import { Elysia, t } from "elysia";
 import { supabase } from "../lib/supabase";
-import { StationSchema, ErrorSchema, IdParamSchema } from "../schemas";
+import { StationSchema, ErrorSchema } from "../schemas";
 
-const app = new OpenAPIHono();
+export const stationsRoutes = new Elysia({ prefix: "/api/stations" })
+  .get(
+    "/",
+    async () => {
+      const { data, error } = await supabase.from("stations").select("*");
 
-const getAllStationsRoute = createRoute({
-  method: "get",
-  path: "/",
-  tags: ["Stations"],
-  summary: "Get all stations",
-  responses: {
-    200: {
-      content: {
-        "application/json": {
-          schema: z.array(StationSchema),
-        },
-      },
-      description: "List of all stations",
+      if (error) {
+        console.error(error);
+        return { error: "Internal server error" };
+      }
+      return data;
     },
-    500: {
-      content: {
-        "application/json": {
-          schema: ErrorSchema,
-        },
+    {
+      detail: {
+        tags: ["Stations"],
+        summary: "Get all stations",
+        description: "List of all stations",
       },
-      description: "Internal server error",
-    },
-  },
-});
-
-app.openapi(getAllStationsRoute, async (c) => {
-  const { data, error } = await supabase.from("stations").select("*");
-
-  if (error) {
-    console.error(error);
-    return c.json({ error: "Internal server error" }, 500);
-  }
-  return c.json(data, 200);
-});
-
-const getStationByIdRoute = createRoute({
-  method: "get",
-  path: "/{id}",
-  tags: ["Stations"],
-  summary: "Get station by ID",
-  request: {
-    params: IdParamSchema,
-  },
-  responses: {
-    200: {
-      content: {
-        "application/json": {
-          schema: StationSchema,
-        },
+      response: {
+        200: t.Array(StationSchema),
+        500: ErrorSchema,
       },
-      description: "Station details",
     },
-    400: {
-      content: {
-        "application/json": {
-          schema: ErrorSchema,
-        },
+  )
+  .get(
+    "/:id",
+    async ({ params, set }) => {
+      const { id } = params;
+
+      const { data, error } = await supabase
+        .from("stations")
+        .select("*")
+        .eq("id", parseInt(id))
+        .single();
+
+      if (error) {
+        if (error.code === "PGRST116") {
+          set.status = 404;
+          return { error: "Station not found" };
+        }
+        console.error(error);
+        set.status = 500;
+        return { error: "Internal server error" };
+      }
+      return data;
+    },
+    {
+      detail: {
+        tags: ["Stations"],
+        summary: "Get station by ID",
+        description: "Station details",
       },
-      description: "Invalid station ID",
-    },
-    404: {
-      content: {
-        "application/json": {
-          schema: ErrorSchema,
-        },
+      params: t.Object({
+        id: t.String({
+          pattern: "^\\d+$",
+          description: "Station ID",
+          examples: "500306017",
+        }),
+      }),
+      response: {
+        200: StationSchema,
+        400: ErrorSchema,
+        404: ErrorSchema,
+        500: ErrorSchema,
       },
-      description: "Station not found",
     },
-    500: {
-      content: {
-        "application/json": {
-          schema: ErrorSchema,
-        },
-      },
-      description: "Internal server error",
-    },
-  },
-});
-
-app.openapi(getStationByIdRoute, async (c) => {
-  const { id } = c.req.valid("param");
-
-  const { data, error } = await supabase
-    .from("stations")
-    .select("*")
-    .eq("id", parseInt(id))
-    .single();
-
-  if (error) {
-    if (error.code === "PGRST116") {
-      return c.json({ error: "Station not found" }, 404);
-    }
-    console.error(error);
-    return c.json({ error: "Internal server error" }, 500);
-  }
-  return c.json(data, 200);
-});
-
-export default app;
+  );
