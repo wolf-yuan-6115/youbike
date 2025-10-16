@@ -2,7 +2,7 @@
   "name": "youbike-api",
   "type": "module",
   "scripts": {
-    "build": "bun build src/index.ts --outdir api --minify"
+    "build": "tsdown src/index.ts -d api --dts"
   },
   "dependencies": {
     "@elysiajs/openapi": "^1.4.11",
@@ -13,7 +13,7 @@
     "@types/bun": "^1.2.23",
     "@types/node": "^24.7.1",
     "supabase": "^2.48.3",
-    "tsdown": "^0.15.6",
+    "tsdown": "^0.15.7",
     "tsx": "^4.7.1",
     "typescript": "^5.8.3"
   }
