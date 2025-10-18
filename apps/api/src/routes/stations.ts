@@ -1,71 +1,108 @@
-import { Elysia, t } from "elysia";
+import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 import { supabase } from "../lib/supabase";
 import { StationSchema, ErrorSchema } from "../schemas";
 
-export const stationsRoutes = new Elysia({ prefix: "/stations" })
-  .get(
-    "/",
-    async () => {
-      const { data, error } = await supabase.from("stations").select("*");
+const ParamSchema = z.object({
+  id: z
+    .string()
+    .regex(/^\d+$/, "Station ID must be numeric")
+    .openapi({
+      param: {
+        name: "id",
+        in: "path",
+      },
+      example: "500306017",
+    }),
+});
 
-      if (error) {
-        console.error(error);
-        return { error: "Internal server error" };
+const getAllStationsRoute = createRoute({
+  method: "get",
+  path: "/",
+  tags: ["Stations"],
+  summary: "Get all stations",
+  description: "List of all stations",
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: z.array(StationSchema),
+        },
+      },
+      description: "Successful response",
+    },
+    500: {
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+      description: "Internal server error",
+    },
+  },
+});
+
+const getStationByIdRoute = createRoute({
+  method: "get",
+  path: "/{id}",
+  tags: ["Stations"],
+  summary: "Get station by ID",
+  description: "Station details",
+  request: {
+    params: ParamSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: StationSchema,
+        },
+      },
+      description: "Successful response",
+    },
+    404: {
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+      description: "Station not found",
+    },
+    500: {
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+      description: "Internal server error",
+    },
+  },
+});
+
+export const stationsRoutes = new OpenAPIHono()
+  .openapi(getAllStationsRoute, async (c) => {
+    const { data, error } = await supabase.from("stations").select("*");
+
+    if (error) {
+      console.error(error);
+      return c.json({ error: "Internal server error" }, 500);
+    }
+    return c.json(data, 200);
+  })
+  .openapi(getStationByIdRoute, async (c) => {
+    const { id } = c.req.valid("param");
+
+    const { data, error } = await supabase
+      .from("stations")
+      .select("*")
+      .eq("id", parseInt(id))
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") {
+        return c.json({ error: "Station not found" }, 404);
       }
-      return data;
-    },
-    {
-      detail: {
-        tags: ["Stations"],
-        summary: "Get all stations",
-        description: "List of all stations",
-      },
-      response: {
-        200: t.Array(StationSchema),
-        500: ErrorSchema,
-      },
-    },
-  )
-  .get(
-    "/:id",
-    async ({ params, set }) => {
-      const { id } = params;
-
-      const { data, error } = await supabase
-        .from("stations")
-        .select("*")
-        .eq("id", parseInt(id))
-        .single();
-
-      if (error) {
-        if (error.code === "PGRST116") {
-          set.status = 404;
-          return { error: "Station not found" };
-        }
-        console.error(error);
-        set.status = 500;
-        return { error: "Internal server error" };
-      }
-      return data;
-    },
-    {
-      detail: {
-        tags: ["Stations"],
-        summary: "Get station by ID",
-        description: "Station details",
-      },
-      params: t.Object({
-        id: t.String({
-          pattern: "^\\d+$",
-          description: "Station ID",
-          examples: "500306017",
-        }),
-      }),
-      response: {
-        200: StationSchema,
-        400: ErrorSchema,
-        404: ErrorSchema,
-        500: ErrorSchema,
-      },
-    },
-  );
+      console.error(error);
+      return c.json({ error: "Internal server error" }, 500);
+    }
+    return c.json(data, 200);
+  });

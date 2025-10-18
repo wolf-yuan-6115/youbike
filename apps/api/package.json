@@ -1,20 +1,17 @@
 {
   "name": "youbike-api",
   "type": "module",
-  "scripts": {
-    "build": "tsdown src/index.ts -d api --dts"
-  },
   "dependencies": {
-    "@elysiajs/openapi": "^1.4.11",
+    "@hono/zod-openapi": "^1.1.4",
+    "@hono/zod-validator": "^0.7.4",
+    "@scalar/hono-api-reference": "^0.9.22",
     "@supabase/supabase-js": "^2.75.0",
-    "elysia": "^1.4.10"
+    "hono": "^4.10.1",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.23",
     "@types/node": "^24.7.1",
     "supabase": "^2.48.3",
-    "tsdown": "^0.15.7",
-    "tsx": "^4.7.1",
     "typescript": "^5.8.3"
   }
 }

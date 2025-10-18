@@ -1,12 +1,69 @@
-import { Elysia, t } from "elysia";
+import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 import { supabase } from "../lib/supabase";
 import { HistorySchema, ErrorSchema } from "../schemas";
 
-export const historyRoutes = new Elysia({ prefix: "/history" }).get(
-  "/:id",
-  async ({ params, query, set }) => {
-    const { id } = params;
-    const { limit } = query;
+const ParamSchema = z.object({
+  id: z
+    .string()
+    .regex(/^\d+$/, "Station ID must be numeric")
+    .openapi({
+      param: {
+        name: "id",
+        in: "path",
+      },
+      example: "500306017",
+    }),
+});
+
+const QuerySchema = z.object({
+  limit: z
+    .string()
+    .regex(/^\d+$/)
+    .optional()
+    .openapi({
+      param: {
+        name: "limit",
+        in: "query",
+      },
+      example: "10",
+    }),
+});
+
+const getHistoryByIdRoute = createRoute({
+  method: "get",
+  path: "/{id}",
+  tags: ["History"],
+  summary: "Get history by station ID",
+  description: "List of historical data for the station",
+  request: {
+    params: ParamSchema,
+    query: QuerySchema,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: z.array(HistorySchema),
+        },
+      },
+      description: "Successful response",
+    },
+    500: {
+      content: {
+        "application/json": {
+          schema: ErrorSchema,
+        },
+      },
+      description: "Internal server error",
+    },
+  },
+});
+
+export const historyRoutes = new OpenAPIHono().openapi(
+  getHistoryByIdRoute,
+  async (c) => {
+    const { id } = c.req.valid("param");
+    const { limit } = c.req.valid("query");
 
     let pendingQuery = supabase
       .from("history")
@@ -22,37 +79,8 @@ export const historyRoutes = new Elysia({ prefix: "/history" }).get(
 
     if (error) {
       console.error(error);
-      set.status = 500;
-      return { error: "Internal server error" };
+      return c.json({ error: "Internal server error" }, 500);
     }
-    return data;
-  },
-  {
-    detail: {
-      tags: ["History"],
-      summary: "Get history by station ID",
-      description: "List of historical data for the station",
-    },
-    params: t.Object({
-      id: t.String({
-        pattern: "^\\d+$",
-        description: "Station ID",
-        examples: ["500306017"],
-      }),
-    }),
-    query: t.Object({
-      limit: t.Optional(
-        t.String({
-          pattern: "^\\d+$",
-          description: "Limit the results",
-          examples: "10",
-        }),
-      ),
-    }),
-    response: {
-      200: t.Array(HistorySchema),
-      400: ErrorSchema,
-      500: ErrorSchema,
-    },
+    return c.json(data, 200);
   },
 );

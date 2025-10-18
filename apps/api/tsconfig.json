@@ -4,9 +4,11 @@
     "module": "Preserve",
     "strict": true,
     "skipLibCheck": true,
-    "types": ["node", "bun"],
+    "types": ["node"],
     "jsx": "react-jsx",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "maxNodeModuleJsDepth": 15,
+    "skipDefaultLibCheck": true
   },
   "exclude": ["node_modules"]
 }
