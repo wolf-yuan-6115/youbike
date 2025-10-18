@@ -1,9 +1,9 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { Hono } from "hono";
 import { Scalar } from "@scalar/hono-api-reference";
-import { stationsRoutes } from "./routes/stations";
-import { currentRoutes } from "./routes/current";
-import { historyRoutes } from "./routes/history";
+import { stationsRoutes } from "./routes/stations.js";
+import { currentRoutes } from "./routes/current.js";
+import { historyRoutes } from "./routes/history.js";
 
 const app = new Hono();
 const api = new OpenAPIHono();

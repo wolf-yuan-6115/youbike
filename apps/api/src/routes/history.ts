@@ -1,6 +1,6 @@
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
-import { supabase } from "../lib/supabase";
-import { HistorySchema, ErrorSchema } from "../schemas";
+import { supabase } from "../lib/supabase.js";
+import { HistorySchema, ErrorSchema } from "../schemas/index.js";
 
 const ParamSchema = z.object({
   id: z
