@@ -9,7 +9,6 @@
     "apps/frontend"
   ],
   "devDependencies": {
-    "@types/swagger-ui-dist": "^3.30.6",
     "prettier": "^3.5.3"
   },
   "trustedDependencies": [
