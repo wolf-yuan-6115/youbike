@@ -51,7 +51,7 @@ export default async (env: Env) => {
 
   for (const station of existingData) {
     try {
-      const targetStation = data.retVal.data.find(
+      const targetStation = data.find(
         (k) => k.station_no === station.id.toString(),
       );
 
