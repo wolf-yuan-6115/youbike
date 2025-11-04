@@ -69,10 +69,10 @@ if (!isNaN(stationName)) {
       selectedStation.name_tw,
       selectedStation.lat,
       selectedStation.lng,
-      `"${zh[areaCode.toString()]}${selectedStation.district_tw}${selectedStation.address_tw}"`,
+      `${zh[areaCode.toString()]}${selectedStation.district_tw}${selectedStation.address_tw}`,
       parkingData.parking_spaces,
       selectedStation.name_en,
-      `"${selectedStation.address_en}, ${selectedStation.district_en}, ${en[areaCode.toString()]}"`,
+      `${selectedStation.address_en}, ${selectedStation.district_en}, ${en[areaCode.toString()]}`,
     ]
       .map((k) => `"${k}"`)
       .join(","),
@@ -115,10 +115,10 @@ if (!isNaN(stationName)) {
         selectedStation[0].name_tw,
         selectedStation[0].lat,
         selectedStation[0].lng,
-        `"${zh[areaCode.toString()]}${selectedStation[0].district_tw}${selectedStation[0].address_tw}"`,
+        `${zh[areaCode.toString()]}${selectedStation[0].district_tw}${selectedStation[0].address_tw}`,
         parkingData.parking_spaces,
         selectedStation[0].name_en,
-        `"${selectedStation[0].address_en}, ${selectedStation[0].district_en}, ${en[areaCode.toString()]}"`,
+        `${selectedStation[0].address_en}, ${selectedStation[0].district_en}, ${en[areaCode.toString()]}`,
       ]
         .map((k) => `"${k}"`)
         .join(","),
