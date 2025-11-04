@@ -5,7 +5,27 @@ const rawStationData = await fetch(
 );
 
 const stationData = await rawStationData.json();
-
-console.log(
-  stationData.filter((k) => k.name_tw.includes(stationName.trim())),
+const selectedStation = stationData.filter((k) =>
+  k.name_tw.includes(stationName.trim()),
 );
+
+console.log(selectedStation);
+
+if (selectedStation.length === 1) {
+  const rawParkingData = await fetch(
+    "https://apis.youbike.com.tw/tw2/parkingInfo",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        station_no: [selectedStation[0].station_no],
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  const parkingData = await rawParkingData.json();
+
+  console.log(parkingData.retVal.data[0]);
+}
