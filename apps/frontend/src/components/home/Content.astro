@@ -203,23 +203,26 @@ const areaName = Astro.currentLocale === "zh-TW" ? zhArea : enArea;
 <section class="mx-auto my-6 max-w-4xl">
   <div class="mt-10 space-y-4">
     {
-      Object.entries(groupedStations).map(([areaCode, stations]) => (
-        <div class="my-8">
-          <h2 class="mb-4 border-b border-gray-600 pb-1 text-2xl font-bold">
-            {areaName[areaCode as keyof typeof areaName] ?? areaCode}
-          </h2>
-          <div class="space-y-3">
-            {stations?.map((station) => (
-              <StationCard
-                station={station}
-                history={
-                  historicalDataMap.get(station.station_id.id) ?? []
-                }
-              />
-            ))}
+      Object.entries(groupedStations)
+        .sort(([a], [b]) => Number(a) - Number(b))
+        .map(([areaCode, stations]) => (
+          <div class="my-8">
+            <h2 class="mb-4 border-b border-gray-600 pb-1 text-2xl font-bold">
+              {areaName[areaCode as keyof typeof areaName] ??
+                areaCode}
+            </h2>
+            <div class="space-y-3">
+              {stations?.map((station) => (
+                <StationCard
+                  station={station}
+                  history={
+                    historicalDataMap.get(station.station_id.id) ?? []
+                  }
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      ))
+        ))
     }
   </div>
 </section>
