@@ -76,7 +76,7 @@ export const parkingInfo = async (
 
     currentPage++;
 
-    console.log(
+    logCurrentTime(
       `Fetched data page ${currentPage - 1} of ${totalPage}`,
     );
   } while (currentPage <= totalPage);
