@@ -18,7 +18,7 @@ api.doc("/api/openapi.json", {
   openapi: "3.0.0",
   info: {
     version: "1.0.0",
-    title: "YouBike API",
+    title: "Cha Bike API",
     description:
       "Get access to underlying data used by Cha Bike. For more information, visit [Cha Bike](https://youbike.wolf-yuan.dev/) homepage.\n" +
       "Data provided as-is, with no warranties.",
