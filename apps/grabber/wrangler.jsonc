@@ -7,9 +7,6 @@
   "observability": {
     "enabled": true
   },
-  "placement": {
-    "mode": "smart"
-  },
   "vars": {
     "SUPABASE_URL": "https://cjuaczvkvlxiursigzzb.supabase.co/"
   },
