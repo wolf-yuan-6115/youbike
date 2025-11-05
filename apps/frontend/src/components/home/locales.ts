@@ -25,6 +25,10 @@ const locales: Locales = {
     "info:subtitle": "我做了你現在正在看的這個網站",
     "info:add": "我想加站點！",
     "info:blog": "看看這個網頁誕生的故事",
+
+    "warning:title":
+      "目前顯示的即時資料可能並非即時資料，因為後端服務暫時無法取得最新的 YouBike 資料",
+    "warning:duration":"距上次取得最新資料已過 "
   },
   en: {
     "dynamic:hasEmpty":
@@ -51,6 +55,10 @@ const locales: Locales = {
     "info:subtitle": "I built the site you're seeing right now",
     "info:add": "I want to add a station!",
     "info:blog": "Read the story behind this site",
+
+    "warning:title":
+      "The live data displayed may be outdated, as the backend service is temporarily unable to fetch the latest YouBike data",
+    "warning:duration":"Since last successful data update: "
   },
 };
 

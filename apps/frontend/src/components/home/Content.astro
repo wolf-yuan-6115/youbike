@@ -4,6 +4,7 @@ import { en as enArea, zh as zhArea } from "@lib/stationCity";
 import { supabase } from "@lib/supabase";
 import fullLocale from "./locales";
 
+import { formatMinuteCount } from "@lib/formatter.ts";
 import { Icon } from "astro-icon/components";
 import clsx from "clsx";
 
@@ -88,9 +89,26 @@ const groupedStations = Object.groupBy(stationData, (k) =>
   k.station_id.id.toString().substring(2, 4),
 );
 const areaName = Astro.currentLocale === "zh-TW" ? zhArea : enArea;
+const lastUpdate =
+  new Date().getTime() - new Date(stationData[0].update).getTime();
 ---
 
 <main class="py-16">
+  {
+    lastUpdate > 70 * 1000 && (
+      <div
+        class="mx-auto mb-18 flex max-w-4xl flex-col items-center justify-center gap-4 rounded-lg border border-yellow-400 bg-gray-800 px-6 py-4 text-center text-yellow-300"
+        transition:name="warning"
+      >
+        <p class="font-bold">{locale["warning:title"]}</p>
+        <p>
+          {locale["warning:duration"] +
+            formatMinuteCount(Math.round(lastUpdate / 1000 / 60), Astro.currentLocale)}
+        </p>
+      </div>
+    )
+  }
+
   <div class="text-center">
     <div class="mb-8">
       <Icon
