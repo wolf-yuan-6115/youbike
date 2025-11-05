@@ -7,12 +7,27 @@ import { logCurrentTime } from "./currentTime.ts";
 export const parkingInfo = async (
   stationIds: string[],
 ): Promise<ParkingData | null> => {
-  let currentPage = 1;
-  let totalPage = 1;
+  const stationChunk: string[][] = [];
+  for (let i = 0; i < stationIds.length; i += 20) {
+    stationChunk.push(stationIds.slice(i, i + 20));
+  }
+
   let allData: ParkingData = [];
 
-  do {
+  logCurrentTime(
+    `Fetching data for ${stationIds.length} stations in ${stationChunk.length} chunks`,
+  );
+
+  for (
+    let chunkIndex = 0;
+    chunkIndex < stationChunk.length;
+    chunkIndex++
+  ) {
+    const chunk = stationChunk[chunkIndex];
+    if (!chunk) continue;
+
     let retry = 0;
+
     while (retry <= 5) {
       try {
         const response = await fetch(
@@ -20,8 +35,7 @@ export const parkingInfo = async (
           {
             method: "POST",
             body: JSON.stringify({
-              station_no: stationIds,
-              page: currentPage,
+              station_no: chunk,
             }),
             headers: {
               "Content-Type": "application/json",
@@ -50,10 +64,11 @@ export const parkingInfo = async (
         }
 
         const result = (await response.json()) as ParkingInfo;
-        if (currentPage === 1) {
-          totalPage = result.retVal.total_page;
-        }
         allData.push(...result.retVal.data);
+
+        logCurrentTime(
+          `Fetched chunk ${chunkIndex + 1} of ${stationChunk.length} (${chunk.length} stations)`,
+        );
         break;
       } catch (error) {
         logCurrentTime(`Error when fetching parking info: ${error}`, {
@@ -71,15 +86,13 @@ export const parkingInfo = async (
     }
 
     if (retry > 5) {
+      logCurrentTime(
+        `Failed to fetch chunk ${chunkIndex + 1} after 5 retries`,
+        { isError: true },
+      );
       return null;
     }
-
-    currentPage++;
-
-    logCurrentTime(
-      `Fetched data page ${currentPage - 1} of ${totalPage}`,
-    );
-  } while (currentPage <= totalPage);
+  }
 
   return allData;
 };
