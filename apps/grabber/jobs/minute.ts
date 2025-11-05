@@ -93,9 +93,15 @@ export default async (env: Env) => {
           existingRecord.unavailable + unavailableIncrement,
         full: existingRecord.full + fullIncrement,
         success: existingRecord.success + 1,
-        status: isNoSlot ? "FULL" : isNoBike ? "EMPTY" : "NORMAL",
+        status:
+          targetStation.status !== 1
+            ? "UNKNOWN"
+            : isNoSlot
+              ? "FULL"
+              : isNoBike
+                ? "EMPTY"
+                : "NORMAL",
         types: targetStation.available_spaces_detail,
-        state: targetStation.status
       });
     } catch (error) {
       logCurrentTime(

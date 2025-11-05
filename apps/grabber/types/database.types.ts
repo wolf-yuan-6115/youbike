@@ -19,7 +19,6 @@ export type Database = {
           bikes: number
           full: number
           slots: number
-          state: number
           station_id: number
           status: Database["public"]["Enums"]["station_state"]
           success: number
@@ -31,7 +30,6 @@ export type Database = {
           bikes?: number
           full?: number
           slots?: number
-          state?: number
           station_id: number
           status?: Database["public"]["Enums"]["station_state"]
           success?: number
@@ -43,7 +41,6 @@ export type Database = {
           bikes?: number
           full?: number
           slots?: number
-          state?: number
           station_id?: number
           status?: Database["public"]["Enums"]["station_state"]
           success?: number
@@ -155,7 +152,7 @@ export type Database = {
       }
     }
     Enums: {
-      station_state: "FULL" | "EMPTY" | "NORMAL"
+      station_state: "FULL" | "EMPTY" | "NORMAL" | "UNKNOWN"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -283,7 +280,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      station_state: ["FULL", "EMPTY", "NORMAL"],
+      station_state: ["FULL", "EMPTY", "NORMAL", "UNKNOWN"],
     },
   },
 } as const
