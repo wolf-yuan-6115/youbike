@@ -27,7 +27,7 @@ const locales: Locales = {
     "info:blog": "看看這個網頁誕生的故事",
 
     "warning:title":
-      "目前顯示的即時資料可能並非即時資料，因為後端服務暫時無法取得最新的 YouBike 資料",
+      "後端服務目前無法正常取得最新的 YouBike 資料",
     "warning:duration":"距上次取得最新資料已過 "
   },
   en: {
@@ -57,7 +57,7 @@ const locales: Locales = {
     "info:blog": "Read the story behind this site",
 
     "warning:title":
-      "The live data displayed may be outdated, as the backend service is temporarily unable to fetch the latest YouBike data",
+      "The backend service is currently having trouble to fetch the latest YouBike data",
     "warning:duration":"Since last successful data update: "
   },
 };
