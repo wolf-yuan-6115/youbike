@@ -25,6 +25,7 @@ const locales: { [k: string]: Locales } = {
       "status:normal": "可借可還",
       "status:empty": "可借數量 <5",
       "status:full": "可還空位 <3",
+      "status:unknown":"未知狀態",
 
       "location:connect": "站點位於",
 
@@ -45,6 +46,7 @@ const locales: { [k: string]: Locales } = {
       "status:normal": "Rent & Return",
       "status:empty": "<5 Bikes",
       "status:full": "<3 Docks",
+      "status:unknown":"Unknown state",
 
       "location:connect": "is located at",
 
