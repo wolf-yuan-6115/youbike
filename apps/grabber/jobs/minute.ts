@@ -95,6 +95,7 @@ export default async (env: Env) => {
         success: existingRecord.success + 1,
         status: isNoSlot ? "FULL" : isNoBike ? "EMPTY" : "NORMAL",
         types: targetStation.available_spaces_detail,
+        state: targetStation.status
       });
     } catch (error) {
       logCurrentTime(
