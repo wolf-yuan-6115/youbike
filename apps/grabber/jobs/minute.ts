@@ -66,9 +66,15 @@ export default async (env: Env) => {
       const isNoBike = targetStation.available_spaces <= 5;
       const isNoSlot = targetStation.empty_spaces <= 3;
 
-      logCurrentTime(
-        `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}, noBike: ${isNoBike} noSlot: ${isNoSlot}`,
-      );
+      if (!isAbnormalStatus) {
+        logCurrentTime(
+          `Station ${station.id} got ${targetStation.available_spaces}/${targetStation.parking_spaces}, noBike: ${isNoBike} noSlot: ${isNoSlot}`,
+        );
+      } else {
+        logCurrentTime(
+          `Station ${station.id} status is abnormal: ${targetStation.status}, skipping unavailable/full count increment`,
+        );
+      }
 
       const existingRecord = existingDataMap.get(station.id);
       if (!existingRecord) {
@@ -99,14 +105,13 @@ export default async (env: Env) => {
           existingRecord.unavailable + unavailableIncrement,
         full: existingRecord.full + fullIncrement,
         success: existingRecord.success + 1,
-        status:
-          isAbnormalStatus
-            ? "UNKNOWN"
-            : isNoSlot
-              ? "FULL"
-              : isNoBike
-                ? "EMPTY"
-                : "NORMAL",
+        status: isAbnormalStatus
+          ? "UNKNOWN"
+          : isNoSlot
+            ? "FULL"
+            : isNoBike
+              ? "EMPTY"
+              : "NORMAL",
         types: targetStation.available_spaces_detail,
       });
     } catch (error) {
