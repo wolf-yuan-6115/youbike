@@ -62,6 +62,7 @@ export default async (env: Env) => {
         continue;
       }
 
+      const isAbnormalStatus = targetStation.status !== 1;
       const isNoBike = targetStation.available_spaces <= 5;
       const isNoSlot = targetStation.empty_spaces <= 3;
 
@@ -77,8 +78,13 @@ export default async (env: Env) => {
         continue;
       }
 
-      const unavailableIncrement = isNoBike ? 1 : 0;
-      const fullIncrement = isNoSlot ? 1 : 0;
+      let unavailableIncrement = isNoBike ? 1 : 0;
+      let fullIncrement = isNoSlot ? 1 : 0;
+
+      if (isAbnormalStatus) {
+        unavailableIncrement = 0;
+        fullIncrement = 0;
+      }
 
       const commonData = {
         station_id: station.id,
@@ -94,7 +100,7 @@ export default async (env: Env) => {
         full: existingRecord.full + fullIncrement,
         success: existingRecord.success + 1,
         status:
-          targetStation.status !== 1
+          isAbnormalStatus
             ? "UNKNOWN"
             : isNoSlot
               ? "FULL"
