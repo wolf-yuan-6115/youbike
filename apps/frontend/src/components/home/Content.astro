@@ -22,7 +22,7 @@ const stationData = stationDataRes.data;
 const historicalData = historicalDataRes.data;
 
 if (!stationData || !historicalData) {
-  throw new Error("Failed to fetch data from Supabase");
+  return "Server is under maintenance / 伺服器維護中"
 }
 
 const historicalDataMap = new Map();
