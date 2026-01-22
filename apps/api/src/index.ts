@@ -40,6 +40,7 @@ api.get(
   Scalar({
     theme: "deepSpace",
     url: "/api/openapi.json",
+    hideClientButton: true,
   }),
 );
 
