@@ -41,6 +41,7 @@ api.get(
     theme: "deepSpace",
     url: "/api/openapi.json",
     hideClientButton: true,
+    defaultOpenAllTags: true,
   }),
 );
 
