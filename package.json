@@ -10,7 +10,7 @@
     "apps/api"
   ],
   "devDependencies": {
-    "prettier": "^3.7.4"
+    "prettier": "^3.8.1"
   },
   "trustedDependencies": [
     "@tailwindcss/oxide",
